@@ -40,6 +40,7 @@ module.exports = function () {
     // Passing the request url to environment locals
     app.use(function (req, res, next) {
         res.locals.url = req.protocol + '://' + req.headers.host + req.url;
+        res.locals.route = req.url;
         next();
     });
 
@@ -120,10 +121,9 @@ module.exports = function () {
     });
 
     // Globbing routing admin files
-    /*    config.getGlobbedFiles('./app/back-end*/
-    /*//*route.js').forEach(function (routePath) {
-     app.use('/admin', require(path.resolve(routePath)));
-     });*/
+    config.getGlobbedFiles('./app/back-end/*/route.js').forEach(function (routePath) {
+        app.use('/'+config.admin_prefix, require(path.resolve(routePath)));
+    });
 
     // Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
     app.use(function (err, req, res, next) {

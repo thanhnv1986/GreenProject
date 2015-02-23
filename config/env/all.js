@@ -6,6 +6,7 @@ module.exports = {
 		description: 'Sequelize, Express and Node.js',
 		keywords: 'Techmaster, Sequelize, Express and Node.js'
 	},
+    admin_prefix: 'ad-green',
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',
