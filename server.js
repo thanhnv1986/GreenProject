@@ -3,14 +3,21 @@
  * Module dependencies.
  */
 var init = require('./config/init')(),
-	config = require('./config/config'),
-	chalk = require('chalk');
+    config = require('./config/config'),
+    chalk = require('chalk');
 
-    global.__base = __dirname + '/';
+global.__base = __dirname + '/';
+global.__modules = require('./libs/modules_manager');
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
  */
+
+//Initials custom filter
+require('./libs/custom_template_filter')();
+
+global.__models = require('./libs/models_manager');
+global.__acl = require('./libs/acl');
 
 // Init the express application
 var app = require('./config/app')();
