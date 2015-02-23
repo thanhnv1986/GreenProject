@@ -1,9 +1,17 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/sen-dev',
+    db:{
+        host:'techmaster.vn',
+        port:'5432',
+        database:'techmaster_db',
+        username:'techmaster',
+        password:'vanthanh123-',
+        dialect: 'postgres',
+        logging: true
+    },
 	app: {
-		title: 'SEN - Development Environment'
+		title: 'GREEN-PROJECT'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

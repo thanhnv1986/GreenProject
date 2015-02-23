@@ -15,6 +15,7 @@ module.exports = function (req, res, next) {
         else {
             view = config.themes + '/' + view;
         }
+        console.log(res.locals.route);
         // continue with original render
         _render.call(this, view, options, fn);
     }

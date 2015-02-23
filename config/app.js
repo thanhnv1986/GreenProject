@@ -114,6 +114,18 @@ module.exports = function () {
 
     app.use(require('../app/plugins/theme-plugin.js'));
 
+    // Globbing admin module files
+    config.getGlobbedFiles('./app/backend/*/module.js').forEach(function (routePath) {
+        console.log(path.resolve(routePath));
+        require(path.resolve(routePath))(__modules);
+    });
+
+    // Globbing front-end module files
+    config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {
+        console.log(path.resolve(routePath));
+        require(path.resolve(routePath))(__modules);
+    });
+
     // Globbing routing files
     config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
@@ -121,7 +133,7 @@ module.exports = function () {
     });
 
     // Globbing routing admin files
-    config.getGlobbedFiles('./app/back-end/*/route.js').forEach(function (routePath) {
+    config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
         app.use('/'+config.admin_prefix, require(path.resolve(routePath)));
     });
 

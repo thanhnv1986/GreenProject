@@ -1,0 +1,33 @@
+<div class="toolbar" style="padding-bottom: 10px;">
+    {% if backButton %}
+        <a href="/admin/{{ backButton }}" name="back" class="btn btn-default"><i
+                    class="fa fa-angle-left"></i>
+            Quay về
+        </a>
+    {% endif %}
+    {% if viewButton %}
+        <a target="_blank" href='/{{ viewButton }}'
+           class="btn btn-info"> <i class="fa fa-eye"></i> Xem</a>
+    {% endif %}
+    {% if createButton %}
+        <a href="/admin/{{ createButton }}/create" class="btn btn-primary">
+            <i class="fa fa-plus"></i>
+                                    <span class="hidden-480">
+                                    Thêm mới </span>
+        </a>
+    {% endif %}
+    {% if saveButton %}
+        <button id="saveForm" class="btn btn-success"><i class="fa fa-check"></i> Lưu</button>
+    {% endif %}
+
+    {% if deleteButton %}
+        <div class="pull-right">
+            <a class="btn btn-danger" data-toggle="modal" href="#confirm">
+                <i class="fa fa-remove"></i>
+								<span class="hidden-480">
+								Xóa </span>
+            </a>
+        </div>
+    {% endif %}
+
+</div>

@@ -2,11 +2,11 @@
 
 module.exports = {
 	app: {
-		title: 'SEN',
+		title: 'GREEN',
 		description: 'Sequelize, Express and Node.js',
 		keywords: 'Techmaster, Sequelize, Express and Node.js'
 	},
-    admin_prefix: 'ad-green',
+    admin_prefix: 'admin',
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',
