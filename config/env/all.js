@@ -7,6 +7,18 @@ module.exports = {
 		keywords: 'Techmaster, Sequelize, Express and Node.js'
 	},
     admin_prefix: 'admin',
+    mailer_config: {
+        service: 'Gmail',
+        auth: {
+            user: 'support@techmaster.vn',
+            pass: 'aikido2015-'
+        },
+        mailer_from: "Techmaster <support@techmaster.vn>",
+        mailer_to: "cuong@techmaster.vn"
+    },
+    pagination:{
+        number_item:20
+    },
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',

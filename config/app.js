@@ -120,12 +120,6 @@ module.exports = function () {
         require(path.resolve(routePath))(__modules);
     });
 
-    // Globbing front-end module files
-    config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {
-        console.log(path.resolve(routePath));
-        require(path.resolve(routePath))(__modules);
-    });
-
     // Globbing routing files
     config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));

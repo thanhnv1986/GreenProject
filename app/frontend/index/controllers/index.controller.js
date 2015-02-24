@@ -7,11 +7,11 @@
  */
 var _ = require('lodash'),
     config = require(__base + 'config/config.js');
-var _this = module.exports = _.extend(
+/*var _this = module.exports = _.extend(
     require('../module.js')
-);
+);*/
 module.exports.index = function (req, res) {
-    var index_view = _this.name + '/index';
+    var index_view = 'index/index';
     res.render(index_view, {
         user: req.user || null
     });
