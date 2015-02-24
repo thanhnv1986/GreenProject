@@ -1,6 +1,7 @@
 /**
  * Created by thanhnv on 2/20/15.
  */
+var fs = require('fs');
 var config = require(__base + 'config/config.js');
 module.exports = function (req, res, next) {
     // grab reference of render
@@ -13,9 +14,15 @@ module.exports = function (req, res, next) {
             view = 'admin/' + view;
         }
         else {
-            view = config.themes + '/' + view;
+            var tmp = config.themes + '/' + view;
+            if(fs.existsSync(__base+'app/themes/'+tmp+'.html')){
+                view = tmp;
+            }
+            else{
+                view = "default/"+view;
+            }
+
         }
-        console.log(res.locals.route);
         // continue with original render
         _render.call(this, view, options, fn);
     }
