@@ -5,6 +5,7 @@
  */
 var passport = require('passport'),
 	path = require('path'),
+    redis = require('redis').createClient(),
 	config = require('./config');
 	
 /**
@@ -18,6 +19,27 @@ module.exports = function() {
 
 	// Deserialize sessions
 	passport.deserializeUser(function(id, done) {
+        var key = 'current-user-'+id;
+        redis.get(key, function(err, result){
+            if(result!=null){
+                var user = JSON.parse(result);
+                user.acl = JSON.parse(user.role.rules);
+                done(null, user);
+            }
+            else{
+                __models.user.find({
+                    include:[__models.role],
+                    where:{
+                        id:id
+                    }
+                }).then(function (user) {
+                    user.acl = JSON.parse(user.role.rules);
+                    redis.setex(key,30000, JSON.stringify(user));
+                    done(null, user);
+                });
+
+            }
+        });
 
 	});
 

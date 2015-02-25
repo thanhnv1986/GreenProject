@@ -89,7 +89,6 @@ module.exports = function () {
         return JSON.parse(data);
     });
     swig.setFilter('check_state', function (rules, moduleName, action) {
-        console.log('**********', rules, moduleName, action);
         for (var i in rules) {
             if (i == moduleName) {
                 if (rules[i].indexOf(action) > -1) {
@@ -141,6 +140,53 @@ module.exports = function () {
         return html;
     });
 
+    swig.setFilter('render_sidebar', function (route, user) {
+        var html = '';
+        sortGroups = sortMenus(__menus);
+        for (var i in sortGroups) {
+
+            var group = __menus[sortGroups[i].menu];
+            html += '<li class="header">' + group.title + '</li>';
+            sortModules = sortMenus(group.modules);
+            for (var y in sortModules) {
+                var moduleName = sortModules[y].menu;
+                var subMenu = group.modules[moduleName];
+                var icon = 'fa fa-circle-o text-danger';
+                if (subMenu.icon) {
+                    icon = subMenu.icon;
+                }
+                var cls = active_menu(route, moduleName.replace('-', '_'));
+                html += '<li class="treeview ' + cls + '">' +
+                    '<a href="{{link}}">' +
+                    '<i class="' + icon + '"></i> <span>' + subMenu.title + '</span>';
+
+                if (subMenu.menus.length > 1) {
+                    html = html.replace('{{link}}', '#');
+                    html += '<i class="fa fa-angle-left pull-right"></i></a>';
+
+                    html += '<ul class="treeview-menu">';
+                    for (var z in subMenu.menus) {
+                        var mn = subMenu.menus[z];
+                        var cls = active_menu(route, mn.link.replace('/', ''), "active", 3);
+                        html += '<li class="treeview ' + cls + '">' +
+                            '<a href="/admin/' + (moduleName + mn.link) + '">' +
+                            '<i class="fa fa-circle-o"></i> <span>' + mn.title + '</span>' +
+                            '</a>' +
+                            '</li>';
+                    }
+                    html += '</ul>';
+                    html += '</li>';
+                }
+                else {
+                    html = html.replace('{{link}}', '/admin/' + y + '');
+                    html += '</a></li>';
+                }
+
+            }
+        }
+        return  html;
+    });
+
     swig.setFilter('standard_route_search', function (route) {
         var st = route.split('/');
         if (st.length > 0) {
@@ -167,16 +213,15 @@ module.exports = function () {
     });
 };
 
-function active_menu(value, string_to_compare, cls) {
+function active_menu(value, string_to_compare, cls, index) {
     var arr = value.split('/');
     var st = "active";
     if (cls) {
         st = cls;
     }
-    /**
-     * only check for book/book-tag
-     */
-//    if (arr[2] == 'book-tags') arr[2] = 'book_tags';
+    if (index) {
+        return arr[index] === string_to_compare ? st : "";
+    }
     return arr[2] == string_to_compare ? st : "";
 }
 

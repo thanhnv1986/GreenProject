@@ -7,7 +7,7 @@ var init = require('./config/init')(),
     chalk = require('chalk');
 
 global.__base = __dirname + '/';
-global.__modules = require('./libs/modules_manager');
+
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -16,6 +16,8 @@ global.__modules = require('./libs/modules_manager');
 //Initials custom filter
 require('./libs/custom_template_filter')();
 
+global.__modules = require('./libs/modules_manager');
+global.__menus = require('./libs/menus_manager')();
 global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
 

@@ -131,6 +131,13 @@ module.exports = function () {
         app.use('/'+config.admin_prefix, require(path.resolve(routePath)));
     });
 
+    // Globbing menu files
+
+    config.getGlobbedFiles('./app/menus/*/*.js').forEach(function (routePath) {
+        console.log(routePath);
+        require(path.resolve(routePath))(__menus);
+    });
+
     // Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
     app.use(function (err, req, res, next) {
         // If the error object doesn't exists

@@ -150,7 +150,7 @@ exports.signout = function (req, res) {
     var key = 'current-user-' + req.user.id;
     redis.del(key);
     req.logout();
-    res.redirect('/login');
+    res.redirect('/admin/login');
 };
 /**
  * Profile

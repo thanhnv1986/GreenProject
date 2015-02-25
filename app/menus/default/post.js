@@ -1,24 +1,24 @@
 /**
- * Created by thanhnv on 2/4/15.
+ * Created by thanhnv on 2/25/15.
  */
 module.exports = function (menus) {
-    menus.posts = {
-        title: 'Posts',
-        sort: 2,
+    menus.default.modules.posts = {
+        title:'Posts',
+        sort: 1,
+        icon:'fa fa-file-o',
         menus: [
             {
                 name: 'index',
                 title: 'All Posts',
-                link: ''
+                link: '/'
             },
             {
                 name: 'create',
-                title: 'Add New',
+                title: 'New Post',
                 link: '/create'
             }
+
         ]
-    }
+    };
     return menus;
-
 };
-

@@ -2,265 +2,218 @@
 {% block cssExtends %}
     <style type="text/css">
 
-    /**
- * Nestable
- */
-    .dd {
-        position: relative;
-        display: block;
-        margin: 0;
-        padding: 0;
-        max-width: 600px;
-        list-style: none;
-        font-size: 13px;
-        line-height: 20px;
-    }
-
-    .dd-list {
-        display: block;
-        position: relative;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .dd-list .dd-list {
-        padding-left: 30px;
-    }
-
-    .dd-collapsed .dd-list {
-        display: none;
-    }
-
-    .dd-item,
-    .dd-empty,
-    .dd-placeholder {
-        display: block;
-        position: relative;
-        margin: 0;
-        padding: 0;
-        min-height: 20px;
-        font-size: 13px;
-        line-height: 20px;
-        margin-bottom: 10px;
-    }
-
-    /*.dd-handle {
-        display: block;
-        height: 30px;
-        margin: 5px 0;
-        padding: 5px 10px;
-        color: #333;
-        text-decoration: none;
-        font-weight: bold;
-        border: 1px solid #ccc;
-        background: #fafafa;
-        background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-        background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-        background: linear-gradient(top, #fafafa 0%, #eee 100%);
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    }*/
-
-    .dd-handle:hover {
-        color: #2ea8e5;
-        background: #fff;
-    }
-
-    .dd-item > button {
-        display: block;
-        position: relative;
-        cursor: pointer;
-        float: left;
-        width: 25px;
-        height: 20px;
-        margin: 5px 0;
-        padding: 0;
-        text-indent: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        border: 0;
-        background: transparent;
-        font-size: 12px;
-        line-height: 1;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .dd-item > button:before {
-        content: '+';
-        display: block;
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        text-indent: 0;
-    }
-
-    .dd-item > button[data-action="collapse"]:before {
-        content: '-';
-    }
-
-    .dd-placeholder,
-    .dd-empty {
-        margin: 5px 0;
-        padding: 0;
-        min-height: 30px;
-        background: #f2fbff;
-        border: 1px dashed #b6bcbf;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    }
-
-    .dd-empty {
-        border: 1px dashed #bbb;
-        min-height: 100px;
-        background-color: #e5e5e5;
-        background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-        background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-        background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-        background-size: 60px 60px;
-        background-position: 0 0, 30px 30px;
-    }
-
-    .dd-dragel {
-        position: absolute;
-        pointer-events: none;
-        z-index: 9999;
-    }
-
-    .dd-dragel > .dd-item .dd-handle {
-        margin-top: 0;
-    }
-
-    .dd-dragel .dd-handle {
-        -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
-        box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
-    }
-
-    /**
-     * Nestable Extras
-     */
-    @media only screen and (min-width: 700px) {
+        /**
+         * Nestable
+         */
         .dd {
+            position: relative;
+            display: block;
+            margin: 0;
+            padding: 0;
+            /*max-width: 600px;*/
+            list-style: none;
+            font-size: 13px;
+            line-height: 20px;
+        }
+
+        .dd-list {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .dd-list .dd-list {
+            padding-left: 30px;
+        }
+
+        .dd-collapsed .dd-list {
+            display: none;
+        }
+
+        .dd-item,
+        .dd-empty,
+        .dd-placeholder {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 20px;
+            font-size: 18px;
+            line-height: 32px;
+            margin-bottom: 10px;
+        }
+
+        .dd-handle {
+            display: block;
+            height: 45px;
+            margin: 5px 0;
+            cursor: move;
+            padding: 5px 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 400;
+            border: 1px solid #ccc;
+            background: #fafafa;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        .dd-handle:hover {
+            color: #2ea8e5;
+            background: #fff;
+        }
+
+        .dd-item > button {
+            display: block;
+            position: relative;
+            cursor: pointer;
             float: left;
-            width: 48%;
+            width: 25px;
+            height: 20px;
+            margin: 5px 0;
+            padding: 0;
+            text-indent: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 0;
+            background: transparent;
+            font-size: 12px;
+            line-height: 1;
+            text-align: center;
+            font-weight: bold;
         }
 
-        .dd + .dd {
-            margin-left: 2%;
+        .dd-item > button:before {
+            content: '+';
+            display: block;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            text-indent: 0;
         }
-    }
 
-    .dd-hover > .dd-handle {
-        background: #2ea8e5 !important;
-    }
+        .dd-item > button[data-action="collapse"]:before {
+            content: '-';
+        }
 
-    /**
-     * Nestable Draggable Handles
-     */
-    .dd3-content {
-        display: block;
-        height: 30px;
-        margin: 5px 0;
-        padding: 5px 10px 5px 40px;
-        color: #333;
-        text-decoration: none;
-        font-weight: bold;
-        border: 1px solid #ccc;
-        background: #fafafa;
-        background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-        background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-        background: linear-gradient(top, #fafafa 0%, #eee 100%);
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    }
+        .dd-placeholder,
+        .dd-empty {
+            margin: 5px 0;
+            padding: 0;
+            min-height: 30px;
+            background: #f2fbff;
+            border: 1px dashed #b6bcbf;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
 
-    .dd3-content:hover {
-        color: #2ea8e5;
-        background: #fff;
-    }
+        .dd-empty {
+            border: 1px dashed #bbb;
+            min-height: 100px;
+            background-color: #e5e5e5;
+            background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
 
-    .dd-dragel > .dd3-item > .dd3-content {
-        margin: 0;
-    }
+        .dd-dragel {
+            position: absolute;
+            pointer-events: none;
+            z-index: 9999;
+        }
 
-    .dd3-item > button {
-        margin-left: 30px;
-    }
+        .dd-dragel > .dd-item .dd-handle {
+            margin-top: 0;
+        }
 
-    /*.dd3-handle {
-        position: absolute;
-        margin: 0;
-        left: 0;
-        top: 0;
-        cursor: pointer;
-        width: 30px;
-        text-indent: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        border: 1px solid #aaa;
-        background: #ddd;
-        background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-        background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-        background: linear-gradient(top, #ddd 0%, #bbb 100%);
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }*/
+        .dd-dragel .dd-handle {
+            -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
+            box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
+        }
 
-    .dd3-handle:before {
-        content: '≡';
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 3px;
-        width: 100%;
-        text-align: center;
-        text-indent: 0;
-        color: #fff;
-        font-size: 20px;
-        font-weight: normal;
-    }
+        /**
+         * Nestable Extras
+         */
+        @media only screen and (min-width: 700px) {
+            .dd {
+                float: left;
+                width: 99%;
+            }
 
-    .dd3-handle:hover {
-        background: #ddd;
-    }
+            .dd + .dd {
+                margin-left: 2%;
+            }
+        }
+
+        .dd-hover > .dd-handle {
+            background: #2ea8e5 !important;
+        }
+
+        .dd-dragel > .dd3-item > .dd3-content {
+            margin: 0;
+        }
+
+        .dd3-item > button {
+            margin-left: 30px;
+        }
+
+        .open {
+            display: block;
+        }
+
+        .close {
+            display: none;
+        }
+
+        .expand_arrow {
+            position: absolute;
+            top: 15px;
+            right: 10px;
+        }
     </style>
 {% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <form method="post" id="edit-form">
-                {% include '../toolbar.html' %}
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" name="name" value="{{ menu.name }}">
-                    <input type="hidden" id="id" name="id" value="{{ menu.id }}">
-                </div>
-                {% if menu %}
-                    <div class="form-group">
-                        <label>Details</label>
-
-                        <div class="col-md-12">
-                            <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
+            {% include '../toolbar.html' %}
+            <div class="box box-primary">
+                <div class="box-body">
+                    <form method="post" id="edit-form">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ menu.name }}">
+                            <input type="hidden" id="id" name="id" value="{{ menu.id }}">
                         </div>
-                        <div class="col-md-12">
-                            <div class="dd" id="nestable3">
-                                <ol class="dd-list">
+                        {% if menu %}
+                            <div class="form-group">
+                                <label>Details</label>
 
-                                </ol>
+                                <div class="col-md-12">
+                                    <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
+                                    <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="dd" id="nestable3">
+                                        <ol class="dd-list">
+
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" style="margin-top: 10px; margin-left:15px;"
-                            onclick="return addNewMenu();">Add Menu
-                    </button>
-                    <input type="hidden" id="output" name="output">
-                {% endif %}
-            </form>
+                            <button class="btn btn-primary" style="margin-top: 10px; margin-left:15px;"
+                                    onclick="return addNewMenu();">Add Menu
+                            </button>
+                            <input type="hidden" id="output" name="output">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -268,6 +221,7 @@
 {% block jsExtends %}
     <script src="/admin/plugins/nestable/jquery.nestable.js"></script>
     <script>
+        var number_menu_item = 1;
         var updateOutput = function (e) {
             var list = e.length ? e : $(e.target),
                     output = list.data('output');
@@ -280,88 +234,95 @@
         var obj = '{{ menu.menu_order|raw }}';
         var menu_details = {{ menu_details|raw }};
         $.each(JSON.parse(obj), function (index, item) {
-            $('#nestable3 ol').append(buildItem(item, index));
+            $('#nestable3 ol').first().append(buildItem(item, index));
         });
 
-        $('#nestable3').nestable({
-            expandBtnHTML:''
-        }).on('change', updateOutput);
+        $('#nestable3').nestable().on('change', updateOutput);
         updateOutput($('#nestable3').data('output', $('#output')));
-        var number_menu_item = 1;
+
         function addNewMenu() {
             $.ajax({
                 url: '/admin/menus/new/menuitem'
             }).success(function (re) {
-                $('#nestable3 ol').append(re);
-                $('#nestable3 li:last-child').find('#mn_id').val(number_menu_item);
-                $('#nestable3 li:last-child')[0].setAttribute('data-id', number_menu_item++);
-
-                $.AdminLTE.boxWidget.activate();
+                $('#nestable3>ol').append(re);
+                $('#nestable3 li:last-child').find('#mn_id').last().val(number_menu_item);
+                $('#nestable3 li:last-child').last().attr('data-id', number_menu_item++);
+                updateOutputValue();
                 return false;
             });
             return false;
         }
-
+        function updateOutputValue() {
+            try {
+                $("#output").val(JSON.stringify($('#nestable3').nestable('serialize')));
+            }
+            catch (e) {
+                $("#output").val(JSON.stringify($('#nestable3').nestable('serialize')));
+            }
+        }
         function changeTitle(element) {
-            var header = $(element).parents(".box").first().find('.box-title')[0];
+            var header = $(element).parents("li").first().find('.dd-handle')[0];
             header.innerHTML = $(element).val();
         }
         function saveDetail() {
             $('#edit-form').attr('action', '/admin/menus/update');
         }
 
-        function buildItem(item, index) {
-            var detail = menu_details[index];
+        function buildItem(item) {
+            number_menu_item++;
+            var detail = {};
+            for (var i in menu_details) {
+                if (item.id == menu_details[i].id) {
+                    detail = menu_details[i];
+                    break;
+                }
+            }
             var html = '';
 
-            html += '<li class="dd-item box box-default" data-id="'+detail.id+'">'+
-                    '<div class="box-header with-border">'+
-                    '<h3 class="box-title dd-handle">'+detail.name+'</h3>'+
-            '<div class="box-tools pull-right">'+
-                    '<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>'+
-            '</div>'+
-                <!-- /.box-tools -->
-            '</div>'+
-                <!-- /.box-header -->
-            '<div class="box-body" style="display: none;">'+
-                    '<div class="row">'+
-                    '<div class="col-md-6">'+
-                    '<div class="form-group">'+
-                    '<label>Navigation Label</label>'+
-            '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" value="'+detail.name+'">'+
-                    '<input type="hidden" id="mn_id" name="mn_id[]" value="'+detail.id+'">'+
-                    '</div>'+
-            '</div>'+
-            '<div class="col-md-6">'+
-                    '<div class="form-group">'+
-                    '<label>Title Attribute</label>'+
-            '<input type="text" class="form-control" id="attribute" name="attribute[]" value="'+detail.type+'">'+
-                    '</div>'+
-            '</div>'+
-            '</div>'+
-            '<div class="row">'+
-                    '<div class="col-md-12">'+
-                    '<div class="form-group">'+
-                    '<label>URL</label>'+
-            '<input type="text" class="form-control" id="url" name="url[]" value="'+detail.link+'">'+
-                    '</div>'+
-            '</div>'+
-            '</div>'+
+            html += '<li class="dd-item" data-id="' + detail.id + '">' +
+                    '<div class="dd-handle" style="position: relative"> ' + detail.name + '</div>' +
+                    '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
+                    '<div class="box box-solid box-default close">' +
+                    '<div class="box-body">' +
+                    '<div class="row">' +
+                    '<div class="col-md-6">' +
+                    '<div class="form-group">' +
+                    '<label>Navigation Label</label>' +
+                    '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" value="' + detail.name + '">' +
+                    '<input type="hidden" id="mn_id" name="mn_id[]" value="' + detail.id + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-6">' +
+                    '<div class="form-group">' +
+                    '<label>Title Attribute</label>' +
+                    '<input type="text" class="form-control" id="attribute" name="attribute[]" value="' + detail.type + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-md-12">' +
+                    '<div class="form-group">' +
+                    '<label>URL</label>' +
+                    '<input type="text" class="form-control" id="url" name="url[]" value="' + detail.link + '">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
 
-            '<div class="row">'+
-                    '<div class="col-md-12">'+
-                    '<a href="#" class="btn btn-danger">Remove</a>'+
-            '</div>'+
+                    '<div class="row">' +
+                    '<div class="col-md-12">' +
+                    '<a href="#" class="btn btn-danger"  onclick="return removeMenu(this)">Remove</a>  |  ' +
+                    '<a href="#"  onclick="return showDetail(this, false)">Close</a>' +
+                    '</div>' +
 
-            '</div>'+
-            '</div>';
-                <!-- /.box-body -->
-                <!-- /.box -->
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            <!-- /.box-body -->
+            <!-- /.box -->
             if (item.children) {
-                html += "<div style='clear:both;'></div>";
                 html += "<ol class='dd-list'>";
                 $.each(item.children, function (index, sub) {
-                    html += buildItem(sub, index);
+                    html += buildItem(sub);
                 });
                 html += "</ol>";
 
@@ -371,6 +332,53 @@
 
             return html;
         }
+        function showDetail(element, changeIcon) {
+            var box = $(element).parents("li").first().find('.box').first();
+            if (box.hasClass('open')) {
+                box.removeClass('open');
+                box.addClass('close');
+                if (changeIcon == undefined) {
+                    $(element).removeClass('fa-caret-down');
+                    $(element).addClass('fa-caret-left');
+                }
+                else {
+                    var el = $(element).parents('li').first().find('a').first();
+                    $(el).removeClass('fa-caret-down');
+                    $(el).addClass('fa-caret-left');
+                }
 
+            }
+            else {
+                box.removeClass('close');
+                box.addClass('open');
+                if (changeIcon == undefined) {
+                    $(element).removeClass('fa-caret-left');
+                    $(element).addClass('fa-caret-down');
+                }
+
+
+            }
+            return false;
+        }
+        function removeMenu(element) {
+            $(element).parents("li").first().remove();
+            $("#nestable3 li").each(function (index) {
+                $(this).attr('data-id', index + 1);
+                $(this).find('#mn_id').first().val(index + 1);
+            });
+            updateOutputValue();
+            number_menu_item--;
+            return false;
+        }
+        function hideAll() {
+            $("#nestable3 .box").each(function (index) {
+                $(this).removeClass('open');
+                $(this).addClass('close');
+                var el = $(this).parents('li').first().find('a').first();
+                $(el).removeClass('fa-caret-down');
+                $(el).addClass('fa-caret-left');
+            });
+            return false;
+        }
     </script>
 {% endblock %}

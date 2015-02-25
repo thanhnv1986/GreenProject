@@ -3,6 +3,17 @@
  */
 var menus = {};
 module.exports = function () {
+    menus.default = {
+        title:'Main Navigation',
+        sort:1,
+        modules:{}
+    };
+    menus.systems = {
+        title:'Systems',
+        sort:2,
+        modules:{}
+    };
+
     return menus;
 };
 

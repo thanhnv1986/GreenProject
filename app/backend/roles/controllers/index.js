@@ -4,54 +4,61 @@
 var async = require('async');
 var fs = require('fs');
 var path = require('path');
+var _ = require('lodash');
 
 var route = 'roles';
-exports.list = function (req, res) {
+var _this = module.exports = _.extend({
+    start:
+        {
+            title: 'Home',
+            icon: 'fa fa-dashboard',
+            href: '/admin'
+        }
+
+});
+module.exports.list = function (req, res) {
     //Them button
     res.locals.createButton = __acl.addButton(req, route, 'create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
-    //breadcrump
-    res.locals.breadcrump = [
-        {
-            title:'Home',
-            icon:'fa fa-dashboard',
-            href:'/admin'
-        },
-        {
-            title:'Roles'
-        }
 
+    //breadcrump
+    _this.breadcrump.push(
+        {
+            title: 'Roles'
+        }
+    );
+    res.locals.breadcrump = [
+        _this.start,
+        {
+            title: 'Roles'
+        }
     ];
     __models.role.findAll({
         order: "id desc"
     }).then(function (roles) {
         res.render('roles/index', {
-            primaryHeader: "Vai trò",
-            subHeader: "Danh sách vai trò",
+            title: "All Roles",
             roles: roles,
             messages: req.messages || []
         });
     });
 };
-exports.view = function (req, res) {
+module.exports.view = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'update');
     res.locals.backButton = route;
+
     //breadcrump
-    res.locals.breadcrump = [
+    _this.breadcrump.push(
         {
-            title:'Home',
-            icon:'fa fa-dashboard',
-            href:'/admin'
+            title: 'Roles',
+            href: '/admin/roles'
         },
         {
-            title:'Roles',
-            href:'/admin/roles'
-        },
-        {
-            title:'Update'
+            title: 'Update'
         }
-    ];
+    );
+    res.locals.breadcrump = _this.breadcrump;
     async.parallel([
         function (callback) {
             __models.role.find({
@@ -64,8 +71,7 @@ exports.view = function (req, res) {
         }
     ], function (err, results) {
             res.render('roles/new', {
-                primaryHeader: "Vai trò",
-                subHeader: "Cập nhật vai trò",
+                title: "Update Role",
                 modules: __modules,
                 role: results[0],
                 rules: JSON.parse(results[0].rules)
@@ -74,7 +80,7 @@ exports.view = function (req, res) {
     );
 
 };
-exports.update = function (req, res, next) {
+module.exports.update = function (req, res, next) {
     req.messages = [];
     __models.role.find({
         where: {
@@ -104,33 +110,28 @@ exports.update = function (req, res, next) {
 
 
 }
-exports.create = function (req, res) {
+module.exports.create = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
     //breadcrump
-    res.locals.breadcrump = [
+    res.locals.breadcrump = _this.breadcrump.push(
+
         {
-            title:'Home',
-            icon:'fa fa-dashboard',
-            href:'/admin'
+            title: 'Roles',
+            href: '/admin/roles'
         },
         {
-            title:'Roles',
-            href:'/admin/roles'
-        },
-        {
-            title:'Add New'
+            title: 'Add New'
         }
-    ];
+    );
     res.render('roles/new', {
-        primaryHeader: "Vai trò",
-        subHeader: "Thêm vai trò",
+        title: "New Role",
         modules: __modules
     });
 
 }
-exports.save = function (req, res, next) {
+module.exports.save = function (req, res, next) {
     req.messages = [];
     var rules = {};
     for (var k in req.body) {
@@ -154,7 +155,7 @@ exports.save = function (req, res, next) {
 
 
 }
-exports.delete = function (req, res) {
+module.exports.delete = function (req, res) {
     models.role.destroy({
         where: {
             id: {

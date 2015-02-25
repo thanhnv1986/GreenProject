@@ -13,25 +13,30 @@ module.exports = function() {
 			passwordField: 'password'
 		},
 		function(username, password, done) {
-			/*User.findOne({
-				username: username
-			}, function(err, user) {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false, {
-						message: 'Unknown user or invalid password'
-					});
-				}
-				if (!user.authenticate(password)) {
-					return done(null, false, {
-						message: 'Unknown user or invalid password'
-					});
-				}
+            __models.user.find({
+                where: {
+                    user_login: username
+                }
 
-				return done(null, user);
-			});*/
+            }).then(function (user,err) {
+
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, {
+                        message: 'Username or password invalid'
+                    });
+                }
+                if (!user.authenticate(password)) {
+                    return done(null, false, {
+                        message: 'Username or password invalid'
+                    });
+                }
+                console.log('*******************',user);
+                return done(null, user);
+
+            });
 
 		}
 	));

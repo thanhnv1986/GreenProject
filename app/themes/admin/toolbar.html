@@ -2,22 +2,22 @@
     {% if backButton %}
         <a href="/admin/{{ backButton }}" name="back" class="btn btn-default"><i
                     class="fa fa-angle-left"></i>
-            Quay về
+            Back
         </a>
     {% endif %}
     {% if viewButton %}
         <a target="_blank" href='/{{ viewButton }}'
-           class="btn btn-info"> <i class="fa fa-eye"></i> Xem</a>
+           class="btn btn-info"> <i class="fa fa-eye"></i> View</a>
     {% endif %}
     {% if createButton %}
         <a href="/admin/{{ createButton }}/create" class="btn btn-primary">
             <i class="fa fa-plus"></i>
                                     <span class="hidden-480">
-                                    Thêm mới </span>
+                                    Add New </span>
         </a>
     {% endif %}
     {% if saveButton %}
-        <button id="saveForm" class="btn btn-success"><i class="fa fa-check"></i> Lưu</button>
+        <button id="saveForm" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
     {% endif %}
 
     {% if deleteButton %}
@@ -25,7 +25,7 @@
             <a class="btn btn-danger" data-toggle="modal" href="#confirm">
                 <i class="fa fa-remove"></i>
 								<span class="hidden-480">
-								Xóa </span>
+								Delete </span>
             </a>
         </div>
     {% endif %}

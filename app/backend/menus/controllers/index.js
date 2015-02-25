@@ -43,21 +43,28 @@ exports.update = function (req, res) {
         menu.updateAttributes({
             menu_order: menu_order
         });
-        var promises = [];
-        for (var i in req.body.title) {
-            promises.push(
-                __models.menu_detail.create({
-                    id: req.body.mn_id[i],
-                    menu_id: menu.id,
-                    name: req.body.title[i],
-                    link: req.body.url[i],
-                    status: 'publish'
-                })
-            );
-        }
-        return Promise.all(promies);
-    }).then(function (menu_details) {
-        res.redirect('/admin/menus');
+        __models.menu_detail.destroy({
+            where: {
+                menu_id: menu.id
+            }
+        }).then(function () {
+            var promises = [];
+            for (var i in req.body.title) {
+                promises.push(
+                    __models.menu_detail.create({
+                        id: req.body.mn_id[i],
+                        menu_id: menu.id,
+                        name: req.body.title[i],
+                        link: req.body.url[i],
+                        status: 'publish'
+                    })
+                );
+            }
+            Promise.all(promises).then(function () {
+                res.redirect('/admin/menus');
+            });
+        });
+
     });
 };
 exports.menuById = function (req, res, next, id) {
