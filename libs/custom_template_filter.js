@@ -208,6 +208,19 @@ module.exports = function () {
         }
         return html;
     });
+    swig.setFilter('get_menu',function(menu_name){
+        var html = '<h1>Menu here</h1>';
+
+        var data = __models.menus.find({
+            where: {
+                name: "Main Menu"
+            }
+        }).then(function (menu) {
+            html = "abac";
+            return html;
+        });
+
+    });
 };
 
 function active_menu(value, string_to_compare, cls, index) {
