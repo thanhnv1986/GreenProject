@@ -7,32 +7,28 @@ var path = require('path');
 var _ = require('lodash');
 
 var route = 'roles';
-var _this = module.exports = _.extend({
-    start:
+var bread_crump =
+    [
         {
             title: 'Home',
             icon: 'fa fa-dashboard',
             href: '/admin'
+        },
+        {
+            title: 'Roles',
+            href: '/admin/roles'
         }
+    ];
 
-});
-module.exports.list = function (req, res) {
+
+exports.list = function (req, res) {
     //Them button
     res.locals.createButton = __acl.addButton(req, route, 'create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
 
     //breadcrump
-    _this.breadcrump.push(
-        {
-            title: 'Roles'
-        }
-    );
-    res.locals.breadcrump = [
-        _this.start,
-        {
-            title: 'Roles'
-        }
-    ];
+    res.locals.breadcrump = _.clone(bread_crump);
+
     __models.role.findAll({
         order: "id desc"
     }).then(function (roles) {
@@ -43,22 +39,13 @@ module.exports.list = function (req, res) {
         });
     });
 };
-module.exports.view = function (req, res) {
+exports.view = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'update');
     res.locals.backButton = route;
 
     //breadcrump
-    _this.breadcrump.push(
-        {
-            title: 'Roles',
-            href: '/admin/roles'
-        },
-        {
-            title: 'Update'
-        }
-    );
-    res.locals.breadcrump = _this.breadcrump;
+    res.locals.breadcrump = _.clone(bread_crump).push({title: 'Update'});
     async.parallel([
         function (callback) {
             __models.role.find({
@@ -80,7 +67,7 @@ module.exports.view = function (req, res) {
     );
 
 };
-module.exports.update = function (req, res, next) {
+exports.update = function (req, res, next) {
     req.messages = [];
     __models.role.find({
         where: {
@@ -110,28 +97,19 @@ module.exports.update = function (req, res, next) {
 
 
 }
-module.exports.create = function (req, res) {
+exports.create = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
     //breadcrump
-    res.locals.breadcrump = _this.breadcrump.push(
-
-        {
-            title: 'Roles',
-            href: '/admin/roles'
-        },
-        {
-            title: 'Add New'
-        }
-    );
+    res.locals.breadcrump = _.clone(bread_crump).push({title: 'Add New'});
     res.render('roles/new', {
         title: "New Role",
         modules: __modules
     });
 
 }
-module.exports.save = function (req, res, next) {
+exports.save = function (req, res, next) {
     req.messages = [];
     var rules = {};
     for (var k in req.body) {
@@ -145,7 +123,7 @@ module.exports.save = function (req, res, next) {
             }
         }
     }
-    models.role.create({
+    __models.role.create({
         name: req.body.title,
         status: req.body.status,
         rules: JSON.stringify(rules)
@@ -155,8 +133,8 @@ module.exports.save = function (req, res, next) {
 
 
 }
-module.exports.delete = function (req, res) {
-    models.role.destroy({
+exports.delete = function (req, res) {
+    __models.role.destroy({
         where: {
             id: {
                 "in": req.body.ids.split(',')
