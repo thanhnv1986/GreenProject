@@ -20,6 +20,7 @@ global.__modules = require('./libs/modules_manager');
 global.__menus = require('./libs/menus_manager')();
 global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
+global.__ = require('./libs/global_function');
 
 // Init the express application
 var app = require('./config/app')();

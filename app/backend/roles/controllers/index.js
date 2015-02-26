@@ -7,7 +7,7 @@ var path = require('path');
 var _ = require('lodash');
 
 var route = 'roles';
-var bread_crump =
+var breadcrumb =
     [
         {
             title: 'Home',
@@ -26,9 +26,8 @@ exports.list = function (req, res) {
     res.locals.createButton = __acl.addButton(req, route, 'create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
 
-    //breadcrump
-    res.locals.breadcrump = _.clone(bread_crump);
-
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
     __models.role.findAll({
         order: "id desc"
     }).then(function (roles) {
@@ -44,8 +43,8 @@ exports.view = function (req, res) {
     res.locals.saveButton = __acl.addButton(req, route, 'update');
     res.locals.backButton = route;
 
-    //breadcrump
-    res.locals.breadcrump = _.clone(bread_crump).push({title: 'Update'});
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Role'});
     async.parallel([
         function (callback) {
             __models.role.find({
@@ -101,8 +100,8 @@ exports.create = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
-    //breadcrump
-    res.locals.breadcrump = _.clone(bread_crump).push({title: 'Add New'});
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Add New'});
     res.render('roles/new', {
         title: "New Role",
         modules: __modules

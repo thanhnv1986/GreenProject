@@ -3,7 +3,6 @@
  */
 exports.isAllow = function (route, action, orAction, hasAuthorize) {
     return function (req, res, next) {
-        return next();
         if (req.user != undefined && req.user.acl[route] != undefined) {
             var rules = req.user.acl[route].split(':');
             for (var i in rules) {
@@ -29,7 +28,6 @@ exports.isAllow = function (route, action, orAction, hasAuthorize) {
 
 }
 exports.addButton = function(req, route, action){
-    return '#';
     if (req.user != undefined && req.user.acl[route] != undefined) {
         var rules = req.user.acl[route].split(':');
         for (var i in rules) {

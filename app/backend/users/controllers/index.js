@@ -6,15 +6,31 @@ var async = require('async');
 var fs = require('fs');
 var path = require('path');
 var slug = require('slug');
-var config = require(__base+'config/config.js');
+var config = require(__base + 'config/config.js');
 
 var redis = require('redis').createClient();
 
 var index_template = 'users/index';
 var edit_template = 'users/new';
-
+var route = 'users';
+var breadcrumb =
+    [
+        {
+            title: 'Home',
+            icon: 'fa fa-dashboard',
+            href: '/admin'
+        },
+        {
+            title: 'Users',
+            href: '/admin/users'
+        }
+    ];
 
 exports.list = function (req, res) {
+    //Add button
+    res.locals.createButton = __acl.addButton(req, route, 'create');
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
     var page = req.params.page;
     __models.user.findAndCountAll({
         include: [__models.role],
@@ -33,6 +49,9 @@ exports.list = function (req, res) {
     });
 };
 exports.view = function (req, res) {
+    res.locals.saveButton = __acl.addButton(req, route, 'create');
+    res.locals.backButton = route;
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update User'});
     async.parallel([
         function (callback) {
             __models.role.findAll().then(function (roles) {
@@ -53,7 +72,7 @@ exports.view = function (req, res) {
             title: "Update Users",
             roles: results[0],
             user: results[1],
-            id:req.params.cid
+            id: req.params.cid
         });
     });
 
@@ -77,6 +96,11 @@ exports.update = function (req, res, next) {
 
 }
 exports.create = function (req, res) {
+    //Them button
+    res.locals.saveButton = __acl.addButton(req, route, 'create');
+    res.locals.backButton = route;
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New User'});
     async.parallel([
         function (callback) {
             __models.role.findAll({
@@ -156,6 +180,7 @@ exports.signout = function (req, res) {
  * Profile
  */
 exports.profile = function (req, res) {
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Profile'});
     __models.role.findAll({
         order: "id asc"
     }).then(function (roles) {

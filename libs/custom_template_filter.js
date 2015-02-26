@@ -200,14 +200,11 @@ module.exports = function () {
         var regex = new RegExp('(' + keyword + ')', 'gi');
         return text.replace(regex, "<b style='color: red;'>$1</b>");
     });
-    swig.setFilter('render_breadcrump', function (breadcrumps) {
-//        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-//            <li><a href="#">Examples</a></li>
-//        <li class="active">Blank page</li>
+    swig.setFilter('render_breadcrumb', function (breadcrumbs) {
         var html = '';
-        for (var i in breadcrumps) {
-            var bread = breadcrumps[i];
-            html += '<li class="' + (i == breadcrumps.length - 1 ? 'active' : '') + '"><a href="' + (bread.href != undefined ? bread.href : '#') + '">' + (bread.icon != undefined ? '<i class="' + bread.icon + '"></i>' : '') + (bread.title) + '</a></li>';
+        for (var i in breadcrumbs) {
+            var bread = breadcrumbs[i];
+            html += '<li class="' + (i == breadcrumbs.length - 1 ? 'active' : '') + '"><a href="' + (bread.href != undefined ? bread.href : '#') + '">' + (bread.icon != undefined ? '<i class="' + bread.icon + '"></i>' : '') + (bread.title) + '</a></li>';
         }
         return html;
     });

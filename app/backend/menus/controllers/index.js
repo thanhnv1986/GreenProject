@@ -3,11 +3,25 @@
  */
 var Promise = require('bluebird');
 var route = 'menus';
-
+var breadcrumb =
+    [
+        {
+            title: 'Home',
+            icon: 'fa fa-dashboard',
+            href: '/admin'
+        },
+        {
+            title: 'Menus',
+            href: '/admin/menus'
+        }
+    ];
 exports.index = function (req, res) {
     //Them button
     res.locals.createButton = __acl.addButton(req, route, 'create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
+
     __models.menus.findAll().then(function (menus) {
         res.render('menus/index', {
             title: "All Menus",
@@ -20,6 +34,8 @@ exports.create = function (req, res) {
     //Them button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
+    //breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New Menu'});
     res.render('menus/new');
 };
 exports.save = function (req, res, next) {
@@ -34,6 +50,7 @@ exports.save = function (req, res, next) {
 exports.read = function (req, res) {
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Menu'});
     res.render('menus/new');
 };
 exports.update = function (req, res) {
