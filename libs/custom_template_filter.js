@@ -1,9 +1,11 @@
 /**
  * Created by thanhnv on 1/29/15.
  */
-var swig = require('swig');
-module.exports = function () {
-    swig.setFilter('vnd', function (value) {
+/*var nunjucks = require('nunjucks');
+ var env = new nunjucks.Environment();
+ console.log(env);*/
+module.exports = function (env) {
+    env.addFilter('vnd', function (value) {
         var c = 0,
             d = ',',
             t = '.';
@@ -18,7 +20,7 @@ module.exports = function () {
         return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
     });
 
-    swig.setFilter('pagination', function (totalPage, current_page, link) {
+    env.addFilter('pagination', function (totalPage, current_page, link) {
         var start = parseInt(current_page) - 4;
         if (start < 1) {
             start = 1;
@@ -61,8 +63,8 @@ module.exports = function () {
             '</div>';
         return html;
     });
-    swig.setFilter('active_menu', active_menu);
-    swig.setFilter('active_page', function (value, string_to_compare, cls) {
+    env.addFilter('active_menu', active_menu);
+    env.addFilter('active_page', function (value, string_to_compare, cls) {
         var arr = value.split('/');
         var st = "active";
         if (cls) {
@@ -70,7 +72,7 @@ module.exports = function () {
         }
         return arr[1] == string_to_compare ? st : "";
     });
-    swig.setFilter('truncate', function (text, length, end) {
+    env.addFilter('truncate', function (text, length, end) {
         text = text.replace(/(<([^>]+)>)/ig, "");
         if (isNaN(length))
             length = 10;
@@ -85,10 +87,10 @@ module.exports = function () {
             return String(text).substring(0, length - end.length) + end;
         }
     });
-    swig.setFilter('json_decode', function (data) {
+    env.addFilter('json_decode', function (data) {
         return JSON.parse(data);
     });
-    swig.setFilter('check_state', function (rules, moduleName, action) {
+    env.addFilter('check_state', function (rules, moduleName, action) {
         for (var i in rules) {
             if (i == moduleName) {
                 if (rules[i].indexOf(action) > -1) {
@@ -99,7 +101,7 @@ module.exports = function () {
         return '';
     });
 
-    swig.setFilter('render_menu', function (route, menus, user) {
+    env.addFilter('render_menu', function (route, menus, user) {
         var html = '';
         var sortedMenus = sortMenus(menus);
         sortedMenus.forEach(function (m) {
@@ -140,7 +142,7 @@ module.exports = function () {
         return html;
     });
 
-    swig.setFilter('render_sidebar', function (route, user) {
+    env.addFilter('render_sidebar', function (route, user) {
         var html = '';
         sortGroups = sortMenus(__menus);
         for (var i in sortGroups) {
@@ -187,7 +189,7 @@ module.exports = function () {
         return  html;
     });
 
-    swig.setFilter('standard_route_search', function (route) {
+    env.addFilter('standard_route_search', function (route) {
         var st = route.split('/');
         if (st.length > 0) {
             return '/' + (st[1] == "search" ? st[2].substring(0, st[2].indexOf('?')) : st[1]);
@@ -196,11 +198,11 @@ module.exports = function () {
             return '';
         }
     });
-    swig.setFilter('mark_search_key', function (text, keyword) {
+    env.addFilter('mark_search_key', function (text, keyword) {
         var regex = new RegExp('(' + keyword + ')', 'gi');
         return text.replace(regex, "<b style='color: red;'>$1</b>");
     });
-    swig.setFilter('render_breadcrumb', function (breadcrumbs) {
+    env.addFilter('render_breadcrumb', function (breadcrumbs) {
         var html = '';
         for (var i in breadcrumbs) {
             var bread = breadcrumbs[i];
@@ -208,19 +210,56 @@ module.exports = function () {
         }
         return html;
     });
-    swig.setFilter('get_menu',function(menu_name){
-        var html = '<h1>Menu here</h1>';
-
-        var data = __models.menus.find({
+    env.addFilter('get_menu', function (menu_name, cb) {
+        __models.menus.find({
             where: {
                 name: "Main Menu"
             }
-        }).then(function (menu) {
-            html = "abac";
-            return html;
+        }, {raw: true}).then(function (menu) {
+            __models.menu_detail.findAll({
+                where: {
+                    menu_id: menu.id
+                }
+            }).then(function (menu_details) {
+                //get menu order
+                var menu_order = JSON.parse(menu.menu_order);
+                var getMenuItem = function (id) {
+                    for (var i in menu_details) {
+                        if (menu_details[i].id == id) {
+                            return menu_details[i];
+                        }
+                    }
+                }
+                var html = '';
+                var buildMenu = function (arr) {
+                    var tmp = '';
+                    for (var i in arr) {
+                        var mn = getMenuItem(arr[i].id);
+
+                        if (arr[i].children) {
+                            tmp += '<li class="'+menu.li_cls+'"><a class="'+menu.a_cls+'" data-toggle="dropdown" href="'+mn.link+'">' + mn.name+'</a><i class="fa fa-angle-down"></i>';
+                            tmp += '<ul class="'+menu.sub_ul_cls+'">';
+                            tmp += buildMenu(arr[i].children);
+                            tmp += '</ul>';
+                        }
+                        else{
+                            tmp += '<li><a href="'+mn.link+'"> ' + mn.name+'</a>';
+                        }
+                        tmp += '</li>';
+                    }
+                    return tmp;
+
+                }
+                html += '<ul class="'+menu.root_ul_cls+'">';
+                html += buildMenu(menu_order);
+                html += '</ul>';
+                cb(null, html);
+            });
+
         });
 
-    });
+    }, true);
+
 };
 
 function active_menu(value, string_to_compare, cls, index) {

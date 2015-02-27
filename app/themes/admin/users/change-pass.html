@@ -1,25 +1,25 @@
-{% extends '../layout.html' %}
+{% extends 'admin/layout.html' %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
             <form id="edit-form" method="post">
                 <div class="form-group">
-                    <label class="control-label">Mật khẩu cũ</label>
+                    <label class="control-label">Old password</label>
                     <input type="password" class="form-control" name="old_pass" id="old_pass">
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Mật khẩu mới</label>
+                    <label class="control-label">New Password</label>
                     <input type="password" class="form-control" id="user_pass" name="user_pass">
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Nhập lại mật khẩu mới</label>
+                    <label class="control-label">Confirmation password</label>
                     <input type="password" class="form-control" id="confirm_pass">
                 </div>
                 <div class="margin-top-10">
                     <button type="submit" class="btn green-haze">
-                        Thay đổi </button>
+                        Change </button>
                     <a href="/admin" class="btn default">
-                        Hủy </a>
+                        Cancel </a>
                 </div>
 
             </form>
@@ -33,7 +33,7 @@
 
         function validatePassword() {
             if (password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Mật khẩu không giống nhau");
+                confirm_password.setCustomValidity("Password confirmation does not match");
             } else {
                 confirm_password.setCustomValidity('');
             }

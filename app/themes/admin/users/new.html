@@ -1,8 +1,8 @@
-{% extends '../layout.html' %}
+{% extends 'admin/layout.html' %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            {% include "../toolbar.html" %}
+            {% include "admin/toolbar.html" %}
             <form id="edit-form" method="post">
                 <div class="box box-solid box-primary">
                     <div class="box-body">
@@ -22,7 +22,7 @@
                                    placeholder="" value="{{ user.user_email }}" required>
 
                         </div>
-                        {% if !user %}
+                        {% if not user %}
                         <div class="form-group">
                             <label>Password: <span class="required">
 													* </span>

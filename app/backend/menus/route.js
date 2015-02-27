@@ -6,7 +6,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require('./controllers/index.js');
 
-//Books Routes
+//Menus Routes
 var moduleName = 'menus';
 
 router.route('/menus').get(__acl.isAllow(moduleName, 'index'), controller.index);

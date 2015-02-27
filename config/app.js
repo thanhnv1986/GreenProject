@@ -24,6 +24,7 @@ var fs = require('fs'),
     consolidate = require('consolidate'),
     redis = require("redis").createClient(),
     RedisStore = require('connect-redis')(session),
+    nunjucks = require('nunjucks'),
     path = require('path');
 
 module.exports = function () {
@@ -56,11 +57,16 @@ module.exports = function () {
     app.set('showStackError', true);
 
     // Set swig as the template engine
-    app.engine('html', consolidate[config.templateEngine]);
-
+    //app.engine('html', nunjucks);
+    var e = nunjucks.configure(__base+'app/themes', {
+        autoescape: true,
+        express: app
+    });
+    //Initials custom filter
+    require('../libs/custom_template_filter')(e);
     // Set views path and view engine
     app.set('view engine', 'html');
-    app.set('views', ['./app/themes', './app/widgets']);
+    //app.set('views', ['./app/themes', './app/widgets']);
 
     // Environment dependent middleware
     if (process.env.NODE_ENV === 'development') {

@@ -58,7 +58,15 @@ exports.update = function (req, res) {
     __models.menus.find(req.body.id).then(function (menu) {
         var menu_order = req.body.output;
         menu.updateAttributes({
-            menu_order: menu_order
+            menu_order: menu_order,
+            root_ul_cls:req.body.root_ul_cls,
+            li_cls:req.body.li_cls,
+            li_active_cls:req.body.li_active_cls,
+            a_cls:req.body.a_cls,
+            a_active_cls:req.body.a_active_cls,
+            sub_ul_cls:req.body.sub_ul_cls,
+            sub_li_cls:req.body.sub_li_cls,
+            sub_a_cls:req.body.sub_a_cls
         });
         __models.menu_detail.destroy({
             where: {

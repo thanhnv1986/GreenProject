@@ -13,8 +13,7 @@ global.__base = __dirname + '/';
  * Please note that the order of loading is important.
  */
 
-//Initials custom filter
-require('./libs/custom_template_filter')();
+
 
 global.__modules = require('./libs/modules_manager');
 global.__menus = require('./libs/menus_manager')();

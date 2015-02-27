@@ -1,4 +1,4 @@
-{% extends '../layout.html' %}
+{% extends 'admin/layout.html' %}
 {% block cssExtends %}
     <link rel="stylesheet" href="/admin/plugins/select2/select2.css"/>
 {% endblock %}
@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <form id="edit-form" method="post" role="form">
 
-                {% include '../toolbar.html' %}
+                {% include 'admin/toolbar.html' %}
 
                 <div class="box box-primary">
                     <div class="box-body">
