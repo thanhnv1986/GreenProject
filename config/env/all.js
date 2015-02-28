@@ -20,8 +20,8 @@ module.exports = {
         number_item:20
     },
 	port: process.env.PORT || 3000,
-	templateEngine: 'swig',
-	sessionSecret: 'MEAN',
+	templateEngine: 'nunjucks',
+	sessionSecret: 'GREEN',
 	sessionCollection: 'sessions',
     themes:'default',
 	assets: {

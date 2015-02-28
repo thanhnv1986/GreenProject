@@ -1,0 +1,17 @@
+site_name: GREEN PROJECT
+pages:
+- [index.md, Home]
+- [folders.md, Folders, GreenProject]
+- [folders/app/backend.md, Folders, app/backend]
+- [folders/app/frontend.md, Folders, app/frontend]
+- [folders/app/themes.md, Folders, app/themes]
+- [folders/app/menus.md, Folders, app/menus]
+- [folders/app/plugins.md, Folders, app/plugins]
+- [folders/app/widgets.md, Folders, app/widgets]
+- [folders/config/config.md, Folders, config]
+- [folders/libs/libs.md, Folders, libs]
+- [extends/create_module.md, Mở rộng, Tạo module]
+- [extends/create_filter.md, Mở rộng, Tạo filter]
+- [extends/create_theme.md, Mở rộng, Tạo theme]
+
+theme: readthedocs

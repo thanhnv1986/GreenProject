@@ -3,11 +3,13 @@
  */
 var menus = {};
 module.exports = function () {
+    //Main Navigation group
     menus.default = {
         title:'Main Navigation',
         sort:1,
         modules:{}
     };
+    //System group
     menus.systems = {
         title:'Systems',
         sort:2,
@@ -16,6 +18,7 @@ module.exports = function () {
 
     return menus;
 };
+
 
 exports.addMenu = function (name, menu) {
     if (!menu.active) {

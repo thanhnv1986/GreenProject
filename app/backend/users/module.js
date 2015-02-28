@@ -2,7 +2,7 @@
  * Created by thanhnv on 2/17/15.
  */
 module.exports = function (modules) {
-    modules.admin_users = {
+    modules.users = {
         title: 'Users',
         rules: [
             {

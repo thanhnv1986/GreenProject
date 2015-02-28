@@ -5,7 +5,7 @@
 
 module.exports = function(app) {
     // Root routing
-    var core = require('./controllers/index.controller');
+    var core = require('./controllers/index');
 
     app.route('/').get(core.index);
     app.route('/change1').get(core.changetotheme1);

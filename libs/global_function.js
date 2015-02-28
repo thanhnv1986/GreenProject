@@ -9,14 +9,32 @@ exports.create_breadcrumb = function (root) {
             arr.push(arguments[i]);
     }
     return arr;
-}
-exports.get_menu = function (done) {
-    __models.menus.find({
-        where: {
-            name: "Main Menu"
-        }
-    }, {raw: true}).then(function (menu) {
-        //console.log(menu);
-        return done(null,'hello');
+};
+exports.active_menu = function (value, string_to_compare, cls, index) {
+    var arr = value.split('/');
+    var st = "active";
+    if (cls) {
+        st = cls;
+    }
+    if (index) {
+        return arr[index] === string_to_compare ? st : "";
+    }
+    return arr[2] == string_to_compare ? st : "";
+};
+
+exports.sortMenus = function (menus) {
+    var sortable = [];
+    for (var m in menus) {
+        //console.log(menus[m].sort);
+        sortable.push({menu: m, sort: menus[m].sort})
+    }
+    sortable.sort(function (a, b) {
+        if (a.sort < b.sort)
+            return -1;
+        if (a.sort > b.sort)
+            return 1;
+        return 0;
     });
+    return sortable;
 }
+

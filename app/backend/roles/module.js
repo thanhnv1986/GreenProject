@@ -2,7 +2,7 @@
  * Created by thanhnv on 2/17/15.
  */
 module.exports = function (modules) {
-    modules.users = {
+    modules.roles = {
         title: 'Roles',
         rules: [
             {

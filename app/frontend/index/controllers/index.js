@@ -19,10 +19,10 @@ module.exports.index = function (req, res) {
 module.exports.changetotheme1 = function (req, res) {
     //console.log(config.themes, _this.index_view);
     config.themes = 'default';
-    res.send("Changed to theme 1");
+    res.redirect('/');
 };
 module.exports.changetotheme2 = function (req, res) {
     config.themes = 'my_themes';
     //console.log(config.themes, _this.index_view);
-    res.send("Changed to theme 2");
+    res.redirect('/');
 };
