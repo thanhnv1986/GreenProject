@@ -183,9 +183,11 @@
                 {{ breadcrumb|render_breadcrumb|safe }}
             </ol>
         </section>
-        <div class="pad margin no-print">
-            {{ messages|flash_message|safe }}
-        </div>
+        {% if messages|length>0 %}
+            <div class="pad margin no-print">
+                {{ messages|flash_message|safe }}
+            </div>
+        {% endif %}
 
         <!-- Main content -->
         <section class="content">

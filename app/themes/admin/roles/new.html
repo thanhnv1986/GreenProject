@@ -1,6 +1,11 @@
 {% extends 'admin/layout.html' %}
 {% block cssExtends %}
-    <link rel="stylesheet" href="/admin/plugins/select2/select2.css"/>
+    {#<link rel="stylesheet" href="/admin/plugins/select2/select2.css"/>#}
+    <style>
+        .rule-item {
+            min-height: 170px;
+        }
+    </style>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -34,17 +39,19 @@
 
                         <div class="row">
                             {% for key, module in modules %}
-                                <div class="col-md-3 col-sm-3" style="min-height: 135px;">
-                                    <div class="form-group">
-                                        <label>{{ module.title }}</label>
-                                        {% for rule in module.rules %}
-                                            <div class="checkbox">
-                                                <label><input type="checkbox"
-                                                              name="{{ key }}[]"
-                                                              value="{{ rule.name }}" {{ rules|check_state(key, rule.name) }}>{{ rule.title }}
-                                                </label>
-                                            </div>
-                                        {% endfor %}
+                                <div class="col-md-3 col-sm-3">
+                                    <div class="rule-item">
+                                        <div class="form-group">
+                                            <label>{{ module.title }}</label>
+                                            {% for rule in module.rules %}
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox"
+                                                                  name="{{ key }}[]"
+                                                                  value="{{ rule.name }}" {{ rules|check_state(key, rule.name) }}>{{ rule.title }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}

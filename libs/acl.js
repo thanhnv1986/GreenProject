@@ -23,11 +23,12 @@ exports.isAllow = function (route, action, orAction, hasAuthorize) {
         }
 //        console.log(route, action, orAction);
 //        console.log(req.user);
+        req.flash.error("You do not have permission to access");
         res.render('/404');
     }
 
 }
-exports.addButton = function(req, route, action){
+exports.addButton = function (req, route, action) {
     if (req.user != undefined && req.user.acl[route] != undefined) {
         var rules = req.user.acl[route].split(':');
         for (var i in rules) {

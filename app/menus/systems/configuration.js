@@ -8,11 +8,15 @@ module.exports = function (menus) {
         icon:"fa fa-cog",
         menus: [
             {
-                name: 'index',
-                title: 'Configuration',
+                name: 'update_info',
+                title: 'Site Info',
                 link: '/'
+            },
+            {
+                name: 'change_theme',
+                title: 'Themes',
+                link: '/themes'
             }
-
         ]
     };
     return menus;
