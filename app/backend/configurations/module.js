@@ -4,6 +4,10 @@
 module.exports = function (modules) {
     modules.configurations = {
         title: 'Configurations',
+        author: 'Nguyen Van Thanh',
+        version: '0.1.0',
+        description:'Configuration information of website',
+        system:true,
         rules: [
             {
                 name: 'update_info',

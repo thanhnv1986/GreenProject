@@ -4,6 +4,10 @@
 module.exports = function (modules) {
     modules.roles = {
         title: 'Roles',
+        author: 'Nguyen Van Thanh',
+        version: '0.1.0',
+        description:'Roles management of website',
+        system:true,
         rules: [
             {
                 name: 'index',

@@ -56,6 +56,7 @@ exports.view = function (req, res) {
             });
         }
     ], function (err, results) {
+            console.log(__modules);
             res.render('roles/new', {
                 title: "Update Role",
                 modules: __modules,

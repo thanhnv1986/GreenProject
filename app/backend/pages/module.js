@@ -2,17 +2,17 @@
  * Created by thanhnv on 2/17/15.
  */
 module.exports = function (modules) {
-    modules.dashboard = {
-        title: 'Dashboard',
+    modules.pages = {
+        title: 'Pages',
         author: 'Nguyen Van Thanh',
         version: '0.1.0',
-        description:'Dashboard',
-        system:true,
+        description: 'Pages management of website',
         rules: [
             {
                 name: 'index',
-                title: 'View'
+                title: 'All Pages'
             }
+
         ]
     }
     return modules;

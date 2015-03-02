@@ -19,9 +19,7 @@ var fs = require('fs'),
     cookieParser = require('cookie-parser'),
     helmet = require('helmet'),
     passport = require('passport'),
-    flash = require('connect-flash'),
     config = require('./config'),
-    consolidate = require('consolidate'),
     redis = require("redis").createClient(),
     RedisStore = require('connect-redis')(session),
     nunjucks = require('nunjucks'),
@@ -58,12 +56,11 @@ module.exports = function () {
 
     // Set swig as the template engine
     //app.engine('html', nunjucks);
-    var e = nunjucks.configure(__base+'app/themes', {
+    var e = nunjucks.configure(__base + 'app/themes', {
         autoescape: true,
         express: app
     });
     //Initials custom filter
-    // Globbing admin module files
     config.getGlobbedFiles('./custom_filters/*.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
         require(path.resolve(routePath))(e);
@@ -111,7 +108,7 @@ module.exports = function () {
     app.use(passport.session());
 
     // connect flash for flash messages
-    app.use(flash());
+    app.use(require(__base+'app/plugins/flash-plugin.js'));
 
     // Use helmet to secure Express headers
     app.use(helmet.xframe());
@@ -123,13 +120,28 @@ module.exports = function () {
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
 
+    app.use(require('../app/plugins/modules-plugin.js'));
     app.use(require('../app/plugins/theme-plugin.js'));
 
+
+
     // Globbing admin module files
-    config.getGlobbedFiles('./app/backend/*/module.js').forEach(function (routePath) {
+    redis.get('all_modules', function (err, results) {
+        if (results != null) {
+            global.__modules = JSON.parse(results);
+        }
+        else {
+            config.getGlobbedFiles('./app/backend/*/module.js').forEach(function (routePath) {
+                console.log(path.resolve(routePath));
+                require(path.resolve(routePath))(__modules);
+            });
+            redis.set('all_modules', JSON.stringify(__modules), redis.print);
+        }
+    });
+/*    config.getGlobbedFiles('./app/backend*//*//*module.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
         require(path.resolve(routePath))(__modules);
-    });
+    });*/
 
     // Globbing routing files
     config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
@@ -139,7 +151,7 @@ module.exports = function () {
 
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
-        app.use('/'+config.admin_prefix, require(path.resolve(routePath)));
+        app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
     });
 
     // Globbing menu files

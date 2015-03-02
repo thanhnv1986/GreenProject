@@ -31,29 +31,23 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                {% for module in modules %}
-                                    <div class="col-md-3 col-sm-3" style="min-height: 135px;">
-                                        {% set key = loop.key %}
-                                        <div class="form-group">
-                                            <label>{{ module.title }}</label>
 
-                                            {% for rule in module.rules %}
-                                                <div class="checkbox">
-                                                    <label><input type="checkbox"
-                                                                  name="{{ key }}[]"
-                                                                  value="{{ rule.name }}" {{ rules|check_state(key, rule.name) }}>{{ rule.title }}
-                                                    </label>
-                                                </div>
-                                            {% endfor %}
-
-
-                                        </div>
+                        <div class="row">
+                            {% for key, module in modules %}
+                                <div class="col-md-3 col-sm-3" style="min-height: 135px;">
+                                    <div class="form-group">
+                                        <label>{{ module.title }}</label>
+                                        {% for rule in module.rules %}
+                                            <div class="checkbox">
+                                                <label><input type="checkbox"
+                                                              name="{{ key }}[]"
+                                                              value="{{ rule.name }}" {{ rules|check_state(key, rule.name) }}>{{ rule.title }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                {% endfor %}
-
-                            </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ module.exports = function (env) {
                     html += '</li>';
                 }
                 else {
-                    html = html.replace('{{link}}', '/admin/' + y + '');
+                    html = html.replace('{{link}}', '/admin/' + sortModules[y].menu + '');
                     html += '</a></li>';
                 }
 

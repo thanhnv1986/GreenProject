@@ -4,6 +4,10 @@
 module.exports = function (modules) {
     modules.menus = {
         title: 'Menus',
+        author: 'Nguyen Van Thanh',
+        version: '0.1.0',
+        description:'Menus management of website frontend',
+        system:true,
         rules: [
             {
                 name: 'index',

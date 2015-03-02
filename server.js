@@ -15,7 +15,7 @@ global.__base = __dirname + '/';
 
 
 
-global.__modules = require('./libs/modules_manager');
+global.__modules = require('./libs/modules_manager')();
 global.__menus = require('./libs/menus_manager')();
 global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
