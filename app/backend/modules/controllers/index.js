@@ -37,3 +37,9 @@ exports.active = function (req, res, next) {
     redis.set('all_modules', JSON.stringify(__modules), redis.print);
     next();
 };
+exports.reload = function (req, res, next) {
+    var md = require(__base+'libs/modules_manager.js');
+    md.loadAllModule();
+    req.flash.success("Reload all modules");
+    next();
+};

@@ -73,6 +73,7 @@ exports.update = function (req, res) {
                 menu_id: menu.id
             }
         }).then(function () {
+
             var promises = [];
             for (var i in req.body.title) {
                 promises.push(

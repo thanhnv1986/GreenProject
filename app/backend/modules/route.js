@@ -10,5 +10,6 @@ var controller = require('./controllers/index.js');
 var moduleName = 'modules';
 
 router.route('/modules').get(__acl.isAllow(moduleName, 'index'), controller.index);
+router.route('/modules/reload-modules').get(__acl.isAllow(moduleName, 'active'), controller.reload, controller.index);
 router.route('/modules/:route').get(__acl.isAllow(moduleName, 'active'), controller.active, controller.index);
 module.exports = router;
