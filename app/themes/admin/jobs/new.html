@@ -1,0 +1,218 @@
+{% extends '../layout-admin.server.view.html' %}
+
+{% block cssExtends %}
+    <link rel="stylesheet" href="/admin/global/plugins/select2/select2.css"/>
+    <link href="/admin/plugins/ckeditor/plugins/codemirror/theme/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/admin/global/plugins/bootstrap-datepicker/css/datepicker3.css"/>
+    <style>
+        .btn-ahref {
+            background: none !important;
+            border: none;
+            padding: 0 !important;
+            color: #069;
+            cursor: pointer;
+        }
+
+        .btn-ahref:focus {
+            outline: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="alert-zone"></div>
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                {% include '../toolbar-admin.server.view.html' %}
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row">
+                <form action="/admin/jobs/create" id="frmEditjob" method="POST" enctype="multipart/form-data">
+                    <!-- BEGIN LEFTSIDE -->
+                    <div class="col-md-9 col-sm-9">
+                        <div class="form-group">
+                            <label for="title" class="control-label">Tiêu đề: <span class="required">* </span></label>
+                            <input id="title" name="title" class="form-control" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="content" class="control-label">Nội dung: <span
+                                        class="required">* </span></label>
+                            <textarea id="content"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content" class="control-label">Yêu cầu: <span class="required">* </span></label>
+                            <textarea id="requirement"></textarea>
+                        </div>
+
+                        <hr/>
+                        <h4>Thông tin công ty</h4>
+
+                        <div class="form-group">
+                            <label for="company_name" class="control-label">Tên công ty: <span
+                                        class="required">* </span></label>
+                            <input id="company_name" name="company_name" class="form-control" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-md-2 control-label">Logo: <span class="required">
+													* </span>
+                                </label>
+
+                                <div class="col-md-10">
+                                    <input type="file" class="form-control" name="logo_company_url"
+                                           id="logo_company_url">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Địa chỉ: <span
+                                        class="required">* </span></label>
+                            <input id="address" name="address" class="form-control" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc" class="control-label">Giới thiệu công ty: <span class="required">* </span></label>
+                            <textarea id="desc"></textarea>
+                        </div>
+                    </div>
+                    <!-- END LEFTSIDE -->
+
+                    <!-- BEGIN RIGHTSIDE -->
+                    <div class="col-md-3 col-sm-3">
+                        <div class="form-group">
+                            <label for="job tags" class="control-label">Kỹ năng</label>
+
+                            <select id="pic_job_skill_id" class="table-group-action-input form-control "
+                                    multiple="multiple">
+                                {% for t in jobSkills %}
+                                    {% set selected = "" %}
+                                    {% if t.id == job.job_skill_id|replace(':','','g') %}
+                                        {% set selected = "selected" %}
+                                    {% endif %}
+                                    <option value="{{ t.id }}" {{ selected }}>{{ t.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="job tags" class="control-label">Nơi làm việc</label>
+
+                            <select id="pic_job_loc_id" class="table-group-action-input form-control "
+                                    multiple="multiple">
+                                {% for t in jobLocations %}
+                                    {% set selected = "" %}
+                                    {% if t.id == job.job_loc_id|replace(':','','g') %}
+                                        {% set selected = "selected" %}
+                                    {% endif %}
+                                    <option value="{{ t.id }}" {{ selected }}>{{ t.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ngày hết hạn:</label>
+
+                            <div class="input-group date date-picker" data-date-format="dd-mm-yyyy"
+                                 data-date-start-date="+0d">
+                                <input type="text" class="form-control" readonly>
+												<span class="input-group-btn">
+												<button class="btn default" type="button"><i class="fa fa-calendar"></i>
+                                                </button>
+												</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END RIGHTSIDE -->
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsExtends %}
+    {% include '../editorScript.html' %}
+    <script type="text/javascript" src="/admin/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        window.onload = function () {
+            CKEDITOR.replace('content', {
+                height: 300
+            });
+            CKEDITOR.replace('requirement', {
+                height: 300
+            });
+            CKEDITOR.replace('desc', {
+                height: 300
+            });
+        };
+
+        $(document).ready(function () {
+            $('.date-picker').datepicker();
+
+            var select2 = $('#pic_job_skill_id');
+
+            $(select2).select2({
+                placeholder: "Chọn danh mục"
+            });
+
+            {% if job.job_skill_id != '' and job.job_skill_id != null %}
+            var job_skill_id = '{{ job.job_skill_id }}';
+            job_skill_id = job_skill_id.split(':');
+            job_skill_id.shift();
+            job_skill_id.pop(job_skill_id[job_skill_id.length - 1]);
+//            console.log(job_skill_id);
+            $(select2).val(job_skill_id).trigger("change");
+            {% endif %}
+
+            $('#pic_job_loc_id').select2({
+                placeholder: 'Chọn địa điểm'
+            });
+
+            $("#frmEditjob").submit(function (e) {
+                var form = $('#frmEditjob');
+                var list_id = $(select2).val();
+                if (list_id && list_id != '') {
+                    list_id = ':' + list_id.join(':') + ':';
+                    var skill_id = $("<input>")
+                            .attr("type", "hidden")
+                            .attr("name", "job_skill_id").val(list_id);
+                    form.append($(skill_id));
+                }
+
+                list_id = $('#pic_job_loc_id').val();
+                if (list_id && list_id != '') {
+                    list_id = ':' + list_id.join(':') + ':';
+                    var loc_id = $("<input>")
+                            .attr("type", "hidden")
+                            .attr("name", "job_loc_id").val(list_id);
+                    form.append($(loc_id));
+                }
+
+                var desc = CKEDITOR.instances.desc.getData();
+                form.append($("<input>")
+                        .attr("type", "hidden")
+                        .attr("name", "desc").val(desc));
+                var content = CKEDITOR.instances.content.getData();
+                form.append($("<input>")
+                        .attr("type", "hidden")
+                        .attr("name", "content").val(content));
+                var requirement = CKEDITOR.instances.requirement.getData();
+                form.append($("<input>")
+                        .attr("type", "hidden")
+                        .attr("name", "requirement").val(requirement));
+                var expires_date = $('.date-picker').find('input').val();
+                form.append($("<input>")
+                        .attr("type", "hidden")
+                        .attr("name", "expires_date").val(expires_date));
+            });
+
+
+            $('#saveForm').click(function () {
+                $('#frmEditjob').submit();
+            });
+        });
+    </script>
+
+{% endblock %}
