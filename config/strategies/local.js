@@ -14,9 +14,9 @@ module.exports = function() {
 		},
 		function(username, password, done) {
             __models.user.find({
-                where: {
-                    user_login: username
-                }
+                where: [
+                    'lower(user_login) = ? or lower(user_email) = ?', username.toLowerCase(), username.toLowerCase()
+                ]
 
             }).then(function (user,err) {
 
@@ -33,7 +33,7 @@ module.exports = function() {
                         message: 'Username or password invalid'
                     });
                 }
-                console.log('*******************',user);
+                //console.log('*******************',user);
                 return done(null, user);
 
             });

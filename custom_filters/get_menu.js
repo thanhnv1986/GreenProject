@@ -29,7 +29,6 @@ module.exports = function (env) {
                     var tmp = '';
                     for (var i in arr) {
                         var mn = getMenuItem(arr[i].id);
-                        console.log('***********',mn.link, route);
                         var active = mn.link.substring(1)===route.substring(1);
                         if (arr[i].children) {
                             tmp += '<li class="'+menu.li_cls+' '+(active?menu.li_active_cls:"")+'"><a class="'+menu.a_cls+'" data-toggle="dropdown" href="'+mn.link+'">' + mn.name+'</a><i class="fa fa-angle-down"></i>';
@@ -51,7 +50,6 @@ module.exports = function (env) {
                 var end = new Date().getTime();
                 var time = end - start;
                 cb(null, html);
-                console.log("*********Build Menu: ",time);
             });
 
         });

@@ -7,12 +7,13 @@ module.exports = function (env) {
         var html = '';
         sortGroups = __.sortMenus(__menus);
         for (var i in sortGroups) {
-
             var group = __menus[sortGroups[i].menu];
             html += '<li class="header">' + group.title + '</li>';
             sortModules = __.sortMenus(group.modules);
             for (var y in sortModules) {
                 var moduleName = sortModules[y].menu;
+                if (user.acl[moduleName] == undefined) continue;
+
                 var subMenu = group.modules[moduleName];
                 var icon = 'fa fa-circle-o text-danger';
                 if (subMenu.icon) {
@@ -30,12 +31,14 @@ module.exports = function (env) {
                     html += '<ul class="treeview-menu">';
                     for (var z in subMenu.menus) {
                         var mn = subMenu.menus[z];
-                        var cls = __.active_menu(route, mn.link.replace('/', ''), "active", 3);
-                        html += '<li class="treeview ' + cls + '">' +
-                            '<a href="/admin/' + (moduleName + mn.link) + '">' +
-                            '<i class="fa fa-circle-o"></i> <span>' + mn.title + '</span>' +
-                            '</a>' +
-                            '</li>';
+                        if (user.acl[moduleName].indexOf(mn.name) > -1) {
+                            var cls = __.active_menu(route, mn.link.replace('/', ''), "active", 3);
+                            html += '<li class="treeview ' + cls + '">' +
+                                '<a href="/admin/' + (moduleName + mn.link) + '">' +
+                                '<i class="fa fa-circle-o"></i> <span>' + mn.title + '</span>' +
+                                '</a>' +
+                                '</li>';
+                        }
                     }
                     html += '</ul>';
                     html += '</li>';

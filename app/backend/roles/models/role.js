@@ -2,6 +2,7 @@ module.exports = function (sequelize, DataTypes) {
     var Role = sequelize.define("role", {
         name: DataTypes.STRING,
         rules: DataTypes.STRING,
+        f_rules: DataTypes.STRING,
         created_at: DataTypes.DATE,
         created_by: DataTypes.INTEGER,
         modified_at: DataTypes.DATE,

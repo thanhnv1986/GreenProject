@@ -19,12 +19,6 @@ module.exports = function (req, res, next) {
     }
     else {
         req.flash.error('Module ' + module + ' is not active');
-        if (pre_fix != '') {
-            res.render('admin/500');
-        }
-        else {
-            res.render('500');
-        }
-
+        res.render('admin/500');
     }
 }

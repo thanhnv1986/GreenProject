@@ -38,8 +38,8 @@ exports.active = function (req, res, next) {
     next();
 };
 exports.reload = function (req, res, next) {
-    var md = require(__base+'libs/modules_manager.js');
-    md.loadAllModule();
+    var md = require(__base+'libs/modules_backend_manager.js');
+    md.loadAllModules();
     req.flash.success("Reload all modules");
     next();
 };

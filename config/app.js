@@ -102,12 +102,12 @@ module.exports = function () {
             return next(new Error('Session destroy')); // handle error
         }
         next(); // otherwise continue
-    })
+    });
     // use passport session
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // connect flash for flash messages
+    //flash messages
     app.use(require(__base+'app/plugins/flash-plugin.js'));
 
     // Use helmet to secure Express headers
@@ -120,10 +120,11 @@ module.exports = function () {
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
 
-    app.use(require('../app/plugins/modules-plugin.js'));
+    //module manager backend
+    app.use('/admin/*',require('../app/plugins/modules-plugin.js'));
+    //module manager frontend
+    app.use('/^((?!admin\/).)*$',require('../app/plugins/modules-f-plugin.js'));
     app.use(require('../app/plugins/theme-plugin.js'));
-
-
 
     // Globbing admin module files
     redis.get('all_modules', function (err, results) {
@@ -138,10 +139,11 @@ module.exports = function () {
             redis.set('all_modules', JSON.stringify(__modules), redis.print);
         }
     });
-/*    config.getGlobbedFiles('./app/backend*//*//*module.js').forEach(function (routePath) {
+    // Globbing frontend module files
+    config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
-        require(path.resolve(routePath))(__modules);
-    });*/
+        require(path.resolve(routePath))(__fmodules);
+    });
 
     // Globbing routing files
     config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
@@ -155,7 +157,6 @@ module.exports = function () {
     });
 
     // Globbing menu files
-
     config.getGlobbedFiles('./app/menus/*/*.js').forEach(function (routePath) {
         console.log(routePath);
         require(path.resolve(routePath))(__menus);

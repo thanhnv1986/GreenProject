@@ -2,7 +2,7 @@
  * Created by thanhnv on 2/25/15.
  */
 module.exports = function (menus) {
-    menus.systems.modules.configuration = {
+    menus.systems.modules.configurations = {
         title:'Configuration',
         sort: 5,
         icon:"fa fa-cog",

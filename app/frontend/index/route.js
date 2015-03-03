@@ -8,6 +8,7 @@ module.exports = function(app) {
     var core = require('./controllers/index');
 
     app.route('/').get(core.index);
+    app.route('/index').get(core.index);
     app.route('/change1').get(core.changetotheme1);
     app.route('/change2').get(core.changetotheme2);
 };

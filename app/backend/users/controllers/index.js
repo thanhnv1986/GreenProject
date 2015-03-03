@@ -7,11 +7,12 @@ var fs = require('fs');
 var path = require('path');
 var slug = require('slug');
 var config = require(__base + 'config/config.js');
-
+var formidable = require('formidable');
 var redis = require('redis').createClient();
 
 var index_template = 'users/index';
 var edit_template = 'users/new';
+var folder_upload = __base + 'public/img/users/';
 var route = 'users';
 var breadcrumb =
     [
@@ -43,8 +44,8 @@ exports.list = function (req, res) {
             title: "All Users",
             totalPage: totalPage,
             users: results.rows,
-            currentPage: page,
-            messages: req.messages || []
+            currentPage: page
+
         });
     });
 };
@@ -78,19 +79,36 @@ exports.view = function (req, res) {
 
 };
 exports.update = function (req, res, next) {
-    req.messages = [];
     var data = req.body;
     __models.user.find({
         where: {
             id: req.params.cid
         }
     }).then(function (user) {
-        user.updateAttributes(data).then(function () {
-            req.messages = [
-                { type: 'success', content: "Updated user successful"}
-            ];
-            next();
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            data = fields;
+
+            if (files.user_image_url.name != '') {
+                var type = files.user_image_url.name.split('.');
+                type = type[type.length - 1];
+                var fileName = folder_upload + slug(fields.user_login).toLowerCase() + '.' + type;
+                fs.rename(files.user_image_url.path, fileName, function (err) {
+                   if(err){
+                       req.flash.error("Lỗi khi thêm việc làm mới: không upload được logo.");
+                       return next();
+                   }
+                });
+                data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
+            }
+
+            user.updateAttributes(data).then(function () {
+                req.flash.success("Updated user successfull");
+                next();
+            });
+
         });
+
     });
 
 
@@ -118,39 +136,53 @@ exports.create = function (req, res) {
     });
 }
 exports.save = function (req, res, next) {
-    req.messages = [];
-    var data = req.body;
-    data.id = new Date().getTime();
-    __models.user.create(data).then(function () {
-        req.messages.push({ type: 'success', content: "Add new user successful"});
-        next();
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        var data = fields;
+        data.id = new Date().getTime();
+        var type = files.user_image_url.name.split('.');
+        type = type[type.length - 1];
+        var fileName = folder_upload + slug(fields.user_login).toLowerCase() + '.' + type;
+        fs.rename(files.user_image_url.path, fileName, function (err) {
+            if (err) {
+                req.flash.error("Lỗi khi thêm việc làm mới: không upload được logo.");
+                next();
+            }
+            data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
+            __models.user.create(data).then(function () {
+                req.flash.success("Add new user successful");
+                next();
+            });
+        });
+
     });
+
 }
 exports.delete = function (req, res) {
     var ids = req.body.ids.split(',');
     async.waterfall([
-        function (done) {
-            __models.usermeta.destroy({
-                where: {
-                    user_id: {
-                        "in": ids
-                    }
-                }
-            }).then(function () {
-                done(null);
-            });
-        },
-        function (done) {
-            __models.user_answer.destroy({
-                where: {
-                    user_id: {
-                        "in": ids
-                    }
-                }
-            }).then(function () {
-                done(null);
-            });
-        },
+        /*function (done) {
+         __models.usermeta.destroy({
+         where: {
+         user_id: {
+         "in": ids
+         }
+         }
+         }).then(function () {
+         done(null);
+         });
+         },
+         function (done) {
+         __models.user_answer.destroy({
+         where: {
+         user_id: {
+         "in": ids
+         }
+         }
+         }).then(function () {
+         done(null);
+         });
+         },*/
         function (done) {
             __models.user.destroy({
                 where: {

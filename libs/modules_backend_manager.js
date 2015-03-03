@@ -8,7 +8,7 @@ var modules = {};
 module.exports = function () {
     return modules;
 };
-module.exports.loadAllModule = function () {
+module.exports.loadAllModules = function () {
 
     // Globbing admin module files
     var module_tmp = {};
@@ -31,18 +31,3 @@ module.exports.loadAllModule = function () {
     }
     redis.set('all_modules', JSON.stringify(__modules), redis.print);
 }
-exports.addModule = function (name, module) {
-    if (!module.active) {
-        module.active = false;
-    }
-    modules[name] = module;
-};
-exports.removeModule = function (name) {
-    delete modules[name];
-};
-exports.enableModule = function (name) {
-    modules[name].active = true;
-};
-exports.disableModule = function (name) {
-    modules[name].active = false;
-};
