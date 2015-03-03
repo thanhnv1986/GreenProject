@@ -58,21 +58,12 @@ exports.view = function (req, res) {
             __models.role.findAll().then(function (roles) {
                 callback(null, roles);
             });
-        },
-        function (callback) {
-            __models.user.find({
-                where: {
-                    id: req.params.cid
-                }
-            }).then(function (us) {
-                callback(null, us);
-            });
         }
     ], function (err, results) {
         res.render(edit_template, {
             title: "Update Users",
             roles: results[0],
-            user: results[1],
+            user: req.user,
             id: req.params.cid
         });
     });
@@ -227,6 +218,7 @@ exports.profile = function (req, res) {
  * Change pass view
  */
 exports.changePass = function (req, res) {
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Change password'});
     res.render('users/change-pass', {
         user: req.user
     });
@@ -259,5 +251,16 @@ exports.updatePass = function (req, res) {
             })
         }
     });
-
 };
+
+exports.userById = function(req, res, next, id){
+    __models.user.find({
+        include:[__models.roles],
+        where:{
+            id:id
+        }
+    }).then(function(user){
+        req.user = user;
+        next();
+    })
+}

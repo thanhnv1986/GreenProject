@@ -140,24 +140,15 @@
                             <img src="{{ __user.user_image_url }}" class="user-image" alt="User Image"/>
                             <span class="hidden-xs">{{ __user.user_login }}</span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="{{ __user.user_image_url }}" class="img-circle" alt="User Image"/>
-
-                                <p>
-                                    {{ __user.display_name }}
-                                    <small>{{ __user.role.name }}</small>
-                                </p>
+                        <ul class="dropdown-menu" style="width: 100%">
+                            <li>
+                                <a href="/admin/users/profile"><i class="fa fa-user"></i>Profile</a>
                             </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="/admin/users/profile" class="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="/admin/users/signout" class="btn btn-default btn-flat">Sign out</a>
-                                </div>
+                            <li>
+                                <a href="/admin/users/change-pass"><i class="fa fa-lock"></i>Change password</a>
+                            </li>
+                            <li>
+                                <a href="/admin/users/signout"><i class="fa fa-sign-out"></i>Sign out</a>
                             </li>
                         </ul>
                     </li>
