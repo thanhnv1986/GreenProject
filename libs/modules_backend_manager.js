@@ -17,7 +17,6 @@ module.exports.loadAllModules = function () {
         require(path.resolve(routePath))(module_tmp);
     });
     //add new module
-    console.log(module_tmp, __modules);
     for (var i in module_tmp) {
         if (__modules[i] == undefined) {
             __modules[i] = module_tmp[i];

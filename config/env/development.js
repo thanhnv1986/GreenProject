@@ -5,8 +5,8 @@ module.exports = {
         host:'localhost',
         port:'5432',
         database:'green_project',
-        username:'postgres',
-        password:'123456',
+        username:'thanhnv',
+        password:'1',
         dialect: 'postgres',
         logging: true
     },

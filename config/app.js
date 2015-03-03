@@ -120,8 +120,7 @@ module.exports = function () {
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
 
-    //module manager backend
-    app.use('/admin/*',require('../app/plugins/modules-plugin.js'));
+
     //module manager frontend
     app.use('/^((?!admin\/).)*$',require('../app/plugins/modules-f-plugin.js'));
     app.use(require('../app/plugins/theme-plugin.js'));
@@ -151,6 +150,8 @@ module.exports = function () {
         require(path.resolve(routePath))(app);
     });
 
+    //module manager backend
+    app.use('/admin/*',require('../app/plugins/modules-plugin.js'));
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));

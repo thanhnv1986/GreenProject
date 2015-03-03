@@ -4,7 +4,12 @@
 var passport = require('passport');
 module.exports = function (app) {
     app.route('/admin/login').get(function (req, res) {
-        res.render('login');
+        if (req.isAuthenticated()) {
+            return res.redirect('/admin');
+        }
+        else {
+            res.render('login');
+        }
     }).post(function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {
             // Remove sensitive data before login

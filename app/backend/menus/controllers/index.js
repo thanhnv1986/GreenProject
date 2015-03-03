@@ -104,7 +104,6 @@ exports.menuById = function (req, res, next, id) {
             res.locals.menu_details = JSON.stringify(menu_details);
             next();
         });
-
     });
 
 };
