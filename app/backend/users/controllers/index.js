@@ -259,8 +259,8 @@ exports.forgot = function(req, res, next) {
                     //}
                     else {
                         var data = {};
-                        data.resetpasswordtoken = token;
-                        data.resetpasswordexpires = Date.now() + 3600000; // 1 hour
+                        data.reset_password_token = token;
+                        data.reset_password_expires = Date.now() + 3600000; // 1 hour
                         user.updateAttributes(data).then(function(user) {
                             done(null, token, user);
                         });
@@ -311,7 +311,7 @@ exports.forgot = function(req, res, next) {
  * Reset password GET from email token
  */
 exports.validateResetToken = function(req, res, next) {
-    var where = 'id=' + req.params.userid + ' and resetpasswordtoken=\'' + req.params.token + '\'' + ' and resetpasswordexpires > ' + Date.now();
+    var where = 'id=' + req.params.userid + ' and reset_password_token=\'' + req.params.token + '\'' + ' and reset_password_expires > ' + Date.now();
     __models.user.find({
         where: where
     }).then(function(user) {
@@ -351,7 +351,7 @@ exports.reset = function(req, res, next) {
     // Init Variables
     var time = Date.now();
     var passwordDetails = req.body;
-    var where = 'id=' + req.params.userid + ' and resetpasswordtoken=\'' + req.params.token + '\'' + ' and resetpasswordexpires > ' + time;
+    var where = 'id=' + req.params.userid + ' and reset_password_token=\'' + req.params.token + '\'' + ' and reset_password_expires > ' + time;
 
     async.waterfall([
 
@@ -363,8 +363,8 @@ exports.reset = function(req, res, next) {
                     if (passwordDetails.newpassword === passwordDetails.retype_password) {
                         var data = {};
                         data.user_pass = user.hashPassword(passwordDetails.newpassword);
-                        data.resetpasswordtoken = '';
-                        data.resetpasswordexpires = null;
+                        data.reset_password_token = '';
+                        data.reset_password_expires = null;
 
                         user.updateAttributes(data).then(function(user) {
                             if (!user) {
