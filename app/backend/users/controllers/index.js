@@ -86,7 +86,7 @@ exports.update = function (req, res, next) {
                 var fileName = folder_upload + slug(fields.user_login).toLowerCase() + '.' + type;
                 fs.rename(files.user_image_url.path, fileName, function (err) {
                    if(err){
-                       req.flash.error("Lỗi khi thêm việc làm mới: không upload được logo.");
+                       req.flash.error("Can not upload image.");
                        return next();
                    }
                 });
@@ -94,7 +94,7 @@ exports.update = function (req, res, next) {
             }
 
             user.updateAttributes(data).then(function () {
-                req.flash.success("Updated user successfull");
+                req.flash.success("Updated user successful");
                 next();
             });
 
@@ -136,7 +136,7 @@ exports.save = function (req, res, next) {
         var fileName = folder_upload + slug(fields.user_login).toLowerCase() + '.' + type;
         fs.rename(files.user_image_url.path, fileName, function (err) {
             if (err) {
-                req.flash.error("Lỗi khi thêm việc làm mới: không upload được logo.");
+                req.flash.error("Can not upload image");
                 next();
             }
             data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
@@ -152,28 +152,6 @@ exports.save = function (req, res, next) {
 exports.delete = function (req, res) {
     var ids = req.body.ids.split(',');
     async.waterfall([
-        /*function (done) {
-         __models.usermeta.destroy({
-         where: {
-         user_id: {
-         "in": ids
-         }
-         }
-         }).then(function () {
-         done(null);
-         });
-         },
-         function (done) {
-         __models.user_answer.destroy({
-         where: {
-         user_id: {
-         "in": ids
-         }
-         }
-         }).then(function () {
-         done(null);
-         });
-         },*/
         function (done) {
             __models.user.destroy({
                 where: {
@@ -236,19 +214,13 @@ exports.updatePass = function (req, res) {
             user.updateAttributes({
                 user_pass: user.hashPassword(user_pass)
             }).then(function () {
-                res.render('users/change-pass', {
-                    messages: [
-                        { type: 'success', content: "Changed password successful"}
-                    ]
-                })
+                req.flash.success("Changed password successful");
+                res.render('users/change-pass');
             });
         }
         else {
-            res.render('users/change-pass', {
-                messages: [
-                    { type: 'error', content: "Password invalid"}
-                ]
-            })
+            req.flash.success("Password invalid");
+            res.render('users/change-pass');
         }
     });
 };

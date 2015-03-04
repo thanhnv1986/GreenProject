@@ -27,7 +27,7 @@
                             {% for menu in menus %}
                                 <tr>
                                     <td>
-                                        <input type="checkbox" id="id[]" name="id[]" value="{{ menu.id }}">
+                                        <input type="checkbox" id="ids[]" name="ids[]" value="{{ menu.id }}">
                                     </td>
                                     <td><a href="/admin/menus/{{ menu.id }}">{{ menu.name }}</a></td>
                                     <td>{{ menu.status }}</td>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" onclick="return deleteCourses()">Delete</button>
+                    <button type="button" class="btn btn-danger" onclick="return deleteMenus();">Delete</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -62,11 +62,11 @@
         <!-- /.modal-dialog -->
     </div>
 {% endblock %}
-{% block jsFooter %}
+{% block jsExtends %}
     <script>
-        function deleteCourses() {
+        function deleteMenus() {
             var ids = [];
-            $("input:checkbox[name='id[]']:checked").each(function () {
+            $("input:checkbox[name='ids[]']:checked").each(function () {
                 ids.push($(this).val());
             });
             if (ids.length > 0)
