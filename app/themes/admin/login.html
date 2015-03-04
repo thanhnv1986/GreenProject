@@ -33,6 +33,7 @@
             {{ message }}
         </div>
         {% endif %}
+        <!-- BEGIN LOGIN FORM -->
         <form method="post">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="Email"  name="username"/>
@@ -53,11 +54,32 @@
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div><!-- /.col -->
+                <div class="col-md-12 col-sm-12 text-right">
+                    <a href="javascript:showForgotForm()">I forgot my password</a>
+                </div>
             </div>
         </form>
-        <a href="#">I forgot my password</a><br>
+        <!-- END LOGIN FORM -->
+
+        <!-- BEGIN FORGOT PASSWORD FORM -->
+        <form class="forget-form" action="/users/forgot" method="post" style="display: none">
+            <p>
+                Enter your email to reset password
+            </p>
+            <div class="form-group">
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="hideForgotForm()" id="back-btn" class="btn btn-default btn-flat">Back</button>
+                <button type="submit" class="btn btn-primary btn-flat uppercase pull-right">Submit</button>
+            </div>
+        </form>
+        <!-- END FORGOT PASSWORD FORM -->
+
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->
+
+
 
 <!-- jQuery 2.1.3 -->
 <script src="/admin/plugins/jQuery/jQuery-2.1.3.min.js"></script>
@@ -73,6 +95,16 @@
             increaseArea: '20%' // optional
         });
     });
+    function showForgotForm() {
+        var form = $('form');
+        form.eq(0).hide();
+        form.eq(1).show();
+    }
+    function hideForgotForm() {
+        var form = $('form');
+        form.eq(1).hide();
+        form.eq(0).show();
+    }
 </script>
 </body>
 </html>
