@@ -107,6 +107,22 @@ exports.menuById = function (req, res, next, id) {
     });
 
 };
+
+exports.delete = function (req, res) {
+    __models.menus.find(id).then(function (menu) {
+        res.locals.menu = menu;
+        __models.menu_detail.findAll({
+            where: {
+                menu_id: id
+            }
+        }, {raw: true}).then(function (menu_details) {
+            res.locals.menu_details = JSON.stringify(menu_details);
+            next();
+        });
+    });
+
+};
+
 exports.menuitem = function (req, res) {
     res.render('menus/menuitem');
 };
