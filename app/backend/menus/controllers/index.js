@@ -105,23 +105,20 @@ exports.menuById = function (req, res, next, id) {
             next();
         });
     });
-
 };
 
 exports.delete = function (req, res) {
-    __models.menus.find(id).then(function (menu) {
-        res.locals.menu = menu;
-        __models.menu_detail.findAll({
-            where: {
-                menu_id: id
+    __models.role.destroy({
+        where: {
+            id: {
+                "in": req.body.ids.split(',')
             }
-        }, {raw: true}).then(function (menu_details) {
-            res.locals.menu_details = JSON.stringify(menu_details);
-            next();
-        });
+        }
+    }).then(function () {
+        res.send(200);
     });
-
 };
+
 
 exports.menuitem = function (req, res) {
     res.render('menus/menuitem');
