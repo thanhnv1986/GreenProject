@@ -134,7 +134,7 @@ exports.save = function (req, res, next) {
 
 }
 exports.delete = function (req, res) {
-    __models.role.destroy({
+    __models.roles.destroy({
         where: {
             id: {
                 "in": req.body.ids.split(',')

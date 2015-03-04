@@ -28,14 +28,18 @@ exports.isAllow = function (route, action, orAction, hasAuthorize) {
     }
 
 }
-exports.addButton = function (req, route, action) {
+exports.addButton = function (req, route, action, controller) {
     if (req.user != undefined && req.user.acl[route] != undefined) {
         var rules = req.user.acl[route].split(':');
         for (var i in rules) {
             if (action == rules[i]) {
-                return route.replace('_', '-');
+                if (controller != undefined && controller != '') {
+                    return controller + '/' + route.replace('_', '-');
+                }
+                else {
+                    return route.replace('_', '-');
+                }
             }
-
         }
     }
 }

@@ -15,11 +15,12 @@ module.exports = function (req, res, next) {
         }
         else {
             var tmp = config.themes + '/' + view;
-            if(fs.existsSync(__base+'app/themes/'+tmp+'.html')){
+            console.log('^^^^^^^^^^^^^', tmp);
+            if (fs.existsSync(__base + 'app/themes/' + tmp + '.html')) {
                 view = tmp;
             }
-            else{
-                view = "default/"+view;
+            else {
+                view = "default/" + view;
             }
 
         }
