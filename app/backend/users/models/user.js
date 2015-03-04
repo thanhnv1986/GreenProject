@@ -14,7 +14,9 @@ module.exports = function (sequelize, DataTypes) {
         display_name: DataTypes.STRING(250),
         user_image_url: DataTypes.TEXT,
         salt: DataTypes.STRING(255),
-        role_id: DataTypes.INTEGER
+        role_id: DataTypes.INTEGER,
+        resetpasswordexpires: DataTypes.BIGINT,
+        resetpasswordtoken: DataTypes.STRING
     }, {
         timestamps: false,
         tableName: 'users',

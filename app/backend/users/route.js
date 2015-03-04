@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require('./controllers/index.js');
 var moduleName = 'users';
-/* GET course listing. */
+
 router.get('/users/signout',controller.signout);
 router.get('/users/change-pass',controller.changePass);
 router.post('/users/change-pass',controller.updatePass);
