@@ -29,7 +29,7 @@ exports.index = function (req, res) {
     });
     for(var i in themes){
         if(themes[i].name.toLowerCase()==config.themes.toLowerCase()){
-            var current_theme = themes[i];
+            var current_theme = __current_theme = themes[i];
         }
     }
     res.render('configurations/themes/index',{

@@ -3,7 +3,7 @@
  */
 module.exports = function (menus) {
     menus.systems.modules.configurations = {
-        title:'Configuration',
+        title:'Configurations',
         sort: 5,
         icon:"fa fa-cog",
         menus: [
@@ -13,7 +13,7 @@ module.exports = function (menus) {
                 link: '/'
             },
             {
-                name: 'change_theme',
+                name: 'change_themes',
                 title: 'Themes',
                 link: '/themes'
             }

@@ -66,7 +66,7 @@ exports.view = function (req, res) {
         res.render(edit_template, {
             title: "Update Users",
             roles: results[0],
-            user: req.user,
+            user: req._user,
             id: req.params.cid
         });
     });
@@ -423,12 +423,12 @@ exports.reset = function(req, res, next) {
 
 exports.userById = function(req, res, next, id){
     __models.user.find({
-        include:[__models.roles],
+        include:[__models.role],
         where:{
             id:id
         }
     }).then(function(user){
-        req.user = user;
+        req._user = user;
         next();
     })
 };
