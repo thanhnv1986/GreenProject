@@ -14,25 +14,13 @@ var _this = module.exports = {
     }
 };
 
-module.exports.add = function () {
-    _this.html = '';
-    _this.html += '<form>' +
-        '<input class="form-control" type="hidden" id="id" name="id" value="' + _this.options.id + '"> </div>' +
-        '<div class="form-group">' +
-        '<label>Title</label>' +
-        '<input class="form-control" type="text" id="title" name="title" value="' + __this.options.title + '"> </div>' +
-        '<div class="form-group">' +
-        '<label>Content</label>' +
-        '<textarea class="form-control" id="content" name="content">' + _this.options.content + '</textarea> </div>' +
-        '</form>'
-};
-
 module.exports.save = function (done) {
     console.log("Widget save");
     if (this.options.id != '') {
         __models.widgets.find(this.options.id).then(function (widget) {
-            __models.widget.updateAttributes({
+            widget.updateAttributes({
                 sidebar:this.options.sidebar,
+                widget_type:this.options.widget,
                 data:JSON.stringify({
                     title:this.options.title,
                     content:this.options.content

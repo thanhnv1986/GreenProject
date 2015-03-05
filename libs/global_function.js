@@ -36,4 +36,11 @@ exports.sortMenus = function (menus) {
     });
     return sortable;
 }
+exports.getWidget = function (alias) {
+    for (var i in __widgets) {
+        if (__widgets[i].alias == alias) {
+            return __widgets[i];
+        }
+    }
+}
 

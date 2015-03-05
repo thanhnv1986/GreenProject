@@ -7,6 +7,10 @@ var Promise = require("bluebird");
 var _ = require('lodash');
 var config = require(__base + 'config/config');
 var route = 'modules';
+// Loads templates from the "views" folder
+var nunjucks = require('nunjucks');
+var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__base + 'app/widgets'));
+
 var breadcrumb =
     [
         {
@@ -40,9 +44,7 @@ exports.sidebar = function (req, res, next) {
     });
 };
 exports.addWidget = function (req, res) {
-    // Loads templates from the "views" folder
-    var nunjucks = require('nunjucks');
-    var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__base + 'app/widgets'));
+
     env.render(req.params.widget + '/setting.html', function (err, re) {
         res.send(re);
     });
@@ -53,12 +55,19 @@ exports.saveWidget = function (req, res) {
     for (var i in __widgets) {
         if (__widgets[i].alias == widget) {
             widget = _.clone(__widgets[i]);
-            console.log('******', widget);
             _.assign(widget.options, req.body);
             break;
         }
     }
     widget.save(function () {
         res.sendStatus(200);
+    });
+}
+exports.read = function (req, res) {
+    __models.widgets.find(req.params.cid).then(function (widget) {
+        env.render(widget.widget_type + '/setting.html', {widget: widget},
+            function (err, re) {
+                res.send(re);
+            });
     });
 }

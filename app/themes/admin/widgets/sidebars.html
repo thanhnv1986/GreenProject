@@ -43,8 +43,9 @@
 
         .expand_arrow {
             position: absolute;
-            top: 15px;
+            top: 8px;
             right: 10px;
+            font-size: 20px;
         }
 
     </style>
@@ -75,7 +76,7 @@
                             </div>
                             <div class="box-body" id="{{ bar.alias }}">
                                 <ul class="widget-list">
-
+                                    {{ bar.name|setting_sidebars|safe }}
                                 </ul>
                             </div>
                         </div>
@@ -100,27 +101,19 @@
                 accept: ":not(.ui-sortable-helper)",
                 drop: function (event, ui) {
                     $(this).find(".placeholder").remove();
-                    var form = $("<form method='post' action='/admin/widgets/sidebars/save'></form>");
-
-                    var li = $("<li></li>");
-
-                    li.append("<div class='widget-item' style='position: relative'></div>");
+                    var li = $("<li style='position: relative'></li>");
+                    li.append("<div class='widget-item'></div>");
                     li.append('<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>');
                     _this = $(this);
                     li.find(".widget-item").first().text(ui.draggable.text());
-                    li.append("<input type='hidden' name='widget' value='" + ui.draggable.attr('data-alias') + "'>");
-                    li.attr('data-alias', ui.draggable.attr('data-alias'));
                     var ul = $(this).find('.widget-list').first();
-//                    var _this = $(this).find('.box-body').first();
                     $.ajax({
                         url: '/admin/widgets/sidebars/add/' + ui.draggable.attr('data-alias')
                     }).done(function (re) {
                         var new_box = $("<div class='box box-solid open'><div class='box-body'></div></div>");
                         new_box.find(".box-body").first().append(re);
                         li.append(new_box);
-                        form.append(li);
-                        form.append("<input type='hidden' name='sidebar' value='"+ _this.attr('id') +"'> ");
-                        ul.append(form);
+                        ul.append(li);
                     });
 //                    $(this).find('.box-body').append("<div class='box box-solid close'><div class='box-body'></div></div>");
 

@@ -9,7 +9,8 @@ module.exports = function (sequelize, DataTypes) {
         created_at: DataTypes.DATE,
         created_by: DataTypes.INTEGER,
         modified_at: DataTypes.DATE,
-        modified_by: DataTypes.INTEGER
+        modified_by: DataTypes.INTEGER,
+        widget_type: DataTypes.STRING
     }, {
         freezeTableName: true,
         timestamps: true,

@@ -1,10 +1,12 @@
-
+<form method="post">
+    <input type="hidden" name="widget" value="custom-html">
+    <input type="hidden" name="id" value="{{ widget.id }}">
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <label>Title</label>
-                <input type="text" class="form-control" name="title" id="title">
-                <input type="hidden" name="id">
+                <input type="text" class="form-control" name="title" id="title" value="{{ widget.data.title }}">
+
             </div>
         </div>
     </div>
@@ -12,7 +14,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>Content</label>
-                <textarea type="text" class="form-control" name="content" id="content"></textarea>
+                <textarea type="text" class="form-control" name="content" id="content">{{ widget.data.content }}</textarea>
             </div>
         </div>
     </div>
@@ -24,3 +26,4 @@
             </div>
         </div>
     </div>
+</form>

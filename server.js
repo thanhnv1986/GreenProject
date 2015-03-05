@@ -13,6 +13,7 @@ global.__base = __dirname + '/';
 global.__modules = require('./libs/modules_backend_manager.js')();
 global.__f_modules = require('./libs/modules_frontend_manager.js')();
 global.__menus = require('./app/menus/menus_manager')();
+global.__widgets = require('./app/widgets/widgets_manager')();
 global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
 global.__ = require('./libs/global_function');
