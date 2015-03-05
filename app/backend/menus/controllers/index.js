@@ -48,7 +48,6 @@ exports.save = function (req, res, next) {
     });
 };
 exports.read = function (req, res) {
-    res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = route;
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Menu'});
     res.render('menus/new');
@@ -104,10 +103,22 @@ exports.menuById = function (req, res, next, id) {
             res.locals.menu_details = JSON.stringify(menu_details);
             next();
         });
-
     });
-
 };
+
+exports.delete = function (req, res) {
+    __models.menus.destroy({
+        where: {
+            id: {
+                "in": req.body.ids.split(',')
+            }
+        }
+    }).then(function () {
+        res.send(200);
+    });
+};
+
+
 exports.menuitem = function (req, res) {
     res.render('menus/menuitem');
 };

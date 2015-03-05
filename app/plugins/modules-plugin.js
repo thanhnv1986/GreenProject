@@ -13,6 +13,7 @@ module.exports = function (req, res, next) {
         module = 'dashboard';
     }
     var moduleName = module.replace('-', '_');
+
     if (moduleName == 'login') return next();
     if (__modules[moduleName] != undefined && (__modules[moduleName].system || __modules[moduleName].active)) {
         next();

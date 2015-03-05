@@ -7,7 +7,6 @@ module.exports = function (modules) {
         author: 'Vu Hoang Chung',
         version: '0.1.0',
         description:'Job management of website',
-        system:true,
         rules: [
             {
                 name: 'index',

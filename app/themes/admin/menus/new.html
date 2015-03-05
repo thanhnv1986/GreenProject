@@ -180,6 +180,7 @@
 {% endblock %}
 {% block content %}
     <div class="row">
+<<<<<<< HEAD
     <form method="post" id="edit-form">
     <div class="col-md-12">
     {% include 'admin/toolbar.html' %}
@@ -199,65 +200,87 @@
                         <div class="col-md-12">
                             <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
                             <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
+=======
+        <form method="post" id="edit-form">
+            <div class="col-md-12">{% include 'admin/toolbar.html' %}</div>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ menu.name }}">
+                            <input type="hidden" id="id" name="id" value="{{ menu.id }}">
+>>>>>>> master
                         </div>
-                        <div class="col-md-12">
-                            <div class="dd" id="nestable3">
-                                <ol class="dd-list">
+                        {% if menu %}
+                            <div class="form-group">
+                                <label>Details</label>
 
-                                </ol>
+                                <div class="col-md-12">
+                                    <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
+                                    <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="dd" id="nestable3">
+                                        <ol class="dd-list">
+
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" style="margin-top: 10px; margin-left:15px;"
-                            onclick="return addNewMenu();">Add Menu
-                    </button>
-                    <input type="hidden" id="output" name="output">
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% if menu %}
-        <div class="col-md-3">
-            <div class="box box-solid box-info">
-                <div class="box-body">
-                    <div class="form-group">
-                        <label>Root menu class(ul)</label>
-                        <input type="text" class="form-control" name="root_ul_cls" value="{{ menu.root_ul_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Menu item(li)</label>
-                        <input type="text" class="form-control" name="li_cls" value="{{ menu.li_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Menu item active(li active)</label>
-                        <input type="text" class="form-control" name="li_active_cls" value="{{ menu.li_active_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>link class(a)</label>
-                        <input type="text" class="form-control" name="a_cls" value="{{ menu.a_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>link active class(a active)</label>
-                        <input type="text" class="form-control" name="a_active_cls" value="{{ menu.a_active_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Sub menu class(ul)</label>
-                        <input type="text" class="form-control" name="sub_ul_cls" value="{{ menu.sub_ul_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Sub menu item class(li)</label>
-                        <input type="text" class="form-control" name="sub_li_cls" value="{{ menu.sub_li_cls }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Sub link class(a)</label>
-                        <input type="text" class="form-control" name="sub_a_cls" value="{{ menu.sub_a_cls }}">
+                            <button class="btn btn-primary" style="margin-top: 10px; margin-left:15px;"
+                                    onclick="return addNewMenu();">Add Menu
+                            </button>
+                            <input type="hidden" id="output" name="output">
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
-    {% endif %}
-    </form>
+            {% if menu %}
+                <div class="col-md-3">
+                    <div class="box box-solid box-info">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Root menu class(ul)</label>
+                                <input type="text" class="form-control" name="root_ul_cls"
+                                       value="{{ menu.root_ul_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Menu item(li)</label>
+                                <input type="text" class="form-control" name="li_cls" value="{{ menu.li_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Menu item active(li active)</label>
+                                <input type="text" class="form-control" name="li_active_cls"
+                                       value="{{ menu.li_active_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>link class(a)</label>
+                                <input type="text" class="form-control" name="a_cls" value="{{ menu.a_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>link active class(a active)</label>
+                                <input type="text" class="form-control" name="a_active_cls"
+                                       value="{{ menu.a_active_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Sub menu class(ul)</label>
+                                <input type="text" class="form-control" name="sub_ul_cls" value="{{ menu.sub_ul_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Sub menu item class(li)</label>
+                                <input type="text" class="form-control" name="sub_li_cls" value="{{ menu.sub_li_cls }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Sub link class(a)</label>
+                                <input type="text" class="form-control" name="sub_a_cls" value="{{ menu.sub_a_cls }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+        </form>
     </div>
 
 {% endblock %}
@@ -275,7 +298,11 @@
             }
         };
         var obj = '{{ menu.menu_order|safe }}';
+        {% if menu_details %}
         var menu_details = {{ menu_details|safe }};
+        {% else %}
+        var menu_details = {};
+        {% endif %}
         $.each(JSON.parse(obj), function (index, item) {
             $('#nestable3 ol').first().append(buildItem(item, index));
         });

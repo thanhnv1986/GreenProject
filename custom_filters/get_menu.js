@@ -31,7 +31,7 @@ module.exports = function (env) {
                         var mn = getMenuItem(arr[i].id);
                         var active = mn.link.substring(1)===route.substring(1);
                         if (arr[i].children) {
-                            tmp += '<li class="'+menu.li_cls+' '+(active?menu.li_active_cls:"")+'"><a class="'+menu.a_cls+'" data-toggle="dropdown" href="'+mn.link+'">' + mn.name+'</a><i class="fa fa-angle-down"></i>';
+                            tmp += '<li class="'+menu.li_cls+' '+(active?menu.li_active_cls:"")+'"><a class="'+menu.a_cls+'" data-toggle="dropdown" href="'+mn.link+'">' + mn.name+' <i class="fa fa-angle-down"></i></a>';
                             tmp += '<ul class="'+menu.sub_ul_cls+'">';
                             tmp += buildMenu(arr[i].children);
                             tmp += '</ul>';
