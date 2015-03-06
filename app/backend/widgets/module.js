@@ -5,7 +5,7 @@ module.exports = function (modules) {
     modules.widgets = {
         title: 'Wdigets',
         author: 'Nguyen Van Thanh',
-        version: '0.1.0',
+        version: '0.1.1',
         description: 'Widget management of website',
         system: true,
         rules: [
