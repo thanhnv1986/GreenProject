@@ -34,7 +34,7 @@ exports.addButton = function (req, route, action, controller) {
         for (var i in rules) {
             if (action == rules[i]) {
                 if (controller != undefined && controller != '') {
-                    return controller + '/' + route.replace('_', '-');
+                    return route.replace('_', '-')+'/'+controller;
                 }
                 else {
                     return route.replace('_', '-');

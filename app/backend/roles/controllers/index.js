@@ -23,7 +23,7 @@ var breadcrumb =
 
 exports.list = function (req, res) {
     //Them button
-    res.locals.createButton = __acl.addButton(req, route, 'create');
+    res.locals.createButton = __acl.addButton(req, route, 'create', 'new-controller/break');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
 
     //breadcrumb
