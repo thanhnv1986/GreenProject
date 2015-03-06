@@ -2,11 +2,11 @@
 
 module.exports = {
     db:{
-        host:'localhost',
+        host:'192.168.1.69',
         port:'5432',
-        database:'green_project',
-        username:'thanhnv',
-        password:'1',
+        database:'green_huy',
+        username:'postgres',
+        password:'techmastercms234-',
         dialect: 'postgres',
         logging: true
     },

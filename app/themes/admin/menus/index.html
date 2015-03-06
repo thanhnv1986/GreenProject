@@ -12,7 +12,7 @@
                             <thead>
                             <tr role="row" class="heading">
                                 <th width="2%">
-                                    <input type="checkbox" class="group-checkable">
+                                    <input type="checkbox" class="check-all">
                                 </th>
                                 <th>
                                     Name
@@ -27,7 +27,7 @@
                             {% for menu in menus %}
                                 <tr>
                                     <td>
-                                        <input type="checkbox" id="ids[]" name="ids[]" value="{{ menu.id }}">
+                                        <input type="checkbox" class="check-element" name="ids[]" value="{{ menu.id }}">
                                     </td>
                                     <td><a href="/admin/menus/{{ menu.id }}">{{ menu.name }}</a></td>
                                     <td>{{ menu.status }}</td>
