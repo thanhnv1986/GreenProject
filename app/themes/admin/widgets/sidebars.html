@@ -173,6 +173,18 @@
             });
             return false;
         }
+
+        function removeWidget(button){
+            var id = $(button).parents('form').find('input[name="id"]').val();
+            if(id!=''){
+                //delete in database
+
+            }else{
+                $(button).parents('li').first().remove();
+            }
+            return false;
+        }
+
         function showBlock(element) {
             $(element).append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
         }
