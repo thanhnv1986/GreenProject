@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require('./controllers/index.js');
 var moduleName = 'roles';
+
 /* GET course listing. */
 router.get('/roles', __acl.isAllow(moduleName, 'index'), controller.list);
 router.delete('/roles', __acl.isAllow(moduleName, 'delete'), controller.delete);
