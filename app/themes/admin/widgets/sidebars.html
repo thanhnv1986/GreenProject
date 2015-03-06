@@ -21,10 +21,6 @@
 
         }
 
-        .sidebar {
-
-        }
-
         .widget-state-hover {
             background-color: lightyellow;
         }
@@ -53,7 +49,7 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-12">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <div class="box box-solid box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Widgets Available</h3>
@@ -67,10 +63,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-9">
                 {% for bar in sidebars %}
                     <div class="col-md-6">
-                        <div class="box box-solid box-info sidebar" id="{{ bar.name }}">
+                        <div class="box box-solid box-info sidebar-widget" id="{{ bar.name }}">
                             <div class="box-header">
                                 <h3 class="box-title">{{ bar.title }}</h3>
                             </div>
@@ -87,7 +83,7 @@
     </div>
 {% endblock %}
 {% block jsExtends %}
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    {% include 'admin/editorScript.html' %}
     <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
     <script>
         $(function () {
@@ -95,7 +91,7 @@
                 appendTo: "body",
                 helper: "clone"
             });
-            $(".sidebar").droppable({
+            $(".sidebar-widget").droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "widget-state-hover",
                 accept: ":not(.ui-sortable-helper)",
@@ -128,6 +124,12 @@
                     $(this).removeClass("ui-state-default");
                 }
             });
+
+            $('.sidebar-widget .widget-list textarea').each(function(index){
+                console.log(this.id);
+                CKEDITOR.replace(this.id);
+            });
+
         });
         function showDetail(element, changeIcon) {
             var box = $(element).parents("li").first().find('.box').first();
@@ -167,12 +169,34 @@
                 type: "POST",
                 url: '/admin/widgets/sidebars/save',
                 data: form.serialize() // serializes the form's elements.
-            }).done(function (re) {
+            }).done(function (id) {
+                form.find('input[name="id"]').val(id);
                 removeBlock(box);
                 return false;
             });
             return false;
         }
+
+        function removeWidget(button){
+            var id = $(button).parents('form').find('input[name="id"]').val();
+            var box = $(button).parents('.box').first();
+            if(id!=''){
+                //delete in database
+                showBlock(box);
+                $.ajax({
+                    url: '/admin/widgets/sidebars/'+id,
+                    type: "DELETE"
+                }).done(function (re) {
+                    $(button).parents('li').first().remove();
+                    removeBlock(box);
+                    return false;
+                });
+            }else{
+                $(button).parents('li').first().remove();
+            }
+            return false;
+        }
+
         function showBlock(element) {
             $(element).append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
         }

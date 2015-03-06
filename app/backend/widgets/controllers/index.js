@@ -35,7 +35,6 @@ exports.sidebar = function (req, res, next) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Sidebars'});
     Promise.promisifyAll(fs);
     fs.readFileAsync(__base + "app/themes/" + config.themes + "/theme.json", "utf8").then(function (data) {
-        console.log(JSON.parse(data).sidebars);
         res.render('widgets/sidebars', {
             title: "Sidebars",
             sidebars: JSON.parse(data).sidebars,
@@ -44,7 +43,6 @@ exports.sidebar = function (req, res, next) {
     });
 };
 exports.addWidget = function (req, res) {
-
     env.render(req.params.widget + '/setting.html', function (err, re) {
         res.send(re);
     });
@@ -59,8 +57,8 @@ exports.saveWidget = function (req, res) {
             break;
         }
     }
-    widget.save(function () {
-        res.sendStatus(200);
+    widget.save(function (id) {
+        res.send(id);
     });
 }
 exports.read = function (req, res) {
@@ -69,5 +67,10 @@ exports.read = function (req, res) {
             function (err, re) {
                 res.send(re);
             });
+    });
+}
+exports.delete = function (req, res) {
+    __models.widgets.destroy({where: {id: req.params.cid}}).then(function () {
+        res.sendStatus(200);
     });
 }

@@ -1,11 +1,11 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here.
-	// For the complete reference:
+	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
 	// The toolbar groups arrangement, optimized for two toolbar rows.
@@ -25,14 +25,44 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'colors' },
 		{ name: 'about' }
 	];
+    // The toolbar groups arrangement, optimized for two toolbar rows.
+    config.basicToolbar = false;
+    if(config.basicToolbar){
+        config.toolbarGroups = [
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] }
+        ];
+    }
 
-	// Remove some buttons, provided by the standard plugins, which we don't
-	// need to have in the Standard(s) toolbar.
+
+	// Remove some buttons provided by the standard plugins, which are
+	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
 
-	// Se the most common block elements.
+	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
 
-	// Make dialogs simpler.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+	// Simplify the dialog windows.
+	config.removeDialogTabs = 'image:advanced;link:advanced;link:upload;image:upload';
+
+	/**
+	 * custom config
+	 */
+	config.codeSnippet_theme = 'monokai';
+
+	config.codemirror_theme = 'monokai';
+	config.codemirror = {
+		lineNumbers: false
+	};
+
+	config.htmlEncodeOutput = false;
+	config.entities = false;
+
+	//prevent ckeditor to append <p></p>
+	config.autoParagraph = false;
+	//mac dinh view source
+	//config.startupMode = 'source';
+
+	config.filebrowserBrowseUrl = '/fileman/index.html';
+	config.filebrowserImageBrowseUrl = '/fileman/index.html?type=image';
 };

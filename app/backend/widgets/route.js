@@ -15,4 +15,5 @@ router.route('/widgets/sidebars').get(__acl.isAllow(moduleName, 'index'), contro
 router.route('/widgets/sidebars/add/:widget').get(__acl.isAllow(moduleName, 'index'), controller.addWidget);
 router.route('/widgets/sidebars/save').post(__acl.isAllow(moduleName, 'index'), controller.saveWidget);
 router.route('/widgets/sidebars/:cid').get(__acl.isAllow(moduleName, 'index'), controller.read);
+router.route('/widgets/sidebars/:cid').delete(__acl.isAllow(moduleName, 'index'), controller.delete);
 module.exports = router;
