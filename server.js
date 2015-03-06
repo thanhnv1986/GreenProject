@@ -16,6 +16,7 @@ global.__menus = require('./app/menus/menus_manager')();
 global.__widgets = require('./app/widgets/widgets_manager')();
 global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
+global.__messages = [];
 global.__current_theme = {};
 global.__ = require('./libs/global_function');
 

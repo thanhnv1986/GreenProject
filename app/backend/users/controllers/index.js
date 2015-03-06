@@ -37,7 +37,7 @@ exports.list = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
-    var page = req.params.page;
+    var page = req.params.page || 1;
     __models.user.findAndCountAll({
         include: [__models.role],
         order: "id desc",

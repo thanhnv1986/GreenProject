@@ -40,7 +40,8 @@ module.exports = function (app) {
     //Passport Router
     app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email' ] }));
     app.get('/auth/facebook/callback', function (req, res, next) {
-        passport.authenticate(strategy, function (err, user, redirectURL) {
+        console.log('333333333');
+        passport.authenticate("facebook", function (err, user, redirectURL) {
             if (err || !user) {
                 return res.redirect('/signin');
             }
@@ -48,11 +49,8 @@ module.exports = function (app) {
                 if (err) {
                     return res.redirect('/signin');
                 }
-
                 return res.redirect(redirectURL || '/');
             });
         })(req, res, next);
-    };
-    )
-    ;
+    });
 }

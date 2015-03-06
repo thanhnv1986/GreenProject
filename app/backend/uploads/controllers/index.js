@@ -4,7 +4,7 @@
 var fs = require('fs'),
     sizeOf = require('image-size'),
     im = require('imagemagick'),
-    moment = require('moment'),
+    //moment = require('moment'),
     formidable = require('formidable'),
     path = require('path');
 var rootPath = '/fileman/Uploads';
