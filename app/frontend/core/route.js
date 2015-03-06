@@ -34,7 +34,25 @@ module.exports = function (app) {
             console.log("redirect to admin login");
             return res.redirect('/admin/login');
         }
-        res.locals.__user = req.user;
+//        res.locals.__user = req.user;
         next();
     });
+    //Passport Router
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email' ] }));
+    app.get('/auth/facebook/callback', function (req, res, next) {
+        passport.authenticate(strategy, function (err, user, redirectURL) {
+            if (err || !user) {
+                return res.redirect('/signin');
+            }
+            req.login(user, function (err) {
+                if (err) {
+                    return res.redirect('/signin');
+                }
+
+                return res.redirect(redirectURL || '/');
+            });
+        })(req, res, next);
+    };
+    )
+    ;
 }
