@@ -4,39 +4,42 @@
  * Module dependencies.
  */
 var passport = require('passport'),
-	url = require('url'),
-	FacebookStrategy = require('passport-facebook').Strategy,
-	config = require('../config'),
-	users = require(__base+'app/backend/users/controllers/index');
+    url = require('url'),
+    FacebookStrategy = require('passport-facebook').Strategy,
+    config = require('../config'),
+    users = require(__base + 'app/backend/users/controllers/index');
 
-module.exports = function() {
-	// Use facebook strategy
-	passport.use(new FacebookStrategy({
-			clientID: config.facebook.clientID,
-			clientSecret: config.facebook.clientSecret,
-			callbackURL: config.facebook.callbackURL,
-			passReqToCallback: true
-		},
-		function(req, accessToken, refreshToken, profile, done) {
-			// Set the provider data and include tokens
-			var providerData = profile._json;
-			providerData.accessToken = accessToken;
-			providerData.refreshToken = refreshToken;
+module.exports = function () {
+    // Use facebook strategy
+    passport.use(new FacebookStrategy({
+            clientID: config.facebook.clientID,
+            clientSecret: config.facebook.clientSecret,
+            callbackURL: config.facebook.callbackURL,
+            passReqToCallback: true
+        },
+        function (req, accessToken, refreshToken, profile, done) {
+            // Set the provider data and include tokens
+            var providerData = profile._json;
+            providerData.accessToken = accessToken;
+            providerData.refreshToken = refreshToken;
+            console.log('^^^^^^^', profile);
+            // Create the user OAuth profile
+            var providerUserProfile = {
+                id: providerData.id,
+                user_url: providerData.link,
+                user_email: providerData.email,
+                user_login: providerData.name,
+                display_name: providerData.name,
+                role_id: 5,
+                user_image_url: 'https://graph.facebook.com/' + providerData.id + '/picture?width=200&height=200&access_token=' + providerData.accessToken,
+                user_status: 'publish'
+            };
 
-			// Create the user OAuth profile
-			var providerUserProfile = {
-				firstName: profile.name.givenName,
-				lastName: profile.name.familyName,
-				displayName: profile.displayName,
-				email: profile.emails[0].value,
-				username: profile.username,
-				provider: 'facebook',
-				providerIdentifierField: 'id',
-				providerData: providerData
-			};
-
-			// Save the user OAuth profile
-			users.saveOAuthUserProfile(req, providerUserProfile, done);
-		}
-	));
+            // Save the user OAuth profile
+            users.saveOAuthUserProfile(req, providerUserProfile, function(err, user){
+                console.log('111111111111');
+                done(err, user);
+            });
+        }
+    ));
 };

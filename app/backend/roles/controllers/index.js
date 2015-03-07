@@ -89,7 +89,8 @@ exports.update = function (req, res, next) {
             status: req.body.status,
             rules: JSON.stringify(rules)
         }).then(function () {
-            next();
+            req.flash.success('Update role success');
+            res.redirect('/admin/roles');
         });
     });
 };
@@ -126,18 +127,20 @@ exports.save = function (req, res, next) {
         status: req.body.status,
         rules: JSON.stringify(rules)
     }).then(function () {
+        req.flash.success('Create role success');
         next();
     });
 };
 
-exports.delete = function (req, res) {
-    __models.roles.destroy({
+exports.delete = function (req, res, next) {
+    __models.role.destroy({
         where: {
             id: {
                 "in": req.body.ids.split(',')
             }
         }
     }).then(function () {
-        res.send(200);
+        req.flash.success("Delete role success");
+        res.sendStatus(200);
     });
 };

@@ -29,6 +29,7 @@
         input[type="checkbox"] {
             font-size: 16px;
         }
+
         span.required {
             color: red;
         }
@@ -184,12 +185,7 @@
                 {{ breadcrumb|render_breadcrumb|safe }}
             </ol>
         </section>
-        {% if messages|length>0 %}
-            <div class="pad margin no-print">
-                {{ messages|flash_message|safe }}
-            </div>
-        {% endif %}
-
+        {{ messages|flash_message|safe }}
         <!-- Main content -->
         <section class="content">
             {% block content %}
@@ -243,11 +239,11 @@
 
 <!-- Global script -->
 <script>
-    $(function(){
-        $('input.check-all').click(function(){
-            if($(this).is(':checked')){
+    $(function () {
+        $('input.check-all').click(function () {
+            if ($(this).is(':checked')) {
                 $('input.check-element').prop('checked', true);
-            }else{
+            } else {
                 $('input.check-element').prop('checked', false);
             }
         })

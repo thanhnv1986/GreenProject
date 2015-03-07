@@ -36,12 +36,6 @@ module.exports = function () {
 //    app.locals.jsFiles = config.getJavaScriptAssets();
 //    app.locals.cssFiles = config.getCSSAssets();
 
-    // Passing the request url to environment locals
-    app.use(function (req, res, next) {
-        res.locals.url = req.protocol + '://' + req.headers.host + req.url;
-        res.locals.route = req.url;
-        next();
-    });
 
     // Should be placed before express.static
     app.use(compress({
@@ -108,7 +102,7 @@ module.exports = function () {
     app.use(passport.session());
 
     //flash messages
-    app.use(require(__base+'app/plugins/flash-plugin.js'));
+    app.use(require(__base + 'app/plugins/flash-plugin.js'));
 
     // Use helmet to secure Express headers
     app.use(helmet.xframe());
@@ -119,10 +113,18 @@ module.exports = function () {
 
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
-
+    // Passing the request url to environment locals
+    app.use(function (req, res, next) {
+        res.locals.url = req.protocol + '://' + req.headers.host + req.url;
+        res.locals.route = req.url;
+        if (req.user) {
+            res.locals.__user = req.user;
+        }
+        next();
+    });
 
     //module manager frontend
-    app.use('/^((?!admin\/).)*$',require('../app/plugins/modules-f-plugin.js'));
+    app.use('/^((?!admin\/).)*$', require('../app/plugins/modules-f-plugin.js'));
     app.use(require('../app/plugins/theme-plugin.js'));
 
     // Globbing admin module files
@@ -151,7 +153,7 @@ module.exports = function () {
     });
 
     //module manager backend
-    app.use('/admin/*',require('../app/plugins/modules-plugin.js'));
+    app.use('/admin/*', require('../app/plugins/modules-plugin.js'));
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));

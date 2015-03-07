@@ -14,8 +14,8 @@ module.exports = {
 		title: 'GREEN-PROJECT'
 	},
 	facebook: {
-		clientID: process.env.FACEBOOK_ID || 'APP_ID',
-		clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
+		clientID: process.env.FACEBOOK_ID || '347148475491688',
+		clientSecret: process.env.FACEBOOK_SECRET || '4376943bb45848768c9e809e11778a67',
 		callbackURL: '/auth/facebook/callback'
 	},
 	twitter: {

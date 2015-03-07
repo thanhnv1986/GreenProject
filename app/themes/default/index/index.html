@@ -92,6 +92,15 @@
                         <!--/.media-->
                     </div>
                     <!--/.tab-wrap-->
+                    <div
+                            class="fb-like"
+                            data-share="true"
+                            data-width="450"
+                            data-show-faces="true">
+                    </div>
+                    {% if __user %}
+                        <img src="{{ __user.user_image_url }}">
+                    {% endif %}
                 </div>
                 <div class="col-xs-12 col-sm-4 wow fadeInDown animated"
                      style="visibility: visible; -webkit-animation: fadeInDown;">

@@ -37,7 +37,7 @@ exports.list = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
-    var page = req.params.page;
+    var page = req.params.page || 1;
     __models.user.findAndCountAll({
         include: [__models.role],
         order: "id desc",
@@ -426,7 +426,20 @@ exports.reset = function (req, res, next) {
         }
     });
 };
-
+exports.saveOAuthUserProfile = function (req, profile, done) {
+    __models.user.find(profile.id).then(function (user) {
+        if (user) {
+            user.updateAttributes(profile).then(function (user) {
+                return done(null, user);
+            });
+        }
+        else {
+            __models.user.create(profile).then(function (user) {
+                return done(null, user);
+            });
+        }
+    });
+}
 exports.userById = function (req, res, next, id) {
     __models.user.find({
         include: [__models.role],
