@@ -5,13 +5,13 @@
 module.exports = function (env) {
     env.addFilter('flash_message', function (messages) {
         var html = '';
-        if (__messages.length > 0) {
+        if (messages.length > 0) {
             html += '<div class="margin no-print">';
-            console.log('adsfasdfa', __messages);
-            for (var i in __messages) {
+            console.log('adsfasdfa', messages);
+            for (var i in messages) {
                 var mgs_class = '';
                 var mgs_icon = '';
-                var message = __messages[i];
+                var message = messages[i];
                 if (message.type == 'error') {
                     mgs_class = 'callout-danger';
                     mgs_icon = 'icon fa fa-ban';
@@ -35,7 +35,6 @@ module.exports = function (env) {
                     '</div>';
             }
             html += '</div>';
-            __messages = [];
         }
 
         return html;

@@ -185,7 +185,7 @@
                 {{ breadcrumb|render_breadcrumb|safe }}
             </ol>
         </section>
-        {{ ""|flash_message|safe }}
+        {{ messages|flash_message|safe }}
         <!-- Main content -->
         <section class="content">
             {% block content %}
