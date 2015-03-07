@@ -1,8 +1,11 @@
 {% extends 'admin/layout.html' %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12">
+
             {% include 'admin/toolbar.html' %}
+
             <div class="box box-solid box-primary">
                 <div class="box-body">
                     <div class="table-container">
@@ -24,9 +27,9 @@
                                 <th width="10%">
                                     Status
                                 </th>
-
                             </tr>
                             </thead>
+
                             <tbody>
                             {% for user in users %}
                                 <tr>
@@ -35,16 +38,15 @@
                                     <td>{{ user.user_email }}</td>
                                     <td>{{ user.role.name }}</td>
                                     <td>{{ user.user_status }}</td>
-
                                 </tr>
                             {% endfor %}
-
                             </tbody>
                         </table>
+
                         {{ totalPage|pagination(currentPage,'/admin/users/page/{page}')|safe }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}
