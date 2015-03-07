@@ -55,10 +55,7 @@ module.exports = function () {
         express: app
     });
     //Initials custom filter
-    config.getGlobbedFiles('./custom_filters/*.js').forEach(function (routePath) {
-        console.log(path.resolve(routePath));
-        require(path.resolve(routePath))(e);
-    });
+    __.getAllCustomFilter(e);
 
     // Set views path and view engine
     app.set('view engine', 'html');

@@ -18,7 +18,7 @@ var _this = module.exports = {
 module.exports.save = function (done) {
     console.log("Widget save");
     if (this.options.id != '') {
-        var data  = JSON.stringify({
+        var data = JSON.stringify({
             title: this.options.title,
             content: this.options.content
         });
@@ -49,8 +49,8 @@ module.exports.save = function (done) {
 module.exports.render = function (widget) {
     console.log(widget);
     return new Promise(function (resolve, reject) {
-        var nunjucks = require('nunjucks');
-        var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__base + 'app/widgets'));
+
+        var env = __.createNewEnv();
         var renderWidget = Promise.promisifyAll(env);
         resolve(renderWidget.renderAsync(widget.widget_type + '/view.html', {widget: widget}));
     });

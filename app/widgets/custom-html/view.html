@@ -1,3 +1,6 @@
-{{ widget.data.content|safe }}
+{% extends '_widget_layout.html' %}
+{% block content %}
+    {{ widget.data.content|safe }}
+{% endblock %}
 
 
