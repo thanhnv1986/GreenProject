@@ -50,7 +50,6 @@ exports.list = function (req, res) {
             totalPage: totalPage,
             users: results.rows,
             currentPage: page
-
         });
     });
 };
@@ -104,8 +103,8 @@ exports.update = function (req, res, next) {
             }
 
             user.updateAttributes(data).then(function () {
-                req.flash.success("Updated user successful");
-                next();
+                req.flash.success("Update user successfully");
+                res.redirect('/admin/users/');
             });
         });
     });
@@ -128,7 +127,6 @@ exports.create = function (req, res) {
             });
         }
     ], function (err, results) {
-
         res.render(edit_template, {
             title: "Add New User",
             roles: results[0]
@@ -151,28 +149,22 @@ exports.save = function (req, res, next) {
             }
             data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
             __models.user.create(data).then(function () {
-                req.flash.success("Add new user successful");
-                next();
+                req.flash.success("Add new user successfully");
+                res.redirect('/admin/users/');
             });
         });
     });
 };
 
 exports.delete = function (req, res) {
-    var ids = req.body.ids.split(',');
-    async.waterfall([
-        function (done) {
-            __models.user.destroy({
-                where: {
-                    id: {
-                        "in": ids
-                    }
-                }
-            }).then(function () {
-                done(null);
-            });
+    __models.user.destroy({
+        where: {
+            id: {
+                "in": req.body.ids.split(',')
+            }
         }
-    ], function (err) {
+    }).then(function () {
+        req.flash.success("Delete user successfully");
         res.sendStatus(200);
     });
 };
@@ -360,7 +352,6 @@ exports.reset = function (req, res, next) {
     var where = 'id=' + req.params.userid + ' and reset_password_token=\'' + req.params.token + '\'' + ' and reset_password_expires > ' + time;
 
     async.waterfall([
-
         function (done) {
             __models.user.find({
                 where: where
@@ -426,6 +417,7 @@ exports.reset = function (req, res, next) {
         }
     });
 };
+
 exports.saveOAuthUserProfile = function (req, profile, done) {
     __models.user.find(profile.id).then(function (user) {
         if (user) {
@@ -439,7 +431,8 @@ exports.saveOAuthUserProfile = function (req, profile, done) {
             });
         }
     });
-}
+};
+
 exports.userById = function (req, res, next, id) {
     __models.user.find({
         include: [__models.role],

@@ -15,11 +15,13 @@ var breadcrumb =
             href: '/admin/menus'
         }
     ];
+
 exports.index = function (req, res) {
-    //Them button
-    res.locals.createButton = __acl.addButton(req, route, 'create');
+    // Add button
+    res.locals.createButton = __acl.addButton(req, route, 'create', '/admin/menus/create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
-    //breadcrumb
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
     __models.menus.findAll().then(function (menus) {
@@ -27,17 +29,19 @@ exports.index = function (req, res) {
             title: "All Menus",
             menus: menus
         });
-    })
-
+    });
 };
+
 exports.create = function (req, res) {
-    //Them button
+    // Add button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
-    res.locals.backButton = route;
-    //breadcrumb
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/menus');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New Menu'});
     res.render('menus/new');
 };
+
 exports.save = function (req, res, next) {
     __models.menus.create({
         name: req.body.name,
@@ -47,13 +51,17 @@ exports.save = function (req, res, next) {
         next();
     });
 };
+
 exports.read = function (req, res) {
-    res.locals.backButton = route;
+    // Add button
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/menus');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Menu'});
     res.render('menus/new');
 };
-exports.update = function (req, res) {
 
+exports.update = function (req, res) {
     __models.menus.find(req.body.id).then(function (menu) {
         var menu_order = req.body.output;
         menu.updateAttributes({
@@ -86,12 +94,13 @@ exports.update = function (req, res) {
                 );
             }
             Promise.all(promises).then(function () {
-                res.redirect('/admin/menus');
+                res.redirect('/admin/menus/');
             });
         });
 
     });
 };
+
 exports.menuById = function (req, res, next, id) {
     __models.menus.find(id).then(function (menu) {
         res.locals.menu = menu;
@@ -114,10 +123,10 @@ exports.delete = function (req, res) {
             }
         }
     }).then(function () {
-        res.send(200);
+        req.flash.success("Delete menu successfully");
+        res.sendStatus(200);
     });
 };
-
 
 exports.menuitem = function (req, res) {
     res.render('menus/menuitem');

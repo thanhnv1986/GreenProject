@@ -65,7 +65,7 @@ exports.view = function (req, res) {
     );
 };
 
-exports.update = function (req, res, next) {
+exports.update = function (req, res) {
     req.messages = [];
     __models.role.find({
         where: {
@@ -89,8 +89,8 @@ exports.update = function (req, res, next) {
             status: req.body.status,
             rules: JSON.stringify(rules)
         }).then(function () {
-            req.flash.success('Update role success');
-            res.redirect('/admin/roles');
+            req.flash.success('Update role successfully');
+            res.redirect('/admin/roles/');
         });
     });
 };
@@ -108,7 +108,7 @@ exports.create = function (req, res) {
     });
 };
 
-exports.save = function (req, res, next) {
+exports.save = function (req, res) {
     req.messages = [];
     var rules = {};
     for (var k in req.body) {
@@ -127,12 +127,12 @@ exports.save = function (req, res, next) {
         status: req.body.status,
         rules: JSON.stringify(rules)
     }).then(function () {
-        req.flash.success('Create role success');
-        next();
+        req.flash.success('Create new role successfully');
+        res.redirect('/admin/roles/');
     });
 };
 
-exports.delete = function (req, res, next) {
+exports.delete = function (req, res) {
     __models.role.destroy({
         where: {
             id: {
@@ -140,7 +140,7 @@ exports.delete = function (req, res, next) {
             }
         }
     }).then(function () {
-        req.flash.success("Delete role success");
+        req.flash.success("Delete role successfully");
         res.sendStatus(200);
     });
 };

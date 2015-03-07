@@ -5,6 +5,7 @@ module.exports = function (req, res, next) {
     if (!req.session.messages) {
         req.session.messages = [];
     }
+
     req.flash = {
         success: function (content) {
             req.session.messages.push({
@@ -30,7 +31,7 @@ module.exports = function (req, res, next) {
                 content: content
             })
         }
-    }
+    };
 
     next();
-}
+};

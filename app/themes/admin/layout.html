@@ -40,12 +40,12 @@
     {% endblock %}
     <!-- END PAGE LEVEL PLUGIN STYLES -->
     <link rel="shortcut icon" href="/img/favicon.png"/>
-
 </head>
+
 <body class="skin-blue">
+
 <!-- Site wrapper -->
 <div class="wrapper">
-
     <header class="main-header">
         <a href="/" class="logo">{{ title }}</a>
         <!-- Header Navbar: style can be found in header.less -->
@@ -185,7 +185,9 @@
                 {{ breadcrumb|render_breadcrumb|safe }}
             </ol>
         </section>
+
         {{ messages|flash_message|safe }}
+
         <!-- Main content -->
         <section class="content">
             {% block content %}
@@ -247,7 +249,7 @@
                 $('input.check-element').prop('checked', false);
             }
         })
-    })
+    });
 </script>
 
 {% block jsExtends %}
