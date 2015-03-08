@@ -24,7 +24,8 @@ module.exports.save = function (done) {
         });
         __models.widgets.find(this.options.id).then(function (widget) {
             widget.updateAttributes({
-                widget_type: this.options.widget,
+                sidebar: this.options.sidebar,
+                widget_type: this.alias,
                 data: data
             }).then(function (widget) {
                 done();
@@ -35,6 +36,7 @@ module.exports.save = function (done) {
         __models.widgets.create({
             id: new Date().getTime(),
             sidebar: this.options.sidebar,
+            widget_type: this.alias,
             data: JSON.stringify({
                 title: this.options.title,
                 content: this.options.content

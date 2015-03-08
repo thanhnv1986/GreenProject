@@ -29,7 +29,6 @@ module.exports = function (env) {
                     mgs_icon = 'icon fa fa-info';
                 }
                 html += '<div class="callout ' + mgs_class + '" style="margin-bottom:0px;">' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' +
                     '<h4><i class="' + mgs_icon + '"></i>' + message.type + '</h4>' +
                     '<p>' + message.content +
                     '</div>';

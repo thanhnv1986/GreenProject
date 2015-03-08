@@ -22,11 +22,15 @@
         }
 
         .widget-state-hover {
-            background-color: lightyellow;
+            border: 1px dashed #000000;
+            min-height: 50px;
+            text-align: center;
         }
 
         .ui-sortable-placeholder {
-            background-color: #d3d3d3;
+            border: 1px dashed #000000;
+            min-height: 50px;
+            text-align: center;
         }
 
         .open {
@@ -42,6 +46,16 @@
             top: 8px;
             right: 10px;
             font-size: 20px;
+        }
+
+        .placeholder {
+            border: 1px dashed #000000;
+            min-height: 50px;
+            text-align: center;
+        }
+        .sidebar-widget{
+            z-index: 9999;
+            min-height: 50px;
         }
 
     </style>
@@ -66,12 +80,12 @@
             <div class="col-sm-9">
                 {% for bar in sidebars %}
                     <div class="col-md-6">
-                        <div class="box box-solid box-info sidebar-widget" id="{{ bar.name }}">
+                        <div class="box box-solid box-info" id="{{ bar.name }}">
                             <div class="box-header">
                                 <h3 class="box-title">{{ bar.title }}</h3>
                             </div>
                             <div class="box-body" id="{{ bar.alias }}">
-                                <ul class="widget-list">
+                                <ul class="widget-list connect-list sidebar-widget">
                                     {{ bar.name|setting_sidebars|safe }}
                                 </ul>
                             </div>
@@ -83,8 +97,9 @@
     </div>
 {% endblock %}
 {% block jsExtends %}
-    {% include 'admin/editorScript.html' %}
-    <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+    {#{% include 'admin/editorScript.html' %}#}
+    {#<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>#}
+    <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
     <script>
         $(function () {
             $("#widgets li").draggable({
@@ -97,18 +112,19 @@
                 accept: ":not(.ui-sortable-helper)",
                 drop: function (event, ui) {
                     $(this).find(".placeholder").remove();
-                    var li = $("<li style='position: relative'></li>");
+                    var li = $("<li style='position: relative' id='"+(new Date().getTime())+"'></li>");
                     li.append("<div class='widget-item'></div>");
-                    li.append('<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>');
+                    li.append('<a href="#" class="fa fa-caret-down expand_arrow" onclick="return showDetail(this);"></a>');
                     _this = $(this);
                     li.find(".widget-item").first().text(ui.draggable.text());
-                    var ul = $(this).find('.widget-list').first();
+//                    var ul = $(this).find('.widget-list').first();
+                    var ul = $(this);
                     $.ajax({
                         url: '/admin/widgets/sidebars/add/' + ui.draggable.attr('data-alias')
                     }).done(function (re) {
                         var new_box = $("<div class='box box-solid open'><div class='box-body'></div></div>");
                         new_box.find(".box-body").first().append(re);
-                        new_box.find("form").first().append("<input type='hidden' name='sidebar' value='"+_this.attr('id')+"'>");
+                        new_box.find("form").first().append("<input type='hidden' name='sidebar' value='" + _this.attr('id') + "'>");
                         li.append(new_box);
                         ul.append(li);
                     });
@@ -116,19 +132,33 @@
 
                 }
             }).sortable({
-                //items: "div:not(.placeholder)",
-                items: "li:not(.placeholder)",
+                items: "li",
+                placeholder: "placeholder",
                 sort: function () {
                     // gets added unintentionally by droppable interacting with sortable
                     // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
                     $(this).removeClass("ui-state-default");
+                },
+                connectWith: ".sidebar-widget",
+                receive: function (event, ui) {
+                    $(this).find(".placeholder").remove();
+                },
+                remove: function (event, ui) {
+                    if ($(this).find('.widget-item').length == 0 && $(this).find('.placeholder').length == 0) {
+                        $(this).find("ul").append("<li class='placeholder'>Drop widget here</li>");
+                    }
                 }
+                /*start: function (event, ui) {
+                    if ($(this).find('.widget-item').length == 1 && $(this).find('.placeholder').length == 0) {
+                        $(this).find("ul").append("<li class='placeholder'>Drop widget here</li>");
+                    }
+                }*/
             });
 
-            $('.sidebar-widget .widget-list textarea').each(function(index){
-                console.log(this.id);
-                CKEDITOR.replace(this.id);
-            });
+            /*$('.sidebar-widget .widget-list textarea').each(function(index){
+             console.log(this.id);
+             CKEDITOR.replace(this.id);
+             });*/
 
         });
         function showDetail(element, changeIcon) {
@@ -177,21 +207,21 @@
             return false;
         }
 
-        function removeWidget(button){
+        function removeWidget(button) {
             var id = $(button).parents('form').find('input[name="id"]').val();
             var box = $(button).parents('.box').first();
-            if(id!=''){
+            if (id != '') {
                 //delete in database
                 showBlock(box);
                 $.ajax({
-                    url: '/admin/widgets/sidebars/'+id,
+                    url: '/admin/widgets/sidebars/' + id,
                     type: "DELETE"
                 }).done(function (re) {
                     $(button).parents('li').first().remove();
                     removeBlock(box);
                     return false;
                 });
-            }else{
+            } else {
                 $(button).parents('li').first().remove();
             }
             return false;

@@ -19,7 +19,6 @@ module.exports = function (req, res, next) {
         }
         else {
             var tmp = config.themes + '/' + view;
-            console.log('^^^^^^^^^^^^^', tmp);
             if (fs.existsSync(__base + 'app/themes/' + tmp + '.html')) {
                 view = tmp;
             }
