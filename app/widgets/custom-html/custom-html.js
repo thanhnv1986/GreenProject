@@ -25,19 +25,17 @@ function CustomHtml() {
 util.inherits(CustomHtml, BaseWidget);
 
 //Override save method
-/*CustomHtml.prototype.save = function (data, done) {
+CustomHtml.prototype.save = function (data, done) {
     //Processing here
-    ....
-    BaseWidget.prototype.save.call(this,args);
+    BaseWidget.prototype.save.call(this, data, done);
 
-};*/
+};
 
 //Override save method
-/*CustomHtml.prototype.render = function (widget) {
- //Processing here
- ....
- return BaseWidget.prototype.render.call(this,args);
+CustomHtml.prototype.render = function (widget) {
+    //Processing here
+    return BaseWidget.prototype.render.call(this, widget, {name: 'thanh', address:'Nguyen Khuyen'});
 
- };*/
+};
 
 module.exports = CustomHtml;
