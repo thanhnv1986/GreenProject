@@ -12,7 +12,7 @@ function BaseWidget() {
 
 }
 var widget = BaseWidget;
-widget.prototype._save = function(data, done){
+widget.prototype.save = function(data, done){
     console.log("Widget save");
     var json_data = _.clone(data);
     delete json_data.sidebar;
@@ -39,7 +39,7 @@ widget.prototype._save = function(data, done){
         });
     }
 }
-widget.prototype._render = function (widget, data) {
+widget.prototype.render = function (widget, data) {
     return new Promise(function (resolve, reject) {
         var env, renderWidget;
         var widgetFile = widget.widget_type + '/view.html';
