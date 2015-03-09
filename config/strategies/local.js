@@ -4,21 +4,21 @@
  * Module dependencies.
  */
 var passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function() {
-	// Use local strategy
-	passport.use(new LocalStrategy({
-			usernameField: 'username',
-			passwordField: 'password'
-		},
-		function(username, password, done) {
+module.exports = function () {
+    // Use local strategy
+    passport.use(new LocalStrategy({
+            usernameField: 'username',
+            passwordField: 'password'
+        },
+        function (username, password, done) {
             __models.user.find({
                 where: [
-                    'lower(user_login) = ? or lower(user_email) = ?', username.toLowerCase(), username.toLowerCase()
+                    "lower(user_login) = ? or lower(user_email) = ? and user_status='publish'", username.toLowerCase(), username.toLowerCase()
                 ]
 
-            }).then(function (user,err) {
+            }).then(function (user, err) {
 
                 if (err) {
                     return done(err);
@@ -38,6 +38,6 @@ module.exports = function() {
 
             });
 
-		}
-	));
+        }
+    ));
 };

@@ -38,9 +38,38 @@ exports.list = function (req, res) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
     var page = req.params.page || 1;
+    var column = req.params.sort || 'id';
+    var order = req.params.order || '';
+    res.locals.table_columns = [
+        {
+            column:"display_name",
+            width:'25%',
+            header:"Full Name"
+        },
+        {
+            column:"user_login",
+            width:'15%',
+            header:"UserName"
+        },
+        {
+            column:"user_email",
+            width:'15%',
+            header:"Email"
+        },
+        {
+            column:"role.name",
+            width:'15%',
+            header:"Role"
+        },
+        {
+            column:"user_status",
+            width:'10%',
+            header:"Status"
+        }
+    ];
     __models.user.findAndCountAll({
         include: [__models.role],
-        order: "id desc",
+        order: column + " " + order,
         limit: config.pagination.number_item,
         offset: (page - 1) * config.pagination.number_item
     }).then(function (results) {
@@ -48,8 +77,10 @@ exports.list = function (req, res) {
         res.render(index_template, {
             title: "All Users",
             totalPage: totalPage,
-            users: results.rows,
-            currentPage: page
+            items: results.rows,
+            currentPage: page,
+            currentColumn: column,
+            currentOrder: order
         });
     });
 };
@@ -247,7 +278,7 @@ exports.forgot = function (req, res, next) {
                 }).then(function (user) {
                     if (!user) {
                         res.render('reset-password', {
-                            message: { type: 'error', content: 'No account with that email has been found'}
+                            message: {type: 'error', content: 'No account with that email has been found'}
                         });
                     }
                     //else if (user.provider !== 'local') {
@@ -266,7 +297,7 @@ exports.forgot = function (req, res, next) {
                 });
             } else {
                 res.render('reset-password', {
-                    message: { type: 'error', content: 'Username field must not be blank'}
+                    message: {type: 'error', content: 'Username field must not be blank'}
                 });
             }
         },
@@ -295,7 +326,10 @@ exports.forgot = function (req, res, next) {
                 } else {
                     console.log('Message sent: ' + info.response);
                     res.render('reset-password', {
-                        message: { type: 'success', content: 'An email has been sent to ' + user.user_email + ' with further instructions. Please follow the guide in email to reset password'}
+                        message: {
+                            type: 'success',
+                            content: 'An email has been sent to ' + user.user_email + ' with further instructions. Please follow the guide in email to reset password'
+                        }
                     });
                 }
             });
@@ -327,7 +361,7 @@ exports.validateResetToken = function (req, res, next) {
  */
 exports.invalidToken = function (req, res) {
     res.render('reset-password', {
-        message: { type: 'error', content: 'Password reset token is invalid or has expired.'}
+        message: {type: 'error', content: 'Password reset token is invalid or has expired.'}
     });
 };
 
@@ -366,7 +400,7 @@ exports.reset = function (req, res, next) {
                         user.updateAttributes(data).then(function (user) {
                             if (!user) {
                                 res.render('reset-password', {
-                                    message: { type: 'error', content: 'Can not update user'}
+                                    message: {type: 'error', content: 'Can not update user'}
                                 });
                             } else {
                                 done(null, user);
@@ -374,12 +408,12 @@ exports.reset = function (req, res, next) {
                         });
                     } else {
                         res.render('reset-password', {
-                            message: { type: 'error', content: 'Passwords do not match'}
+                            message: {type: 'error', content: 'Passwords do not match'}
                         });
                     }
                 } else {
                     res.render('reset-password', {
-                        message: { type: 'error', content: 'Password reset token is invalid or has expired.'}
+                        message: {type: 'error', content: 'Password reset token is invalid or has expired.'}
                     });
                 }
             });
@@ -412,7 +446,7 @@ exports.reset = function (req, res, next) {
         if (err) res.send(err);
         else {
             res.render('reset-password', {
-                message: { type: 'success', content: 'Reset password successfully.'}
+                message: {type: 'success', content: 'Reset password successfully.'}
             });
         }
     });
