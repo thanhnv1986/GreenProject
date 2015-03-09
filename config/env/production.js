@@ -2,13 +2,13 @@
 
 module.exports = {
     db:{
-        host:'localhost',
+        host:'192.168.1.69',
         port:'5432',
-        database:'green_project',
+        database:'green_huy',
         username:'postgres',
-        password:'123456',
+        password:'techmastercms234-',
         dialect: 'postgres',
-        logging: true
+        logging: false
     },
 	assets: {
 		lib: {

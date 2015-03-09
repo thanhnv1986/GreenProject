@@ -8,6 +8,10 @@ module.exports = function (req, res, next) {
     var _render = res.render;
     // override logic
     res.render = function (view, options, fn) {
+        //get messages from session
+        res.locals.messages = req.session.messages;
+        //clear session messages
+        req.session.messages = [];
         //Check if is using admin view
         var route = res.locals.route.split('/')[1];
         if (route === config.admin_prefix) {
@@ -15,7 +19,6 @@ module.exports = function (req, res, next) {
         }
         else {
             var tmp = config.themes + '/' + view;
-            console.log('^^^^^^^^^^^^^', tmp);
             if (fs.existsSync(__base + 'app/themes/' + tmp + '.html')) {
                 view = tmp;
             }

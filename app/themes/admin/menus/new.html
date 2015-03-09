@@ -1,7 +1,7 @@
 {% extends 'admin/layout.html' %}
+
 {% block cssExtends %}
     <style type="text/css">
-
         /**
          * Nestable
          */
@@ -178,6 +178,7 @@
         }
     </style>
 {% endblock %}
+
 {% block content %}
     <div class="row">
 <<<<<<< HEAD
@@ -203,6 +204,7 @@
 =======
         <form method="post" id="edit-form">
             <div class="col-md-12">{% include 'admin/toolbar.html' %}</div>
+
             <div class="col-md-9">
                 <div class="box box-primary">
                     <div class="box-body">
@@ -212,6 +214,7 @@
                             <input type="hidden" id="id" name="id" value="{{ menu.id }}">
 >>>>>>> master
                         </div>
+
                         {% if menu %}
                             <div class="form-group">
                                 <label>Details</label>
@@ -236,6 +239,7 @@
                     </div>
                 </div>
             </div>
+
             {% if menu %}
                 <div class="col-md-3">
                     <div class="box box-solid box-info">
@@ -278,12 +282,11 @@
                         </div>
                     </div>
                 </div>
-
             {% endif %}
         </form>
     </div>
-
 {% endblock %}
+
 {% block jsExtends %}
     <script src="/admin/plugins/nestable/jquery.nestable.js"></script>
     <script>
@@ -322,6 +325,7 @@
             });
             return false;
         }
+
         function updateOutputValue() {
             try {
                 $("#output").val(JSON.stringify($('#nestable3').nestable('serialize')));
@@ -330,10 +334,12 @@
                 $("#output").val(JSON.stringify($('#nestable3').nestable('serialize')));
             }
         }
+
         function changeTitle(element) {
             var header = $(element).parents("li").first().find('.dd-handle')[0];
             header.innerHTML = $(element).val();
         }
+
         function saveDetail() {
             $('#edit-form').attr('action', '/admin/menus/update');
         }
@@ -347,8 +353,8 @@
                     break;
                 }
             }
-            var html = '';
 
+            var html = '';
             html += '<li class="dd-item" data-id="' + detail.id + '">' +
                     '<div class="dd-handle" style="position: relative"> ' + detail.name + '</div>' +
                     '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
@@ -399,9 +405,9 @@
             }
 
             html += "</li>";
-
             return html;
         }
+
         function showDetail(element, changeIcon) {
             var box = $(element).parents("li").first().find('.box').first();
             if (box.hasClass('open')) {
@@ -430,6 +436,7 @@
             }
             return false;
         }
+
         function removeMenu(element) {
             $(element).parents("li").first().remove();
             $("#nestable3 li").each(function (index) {
@@ -440,6 +447,7 @@
             number_menu_item--;
             return false;
         }
+
         function hideAll() {
             $("#nestable3 .box").each(function (index) {
                 $(this).removeClass('open');

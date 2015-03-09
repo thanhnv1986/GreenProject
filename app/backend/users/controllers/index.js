@@ -31,11 +31,13 @@ var breadcrumb =
     ];
 
 exports.list = function (req, res) {
-    //Add button
-    res.locals.createButton = __acl.addButton(req, route, 'create');
-    //breadcrumb
+    // Add button
+    res.locals.createButton = __acl.addButton(req, route, 'create', '/admin/users/create');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
-    var page = req.params.page;
+
+    var page = req.params.page || 1;
     __models.user.findAndCountAll({
         include: [__models.role],
         order: "id desc",
@@ -48,14 +50,18 @@ exports.list = function (req, res) {
             totalPage: totalPage,
             users: results.rows,
             currentPage: page
-
         });
     });
 };
+
 exports.view = function (req, res) {
+    // Add button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
-    res.locals.backButton = route;
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/users');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update User'});
+
     async.parallel([
         function (callback) {
             __models.role.findAll().then(function (roles) {
@@ -66,12 +72,12 @@ exports.view = function (req, res) {
         res.render(edit_template, {
             title: "Update Users",
             roles: results[0],
-            user: req.user,
+            user: req._user,
             id: req.params.cid
         });
     });
-
 };
+
 exports.update = function (req, res, next) {
     var data = req.body;
     __models.user.find({
@@ -88,31 +94,30 @@ exports.update = function (req, res, next) {
                 type = type[type.length - 1];
                 var fileName = folder_upload + slug(fields.user_login).toLowerCase() + '.' + type;
                 fs.rename(files.user_image_url.path, fileName, function (err) {
-                   if(err){
-                       req.flash.error("Can not upload image.");
-                       return next();
-                   }
+                    if (err) {
+                        req.flash.error("Can not upload image.");
+                        return next();
+                    }
                 });
                 data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
             }
 
             user.updateAttributes(data).then(function () {
-                req.flash.success("Updated user successful");
-                next();
+                req.flash.success("Update user successfully");
+                res.redirect('/admin/users/');
             });
-
         });
-
     });
-
-
 };
+
 exports.create = function (req, res) {
-    //Them button
+    // Add button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
-    res.locals.backButton = route;
-    //breadcrumb
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/users');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New User'});
+
     async.parallel([
         function (callback) {
             __models.role.findAll({
@@ -122,13 +127,13 @@ exports.create = function (req, res) {
             });
         }
     ], function (err, results) {
-
         res.render(edit_template, {
             title: "Add New User",
             roles: results[0]
         });
     });
 };
+
 exports.save = function (req, res, next) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -144,33 +149,26 @@ exports.save = function (req, res, next) {
             }
             data.user_image_url = '/img/users/' + slug(fields.user_login).toLowerCase() + '.' + type;
             __models.user.create(data).then(function () {
-                req.flash.success("Add new user successful");
-                next();
+                req.flash.success("Add new user successfully");
+                res.redirect('/admin/users/');
             });
         });
-
     });
-
 };
+
 exports.delete = function (req, res) {
-    var ids = req.body.ids.split(',');
-    async.waterfall([
-        function (done) {
-            __models.user.destroy({
-                where: {
-                    id: {
-                        "in": ids
-                    }
-                }
-            }).then(function () {
-                done(null);
-            });
+    __models.user.destroy({
+        where: {
+            id: {
+                "in": req.body.ids.split(',')
+            }
         }
-    ], function (err) {
+    }).then(function () {
+        req.flash.success("Delete user successfully");
         res.sendStatus(200);
     });
-
 };
+
 /**
  * Signout
  */
@@ -180,6 +178,7 @@ exports.signout = function (req, res) {
     req.logout();
     res.redirect('/admin/login');
 };
+
 /**
  * Profile
  */
@@ -203,7 +202,6 @@ exports.changePass = function (req, res) {
     res.render('users/change-pass', {
         user: req.user
     });
-
 };
 
 /**
@@ -231,22 +229,22 @@ exports.updatePass = function (req, res) {
 /**
  * Forgot for reset password (forgot POST)
  */
-exports.forgot = function(req, res, next) {
+exports.forgot = function (req, res, next) {
     async.waterfall([
         // Generate random token
-        function(done) {
-            crypto.randomBytes(20, function(err, buffer) {
+        function (done) {
+            crypto.randomBytes(20, function (err, buffer) {
                 var token = buffer.toString('hex');
                 console.log(token, '\n@@@\n');
                 done(err, token);
             });
         },
         // Lookup user by user_email
-        function(token, done) {
+        function (token, done) {
             if (req.body.email) {
                 __models.user.find({
                     where: 'user_email=\'' + req.body.email + '\''
-                }).then(function(user) {
+                }).then(function (user) {
                     if (!user) {
                         res.render('reset-password', {
                             message: { type: 'error', content: 'No account with that email has been found'}
@@ -261,7 +259,7 @@ exports.forgot = function(req, res, next) {
                         var data = {};
                         data.reset_password_token = token;
                         data.reset_password_expires = Date.now() + 3600000; // 1 hour
-                        user.updateAttributes(data).then(function(user) {
+                        user.updateAttributes(data).then(function (user) {
                             done(null, token, user);
                         });
                     }
@@ -272,17 +270,17 @@ exports.forgot = function(req, res, next) {
                 });
             }
         },
-        function(token, user, done) {
+        function (token, user, done) {
             res.render('email-templates/reset-password-email', {
                 name: user.display_name,
                 appName: config.app.title,
                 url: 'http://' + req.headers.host + '/users/reset/' + user.id + '/' + token
-            }, function(err, emailHTML) {
+            }, function (err, emailHTML) {
                 done(err, emailHTML, user);
             });
         },
         // If valid email, send reset email using service
-        function(emailHTML, user, done) {
+        function (emailHTML, user, done) {
             var transporter = mailer.createTransport(config.mailer_config);
             var mailOptions = {
                 to: user.user_email,
@@ -302,7 +300,7 @@ exports.forgot = function(req, res, next) {
                 }
             });
         }
-    ], function(err) {
+    ], function (err) {
         if (err) return next(err);
     });
 };
@@ -310,11 +308,11 @@ exports.forgot = function(req, res, next) {
 /**
  * Reset password GET from email token
  */
-exports.validateResetToken = function(req, res, next) {
+exports.validateResetToken = function (req, res, next) {
     var where = 'id=' + req.params.userid + ' and reset_password_token=\'' + req.params.token + '\'' + ' and reset_password_expires > ' + Date.now();
     __models.user.find({
         where: where
-    }).then(function(user) {
+    }).then(function (user) {
         if (!user) {
             return res.redirect('/password/reset/invalid');
         }
@@ -327,7 +325,7 @@ exports.validateResetToken = function(req, res, next) {
  * @param req
  * @param res
  */
-exports.invalidToken = function(req, res) {
+exports.invalidToken = function (req, res) {
     res.render('reset-password', {
         message: { type: 'error', content: 'Password reset token is invalid or has expired.'}
     });
@@ -338,7 +336,7 @@ exports.invalidToken = function(req, res) {
  * @param req
  * @param res
  */
-exports.resetForm = function(req, res) {
+exports.resetForm = function (req, res) {
     res.render('reset-password', {
         form: true
     });
@@ -347,18 +345,17 @@ exports.resetForm = function(req, res) {
 /**
  * Reset password POST from email token (post form with new password)
  */
-exports.reset = function(req, res, next) {
+exports.reset = function (req, res, next) {
     // Init Variables
     var time = Date.now();
     var passwordDetails = req.body;
     var where = 'id=' + req.params.userid + ' and reset_password_token=\'' + req.params.token + '\'' + ' and reset_password_expires > ' + time;
 
     async.waterfall([
-
-        function(done) {
+        function (done) {
             __models.user.find({
                 where: where
-            }).then(function(user) {
+            }).then(function (user) {
                 if (user) {
                     if (passwordDetails.newpassword === passwordDetails.retype_password) {
                         var data = {};
@@ -366,7 +363,7 @@ exports.reset = function(req, res, next) {
                         data.reset_password_token = '';
                         data.reset_password_expires = null;
 
-                        user.updateAttributes(data).then(function(user) {
+                        user.updateAttributes(data).then(function (user) {
                             if (!user) {
                                 res.render('reset-password', {
                                     message: { type: 'error', content: 'Can not update user'}
@@ -387,18 +384,18 @@ exports.reset = function(req, res, next) {
                 }
             });
         },
-        function(user, done) {
+        function (user, done) {
             res.render('email-templates/reset-password-confirm-email', {
                 name: user.display_name,
                 appName: config.app.title,
-                site: 'http://' + req.headers.host ,
+                site: 'http://' + req.headers.host,
                 login_url: 'http://' + req.headers.host + '/admin/login'
-            }, function(err, emailHTML) {
+            }, function (err, emailHTML) {
                 done(err, emailHTML, user);
             });
         },
         // If valid email, send reset email using service
-        function(emailHTML, user, done) {
+        function (emailHTML, user, done) {
             var smtpTransport = mailer.createTransport(config.mailer_config);
             var mailOptions = {
                 to: user.user_email,
@@ -407,11 +404,11 @@ exports.reset = function(req, res, next) {
                 html: emailHTML
             };
 
-            smtpTransport.sendMail(mailOptions, function(err, info) {
+            smtpTransport.sendMail(mailOptions, function (err, info) {
                 done(err, 'done');
             });
         }
-    ], function(err) {
+    ], function (err) {
         if (err) res.send(err);
         else {
             res.render('reset-password', {
@@ -421,14 +418,29 @@ exports.reset = function(req, res, next) {
     });
 };
 
-exports.userById = function(req, res, next, id){
-    __models.user.find({
-        include:[__models.roles],
-        where:{
-            id:id
+exports.saveOAuthUserProfile = function (req, profile, done) {
+    __models.user.find(profile.id).then(function (user) {
+        if (user) {
+            user.updateAttributes(profile).then(function (user) {
+                return done(null, user);
+            });
         }
-    }).then(function(user){
-        req.user = user;
+        else {
+            __models.user.create(profile).then(function (user) {
+                return done(null, user);
+            });
+        }
+    });
+};
+
+exports.userById = function (req, res, next, id) {
+    __models.user.find({
+        include: [__models.role],
+        where: {
+            id: id
+        }
+    }).then(function (user) {
+        req._user = user;
         next();
     })
 };

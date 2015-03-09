@@ -3,112 +3,98 @@
     <div class="row">
         <div class="col-md-12">
             <form id="edit-form" method="post" enctype="multipart/form-data">
+
                 {% include "admin/toolbar.html" %}
+
                 <div class="box box-solid box-primary">
                     <div class="box-body">
-                        <div class="form-group">
-                            <label>Username: <span class="required">
-													* </span>
-                            </label>
-                            <input type="text" class="form-control" name="user_login"
-                                   placeholder="" value="{{ user.user_login }}" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Username <span class="required">*</span></label>
+                                    <input type="text" class="form-control" name="user_login"
+                                           value="{{ user.user_login }}" required="required" />
+                                </div>
 
-                        </div>
-                        <div class="form-group">
-                            <label>Email: <span class="required">
-													* </span>
-                            </label>
-                            <input type="email" class="form-control" name="user_email"
-                                   placeholder="" value="{{ user.user_email }}" required>
+                                <div class="form-group">
+                                    <label>Full Name <span class="required">*</span></label>
+                                    <input type="text" class="form-control" name="display_name"
+                                           value="{{ user.display_name }}" required="required" />
+                                </div>
 
-                        </div>
-                        {% if not user %}
-                            <div class="form-group">
-                                <label>Password: <span class="required">
-													* </span>
-                                </label>
-                                <input type="password" class="form-control" id="user_pass" name="user_pass"
-                                       required>
+                                <div class="form-group">
+                                    <label>Email <span class="required">*</span></label>
+                                    <input type="email" class="form-control" name="user_email"
+                                           value="{{ user.user_email }}" required="required" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>URL</label>
+                                    <input type="text" class="form-control" name="user_url"
+                                           value="{{ user.user_url }}" required="required" />
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label>Role <span class="required">*</span></label>
+                                    <select class="table-group-action-input form-control input-medium"
+                                            name="role_id" required="required">
+                                        {% for role in roles %}
+                                            {% set selected = "" %}
+                                            {% if role.id == user.role_id %}
+                                                {% set selected = "selected" %}
+                                            {% endif %}
+                                            <option value="{{ role.id }}" {{ selected }}>{{ role.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status <span class="required">*</span></label>
+                                    <select class="table-group-action-input form-control input-medium"
+                                            name="user_status" value="{{ user.user_status }}" required>
+                                        {% if user.user_status == 'publish' %}
+                                            <option value="publish" selected>Published</option>
+                                            <option value="un-publish">Not Published</option>
+                                        {% else %}
+                                            <option value="publish">Published</option>
+                                            <option value="un-publish" selected>Not Published</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+
 
                             </div>
-                            <div class="form-group">
-                                <label>Password confirmation: <span class="required">
-													* </span>
-                                </label>
-                                <input type="password" class="form-control" id="confirm_pass"
-                                       required>
 
-                            </div>
-                        {% endif %}
-                        <div class="form-group">
-                            <label>URL:</label>
-                            <input type="text" class="form-control" name="user_url"
-                                   value="{{ user.user_url }}" required>
+                            <div class="col-md-6">
+                                {% if not user %}
+                                    <div class="form-group">
+                                        <label>Password <span class="required">*</span></label>
+                                        <input type="password" class="form-control" id="user_pass" name="user_pass"
+                                               required="required" />
+                                    </div>
 
-                        </div>
-                        <div class="form-group">
-                            <label>Full Name: <span class="required">
-													* </span>
-                            </label>
-                            <input type="text" class="form-control" name="display_name"
-                                   placeholder="" value="{{ user.display_name }}" required>
-
-                        </div>
-
-                        <div class="form-group">
-                            <label>Role: <span class="required">
-													* </span>
-                            </label>
-                            <select class="table-group-action-input form-control input-medium"
-                                    name="role_id" required>
-                                {% for role in roles %}
-                                    {% set selected = "" %}
-                                    {% if role.id == user.role_id %}
-                                        {% set selected = "selected" %}
-                                    {% endif %}
-                                    <option value="{{ role.id }}" {{ selected }}>{{ role.name }}</option>
-                                {% endfor %}
-                            </select>
-
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Status: <span class="required">
-													* </span>
-                            </label>
-
-
-                            <select class="table-group-action-input form-control input-medium"
-                                    name="user_status" value="{{ user.user_status }}" required>
-                                {% if user.user_status == 'publish' %}
-                                    <option value="publish" selected>Published</option>
-                                    <option value="un-publish">Not Published</option>
-                                {% else %}
-                                    <option value="publish">Published</option>
-                                    <option value="un-publish" selected>Not Published</option>
+                                    <div class="form-group">
+                                        <label>Password confirmation <span class="required">*</span></label>
+                                        <input type="password" class="form-control" id="confirm_pass"
+                                               required="required" />
+                                    </div>
                                 {% endif %}
-                            </select>
 
+                                <div class="form-group">
+                                    <label>Avatar <span class="required">*</span></label>
+                                    <input type="file" class="form-control" name="user_image_url" id="user_image_url">
+                                    <img width="270" height="179" id="user_image" src="{{ user.user_image_url }}" />
+                                </div>
+
+                                {% if user %}
+                                    <a class="btn btn-sm btn-danger" data-toggle="modal" href="#confirm">
+                                        <i class="fa fa-remove"></i> Delete
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Avatar: <span class="required">
-													* </span>
-                            </label>
-
-
-                            <input type="file" class="form-control" name="user_image_url"
-                                   id="user_image_url">
-                            <img width="270" height="179" id="user_image" src="{{ user.user_image_url }}">
-
-                        </div>
-                        {% if user %}
-                            <a class="btn btn-sm btn-danger" data-toggle="modal" href="#confirm">
-                                <i class="fa fa-remove"></i>
-								<span class="hidden-480">
-								Delete </span>
-                            </a>
-                        {% endif %}
                     </div>
                 </div>
             </form>
@@ -135,6 +121,7 @@
         <!-- /.modal-dialog -->
     </div>
 {% endblock %}
+
 {% block jsExtends %}
     <script>
         var password = document.getElementById("user_pass")
@@ -151,6 +138,7 @@
             password.onchange = validatePassword;
             confirm_password.onkeyup = validatePassword;
         }
+
         $("#user_image_url").change(function () {
             readURL(this);
         });
@@ -161,7 +149,7 @@
 
                 reader.onload = function (e) {
                     $('#user_image').attr('src', e.target.result);
-                }
+                };
 
                 reader.readAsDataURL(input.files[0]);
             }

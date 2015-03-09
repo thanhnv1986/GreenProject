@@ -4,5 +4,20 @@
     "folder":"acme",
     "author":"cosmic",
     "link":"http://shapebootstrap.net/item/acme-free-responsive-corporate-template/",
-    "thumbnail":"acme-thumbnail.jpg"
+    "thumbnail":"acme-thumbnail.jpg",
+    "sidebars": [
+        {
+            "name": "name",
+            "title": "Title"
+        }
+    ],
+    "layouts": [
+        {
+            "name": "name",
+            "title": "title",
+            "description": "description",
+            "file": "file",
+            "thumbnail": "thumbnail"
+        }
+    ]
 }

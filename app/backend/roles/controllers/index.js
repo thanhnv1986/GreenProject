@@ -20,30 +20,29 @@ var breadcrumb =
         }
     ];
 
-
 exports.list = function (req, res) {
-    //Them button
-    res.locals.createButton = __acl.addButton(req, route, 'create');
+    // Add button
+    res.locals.createButton = __acl.addButton(req, route, 'create', '/admin/roles/create');
     res.locals.deleteButton = __acl.addButton(req, route, 'delete');
 
-    //breadcrumb
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
     __models.role.findAll({
         order: "id desc"
     }).then(function (roles) {
         res.render('roles/index', {
             title: "All Roles",
-            roles: roles,
-            messages: req.messages || []
+            roles: roles
         });
     });
 };
-exports.view = function (req, res) {
-    //Them button
-    res.locals.saveButton = __acl.addButton(req, route, 'update');
-    res.locals.backButton = route;
 
-    //breadcrumb
+exports.view = function (req, res) {
+    // Add button
+    res.locals.saveButton = __acl.addButton(req, route, 'update');
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/roles');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Role'});
     async.parallel([
         function (callback) {
@@ -56,7 +55,6 @@ exports.view = function (req, res) {
             });
         }
     ], function (err, results) {
-            console.log(__modules);
             res.render('roles/new', {
                 title: "Update Role",
                 modules: __modules,
@@ -65,9 +63,9 @@ exports.view = function (req, res) {
             });
         }
     );
-
 };
-exports.update = function (req, res, next) {
+
+exports.update = function (req, res) {
     req.messages = [];
     __models.role.find({
         where: {
@@ -91,25 +89,26 @@ exports.update = function (req, res, next) {
             status: req.body.status,
             rules: JSON.stringify(rules)
         }).then(function () {
-            next();
+            req.flash.success('Update role successfully');
+            res.redirect('/admin/roles/');
         });
     });
+};
 
-
-}
 exports.create = function (req, res) {
-    //Them button
+    // Add button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
-    res.locals.backButton = route;
-    //breadcrumb
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/roles');
+
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Add New'});
     res.render('roles/new', {
         title: "New Role",
         modules: __modules
     });
+};
 
-}
-exports.save = function (req, res, next) {
+exports.save = function (req, res) {
     req.messages = [];
     var rules = {};
     for (var k in req.body) {
@@ -128,19 +127,20 @@ exports.save = function (req, res, next) {
         status: req.body.status,
         rules: JSON.stringify(rules)
     }).then(function () {
-        next();
+        req.flash.success('Create new role successfully');
+        res.redirect('/admin/roles/');
     });
+};
 
-
-}
 exports.delete = function (req, res) {
-    __models.roles.destroy({
+    __models.role.destroy({
         where: {
             id: {
                 "in": req.body.ids.split(',')
             }
         }
     }).then(function () {
-        res.send(200);
+        req.flash.success("Delete role successfully");
+        res.sendStatus(200);
     });
-}
+};

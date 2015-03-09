@@ -780,5 +780,24 @@
 <script src="/corlate/js/jquery.isotope.min.js"></script>
 <script src="/corlate/js/main.js"></script>
 <script src="/corlate/js/wow.min.js"></script>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '347148475491688',
+            xfbml      : true,
+            version    : 'v2.2'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+{% block jsExtends %}
+{% endblock %}
 </body>
 </html>

@@ -4,6 +4,7 @@
 var config = require('../config/config');
 var redis = require('redis').createClient();
 var path = require('path');
+var _ = require('lodash');
 var modules = {};
 module.exports = function () {
     return modules;
@@ -20,6 +21,9 @@ module.exports.loadAllModules = function () {
     for (var i in module_tmp) {
         if (__modules[i] == undefined) {
             __modules[i] = module_tmp[i];
+        }
+        else{
+            __modules[i] = _.assign(__modules[i], module_tmp[i]);
         }
     }
     //remove module

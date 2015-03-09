@@ -17,7 +17,6 @@ module.exports = function (menus) {
                 title: 'New Menu',
                 link: '/create'
             }
-
         ]
     };
     return menus;
