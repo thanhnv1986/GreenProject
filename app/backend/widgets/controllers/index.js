@@ -51,7 +51,7 @@ exports.saveWidget = function (req, res) {
     console.log(req.body);
     var widget_type = req.body.widget;
     var widget = __.getWidget(widget_type);
-    widget.save(req.body, function (id) {
+    widget.save(req.body).then(function (id) {
         res.send(id);
     });
 }

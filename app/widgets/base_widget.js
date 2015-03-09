@@ -12,32 +12,33 @@ function BaseWidget() {
 
 }
 var widget = BaseWidget;
-widget.prototype.save = function(data, done){
-    console.log("Widget save");
-    var json_data = _.clone(data);
-    delete json_data.sidebar;
-    delete json_data.id;
-    json_data = JSON.stringify(json_data);
-    if (data.id != '') {
-        __models.widgets.find(data.id).then(function (widget) {
-            widget.updateAttributes({
+widget.prototype.save = function (data) {
+    return new Promise(function (done, reject) {
+        var json_data = _.clone(data);
+        delete json_data.sidebar;
+        delete json_data.id;
+        json_data = JSON.stringify(json_data);
+        if (data.id != '') {
+            __models.widgets.find(data.id).then(function (widget) {
+                widget.updateAttributes({
+                    sidebar: data.sidebar,
+                    data: json_data
+                }).then(function (widget) {
+                    done(widget.id);
+                });
+            });
+
+        } else {
+            __models.widgets.create({
+                id: new Date().getTime(),
+                widget_type: this.alias,
                 sidebar: data.sidebar,
                 data: json_data
             }).then(function (widget) {
                 done(widget.id);
             });
-        });
-
-    } else {
-        __models.widgets.create({
-            id: new Date().getTime(),
-            widget_type: this.alias,
-            sidebar: data.sidebar,
-            data: json_data
-        }).then(function (widget) {
-            done(widget.id);
-        });
-    }
+        }
+    });
 }
 widget.prototype.render = function (widget, data) {
     return new Promise(function (resolve, reject) {
@@ -58,8 +59,8 @@ widget.prototype.render = function (widget, data) {
         }
         console.log("User view: ", widgetFilePath);
         var context = _.assign({widget: widget}, data);
-        resolve(renderWidget(widgetFilePath, context).catch(function(err){
-            return "<p>"+err.cause;
+        resolve(renderWidget(widgetFilePath, context).catch(function (err) {
+            return "<p>" + err.cause;
         }));
     });
 }
