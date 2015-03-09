@@ -24,19 +24,23 @@ function CustomHtml() {
 }
 util.inherits(CustomHtml, BaseWidget);
 
-CustomHtml.prototype.save = function (done) {
+CustomHtml.prototype.save = function (data, done) {
     console.log("Widget save");
+    //call base _save of widget
+    this._save(data, done);
+
+    /*var data = JSON.stringify({
+        title: this.options.title,
+        content: this.options.content
+    });
     if (this.options.id != '') {
-        var data = JSON.stringify({
-            title: this.options.title,
-            content: this.options.content
-        });
         __models.widgets.find(this.options.id).then(function (widget) {
             widget.updateAttributes({
-                widget_type: this.options.widget,
+                sidebar: this.options.sidebar,
+                widget_type: this.alias,
                 data: data
             }).then(function (widget) {
-                done();
+                done(widget.id);
             });
         });
 
@@ -44,15 +48,15 @@ CustomHtml.prototype.save = function (done) {
         __models.widgets.create({
             id: new Date().getTime(),
             sidebar: this.options.sidebar,
-            data: JSON.stringify({
-                title: this.options.title,
-                content: this.options.content
-            })
+            data: data
         }).then(function (widget) {
-            done();
+            done(widget.id);
         });
-    }
+    }*/
 
 };
-
+CustomHtml.prototype.render = function (widget) {
+    //call base _render method _render(widget,{})
+    return this._render(widget);
+}
 module.exports = CustomHtml;

@@ -124,7 +124,7 @@
                     }).done(function (re) {
                         var new_box = $("<div class='box box-solid open'><div class='box-body'></div></div>");
                         new_box.find(".box-body").first().append(re);
-                        new_box.find("form").first().append("<input type='hidden' name='sidebar' value='" + _this.attr('id') + "'>");
+                        new_box.find("form").first().append("<input type='hidden' name='sidebar' value='" + _this.parents('.box').first().attr('id') + "'>");
                         li.append(new_box);
                         ul.append(li);
                     });

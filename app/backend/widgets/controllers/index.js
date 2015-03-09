@@ -49,15 +49,9 @@ exports.addWidget = function (req, res) {
 }
 exports.saveWidget = function (req, res) {
     console.log(req.body);
-    var widget = req.body.widget;
-    for (var i in __widgets) {
-        if (__widgets[i].alias == widget) {
-            widget = _.clone(__widgets[i]);
-            _.assign(widget.options, req.body);
-            break;
-        }
-    }
-    widget.save(function (id) {
+    var widget_type = req.body.widget;
+    var widget = __.getWidget(widget_type);
+    widget.save(req.body, function (id) {
         res.send(id);
     });
 }
