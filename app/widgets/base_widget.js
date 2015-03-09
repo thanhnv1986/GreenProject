@@ -58,7 +58,9 @@ widget.prototype.render = function (widget, data) {
         }
         console.log("User view: ", widgetFilePath);
         var context = _.assign({widget: widget}, data);
-        resolve(renderWidget(widgetFilePath, context));
+        resolve(renderWidget(widgetFilePath, context).catch(function(err){
+            return "<p>"+err.cause;
+        }));
     });
 }
 
