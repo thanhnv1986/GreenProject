@@ -11,6 +11,7 @@ var moduleName = 'widgets';
 
 router.route('/widgets').get(__acl.isAllow(moduleName, 'index'), controller.index);
 router.route('/widgets/sidebars').get(__acl.isAllow(moduleName, 'index'), controller.sidebar);
+router.route('/widgets/sidebars/sort').post(__acl.isAllow(moduleName, 'index'), controller.sidebar_sort);
 
 router.route('/widgets/sidebars/add/:widget').get(__acl.isAllow(moduleName, 'index'), controller.addWidget);
 router.route('/widgets/sidebars/save').post(__acl.isAllow(moduleName, 'index'), controller.saveWidget);

@@ -31,13 +31,15 @@ widget.prototype.save = function (data) {
         } else {
             __models.widgets.create({
                 id: new Date().getTime(),
-                widget_type: this.alias,
+                widget_type: data.widget,
                 sidebar: data.sidebar,
-                data: json_data
+                data: json_data,
+                ordering: data.ordering
             }).then(function (widget) {
                 done(widget.id);
             });
         }
+
     });
 }
 widget.prototype.render = function (widget, data) {

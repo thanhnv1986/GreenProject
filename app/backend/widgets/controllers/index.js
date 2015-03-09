@@ -68,3 +68,22 @@ exports.delete = function (req, res) {
         res.sendStatus(200);
     });
 }
+exports.sidebar_sort = function (req, res) {
+    console.log(req.body);
+    var ids = req.body.ids.split(',');
+    var sidebar = req.body.sidebar;
+    var index = 1;
+    var promises = [];
+    for (var i in ids) {
+        if (ids[i] == ''){
+            index++;
+            continue;
+        }
+        promises.push(__models.sequelize.query("Update widgets set ordering=?, sidebar=? where id=?",
+            {replacements: [index++, sidebar, ids[i]]}));
+    }
+    Promise.all(promises).then(function (results) {
+        res.sendStatus(200);
+    });
+
+};

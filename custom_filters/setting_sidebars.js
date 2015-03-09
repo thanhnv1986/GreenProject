@@ -8,7 +8,8 @@ module.exports = function (env) {
         __models.widgets.findAll({
             where: {
                 sidebar: sidebarName
-            }
+            },
+            order:['ordering']
         }, {raw: true}).then(function (widgets) {
             var promises = [];
             var getWidgetHtml = function (widget) {
@@ -23,17 +24,14 @@ module.exports = function (env) {
             }
             Promise.all(promises).then(function (results) {
                 var html = "";
-                if (results.length > 0){
+                if (results.length > 0) {
                     for (var i in results) {
                         var w = __.getWidget(widgets[i].widget_type);
-                        html += '<li style="position: relative">' +
-                            '<div class="widget-item" style="position: relative">' + w.name + '</div>' +
-                            '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
-                            '<div class="box box-solid close"><div class="box-body">' + results[i] + '</div></div></li>';
+                        html += '<li style="position: relative" id="' + widgets[i].id + '">' +
+                        '<div class="widget-item" style="position: relative">' + w.name + '</div>' +
+                        '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
+                        '<div class="box box-solid close"><div class="box-body">' + results[i] + '</div></div></li>';
                     }
-                }
-                else{
-                    //html+="<li class='placeholder'>Drop widget here</li>";
                 }
 
                 cb(null, html);
