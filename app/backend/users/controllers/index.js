@@ -40,38 +40,65 @@ exports.list = function (req, res) {
     var page = req.params.page || 1;
     var column = req.params.sort || 'id';
     var order = req.params.order || '';
+    console.log(req.query);
+    var conditions = [];
+    var values = [];
+    values.push('abc');
+    for (var i in req.query) {
+        if (req.query[i] != '') {
+            conditions.push(__.parseCondition(i, req.query[i]));
+            var value = __.parseValue(req.query[i]);
+            if(Array.isArray(value)){
+                for(var y in value){
+                    values.push(value[y].trim());
+                }
+            }
+            else{
+                values.push(value);
+            }
+
+        }
+    }
+    var stCondition = conditions.join(" AND ");
+    values[0] = stCondition;
+    //Config columns
     res.locals.table_columns = [
         {
-            column:"display_name",
-            width:'25%',
-            header:"Full Name"
+            column: "display_name",
+            width: '25%',
+            header: "Full Name"
         },
         {
-            column:"user_login",
-            width:'15%',
-            header:"UserName"
+            column: "user_login",
+            width: '15%',
+            header: "UserName"
         },
         {
-            column:"user_email",
-            width:'15%',
-            header:"Email"
+            column: "user_email",
+            width: '15%',
+            header: "Email"
         },
         {
-            column:"role.name",
-            width:'15%',
-            header:"Role"
+            column: "role.name",
+            width: '15%',
+            header: "Role"
         },
         {
-            column:"user_status",
-            width:'10%',
-            header:"Status"
+            column: "user_status",
+            width: '10%',
+            header: "Status"
         }
     ];
     __models.user.findAndCountAll({
-        include: [__models.role],
+        include: [
+            {
+                model: __models.role
+            }
+        ],
         order: column + " " + order,
         limit: config.pagination.number_item,
-        offset: (page - 1) * config.pagination.number_item
+        offset: (page - 1) * config.pagination.number_item,
+        where: values
     }).then(function (results) {
         var totalPage = Math.ceil(results.count / config.pagination.number_item);
         res.render(index_template, {
@@ -80,7 +107,8 @@ exports.list = function (req, res) {
             items: results.rows,
             currentPage: page,
             currentColumn: column,
-            currentOrder: order
+            currentOrder: order,
+            filters: req.query
         });
     });
 };

@@ -1,0 +1,9 @@
+<tr role="row" class="heading">
+    <form method="GET" id="search-form">
+        {% for col in table_columns %}
+            <th width="{{ col.width }}">
+                <input type="text" name="{{ col.column }}" class="form-control" value="{{ filters[col.column] }}">
+            </th>
+        {% endfor %}
+    </form>
+</tr>

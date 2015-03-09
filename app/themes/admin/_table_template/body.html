@@ -1,0 +1,11 @@
+{% for item in items %}
+    <tr>
+        {% for col in table_columns %}
+            {% if col.link %}
+                <td><a href="{{ item.link }}">{{ col.column|get_value(item) }}</a></td>
+            {% else %}
+                <td>{{ col.column|get_value(item) }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endfor %}

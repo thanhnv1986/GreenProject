@@ -7,15 +7,10 @@
 <table class="table table-striped table-bordered table-hover" id="datatable_orders">
     <thead>
     <tr role="row" class="heading">
-        {% for col in table_columns %}
-            <th width="{{ col.width }}">
-                {% set link = root_link +'/'+col.column+'/'+order %}
-                <a href="{{ link }}">{{ col.header }}</a>
-                {% if currentColumn == col.column %}
-                    <i class="fa fa-sort-{{ currentOrder }} pull-right"></i>
-                {% endif %}
-            </th>
-        {% endfor %}
+        {% include "admin/_table_template/header.html" %}
+    </tr>
+    <tr>
+        {% include "admin/_table_template/filter.html" %}
     </tr>
     </thead>
 
@@ -24,9 +19,9 @@
         <tr>
             {% for col in table_columns %}
                 {% if col.link %}
-                    <td><a href="{{ item.link }}">{{ item[col.column] }}</a></td>
+                    <td><a href="{{ item.link }}">{{ col.column|get_value(item) }}</a></td>
                 {% else %}
-                    <td>{{ item[col.column] }}</td>
+                    <td>{{ col.column|get_value(item) }}</td>
                 {% endif %}
             {% endfor %}
         </tr>

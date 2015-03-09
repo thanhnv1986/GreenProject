@@ -248,7 +248,12 @@
             } else {
                 $('input.check-element').prop('checked', false);
             }
-        })
+        });
+        $('input').keypress(function (e) {
+            if (e.which == 13) {
+                $('#search-form').submit();
+            }
+        });
     });
 </script>
 
