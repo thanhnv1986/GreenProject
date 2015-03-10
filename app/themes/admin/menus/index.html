@@ -1,9 +1,7 @@
 {% extends 'admin/layout.html' %}
 
 {% block content %}
-
     {% include 'admin/toolbar.html' %}
-
     <div class="row">
         <div class="col-md-12">
             <div class="box box-solid box-primary">
@@ -12,28 +10,11 @@
                         <table class="table table-striped table-bordered table-hover" id="datatable_orders">
                             <thead>
                             <tr role="row" class="heading">
-                                <th width="2%">
-                                    <input type="checkbox" class="check-all">
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th width="10%">
-                                    Status
-                                </th>
+                                {% include "admin/_table_template/header.html" %}
                             </tr>
                             </thead>
-
                             <tbody>
-                            {% for menu in menus %}
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" class="check-element" name="ids[]" value="{{ menu.id }}">
-                                    </td>
-                                    <td><a href="/admin/menus/{{ menu.id }}">{{ menu.name }}</a></td>
-                                    <td>{{ menu.status }}</td>
-                                </tr>
-                            {% endfor %}
+                            {% include "admin/_table_template/body.html" %}
                             </tbody>
                         </table>
                     </div>

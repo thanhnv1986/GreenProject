@@ -1,10 +1,19 @@
+{% if currentOrder =="asc" %}
+    {% set order = "desc" %}
+{% else %}
+    {% set order = "asc" %}
+{% endif %}
 <tr role="row" class="heading">
     {% for col in table_columns %}
         <th width="{{ col.width }}">
-            {% set link = root_link +'/'+col.column+'/'+order %}
-            <a href="{{ link }}">{{ col.header }}</a>
-            {% if currentColumn == col.column %}
-                <i class="fa fa-sort-{{ currentOrder }} pull-right"></i>
+            {% if col.type == "checkbox" %}
+                <input type="checkbox" class="check-all">
+            {% else %}
+                {% set link = root_link +'/'+col.column+'/'+order %}
+                <a href="{{ link }}">{{ col.header }}</a>
+                {% if currentColumn == col.column %}
+                    <i class="fa fa-sort-{{ currentOrder }} pull-right"></i>
+                {% endif %}
             {% endif %}
         </th>
     {% endfor %}

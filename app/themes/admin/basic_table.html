@@ -1,9 +1,3 @@
-{% set root_link = '/admin/users/page/'+currentPage+'/sort' %}
-{% if currentOrder =="asc" %}
-    {% set order = "desc" %}
-{% else %}
-    {% set order = "asc" %}
-{% endif %}
 <table class="table table-striped table-bordered table-hover" id="datatable_orders">
     <thead>
     <tr role="row" class="heading">
@@ -13,18 +7,7 @@
         {% include "admin/_table_template/filter.html" %}
     </tr>
     </thead>
-
     <tbody>
-    {% for item in items %}
-        <tr>
-            {% for col in table_columns %}
-                {% if col.link %}
-                    <td><a href="{{ item.link }}">{{ col.column|get_value(item) }}</a></td>
-                {% else %}
-                    <td>{{ col.column|get_value(item) }}</td>
-                {% endif %}
-            {% endfor %}
-        </tr>
-    {% endfor %}
+        {% include "admin/_table_template/body.html" %}
     </tbody>
 </table>

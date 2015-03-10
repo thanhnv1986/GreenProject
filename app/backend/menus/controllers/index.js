@@ -24,10 +24,37 @@ exports.index = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
-    __models.menus.findAll().then(function (menus) {
+    //Config ordering
+    var column = req.params.sort || 'id';
+    var order = req.params.order || '';
+    res.locals.root_link = '/admin/menus/sort';
+    //Config columns
+    __.createFilter(req, res, '', '/admin/menus', column, order, [
+        {
+            column: "id",
+            width: '1%',
+            header: "",
+            type: 'checkbox'
+        },
+        {
+            column: "name",
+            width: '25%',
+            header: "Name",
+            link: '/admin/roles/{id}',
+            acl: 'users.update'
+        },
+        {
+            column: "status",
+            width: '15%',
+            header: "Status"
+        }
+    ]);
+    __models.menus.findAll({
+        order: column + " " + order
+    }, {raw: true}).then(function (menus) {
         res.render('menus/index', {
             title: "All Menus",
-            menus: menus
+            items: menus
         });
     });
 };
@@ -66,14 +93,14 @@ exports.update = function (req, res) {
         var menu_order = req.body.output;
         menu.updateAttributes({
             menu_order: menu_order,
-            root_ul_cls:req.body.root_ul_cls,
-            li_cls:req.body.li_cls,
-            li_active_cls:req.body.li_active_cls,
-            a_cls:req.body.a_cls,
-            a_active_cls:req.body.a_active_cls,
-            sub_ul_cls:req.body.sub_ul_cls,
-            sub_li_cls:req.body.sub_li_cls,
-            sub_a_cls:req.body.sub_a_cls
+            root_ul_cls: req.body.root_ul_cls,
+            li_cls: req.body.li_cls,
+            li_active_cls: req.body.li_active_cls,
+            a_cls: req.body.a_cls,
+            a_active_cls: req.body.a_active_cls,
+            sub_ul_cls: req.body.sub_ul_cls,
+            sub_li_cls: req.body.sub_li_cls,
+            sub_a_cls: req.body.sub_a_cls
         });
         __models.menu_detail.destroy({
             where: {

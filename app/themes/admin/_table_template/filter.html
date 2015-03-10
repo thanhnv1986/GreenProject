@@ -2,7 +2,25 @@
     <form method="GET" id="search-form">
         {% for col in table_columns %}
             <th width="{{ col.width }}">
-                <input type="text" name="{{ col.column }}" class="form-control" value="{{ filters[col.column] }}">
+                {% if col.type == 'checkbox' %}
+                    {{ '' }}
+                {% elif col.filter %}
+                    {% set filter = col.filter %}
+                    {% if filter.type == 'select' %}
+                        <select name="{{ filter.filter_key }}" class="form-control">
+                            <option value="">All</option>
+                            {% for s in filter.data_source|get_data_source %}
+                                {% if filters[filter.filter_key] == s[filter.value_key] %}
+                                    <option value="{{ s[filter.value_key] }}" selected>{{ s[filter.display_key] }}</option>
+                                {% else %}
+                                    <option value="{{ s[filter.value_key] }}">{{ s[filter.display_key] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                {% else %}
+                    <input type="text" name="{{ col.column }}" class="form-control" value="{{ filters[col.column] }}">
+                {% endif %}
             </th>
         {% endfor %}
     </form>

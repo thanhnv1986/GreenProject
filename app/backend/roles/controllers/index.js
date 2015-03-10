@@ -27,12 +27,44 @@ exports.list = function (req, res) {
 
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
+
+    //Config ordering
+    var column = req.params.sort || 'id';
+    var order = req.params.order || '';
+    res.locals.root_link = '/admin/roles/sort';
+    //Config columns
+    __.createFilter(req, res, '', '/admin/roles', column, order, [
+        {
+            column: "id",
+            width: '1%',
+            header: "",
+            type:'checkbox'
+        },
+        {
+            column: "name",
+            width: '25%',
+            header: "Name",
+            link: '/admin/roles/{id}',
+            acl: 'users.update'
+        },
+        {
+            column: "modified_at",
+            type:'datetime',
+            width: '10%',
+            header: "Modified Date"
+        },
+        {
+            column: "status",
+            width: '15%',
+            header: "Status"
+        }
+    ]);
     __models.role.findAll({
-        order: "id desc"
+        order: column + " " + order
     }).then(function (roles) {
         res.render('roles/index', {
             title: "All Roles",
-            roles: roles
+            items: roles
         });
     });
 };

@@ -7,36 +7,14 @@
                 <div class="box box-solid box-primary">
                     <div class="box-body">
                         <div class="table-container">
-
                             <table class="table table-striped table-bordered table-hover" id="datatable_orders">
                                 <thead>
                                 <tr role="row" class="heading">
-                                    <th width="2%">
-                                        <input type="checkbox" class="check-all">
-                                    </th>
-                                    <th>
-                                        Tên
-                                    </th>
-                                    <th width="15%">
-                                        Ngày cập nhật
-                                    </th>
-                                    <th width="10%">
-                                        Trạng thái
-                                    </th>
+                                    {% include "admin/_table_template/header.html" %}
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for role in roles %}
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" class="check-element" name="ids[]"
-                                                   value="{{ role.id }}">
-                                        </td>
-                                        <td><a href="/admin/roles/{{ role.id }}">{{ role.name }}</a></td>
-                                        <td>{{ role.modified_at | date('d/m/Y') }}</td>
-                                        <td>{{ role.status }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% include "admin/_table_template/body.html" %}
                                 </tbody>
                             </table>
                         </div>

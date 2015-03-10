@@ -2,9 +2,9 @@
  * Created by thanhnv on 2/25/15.
  */
 module.exports = function (menus) {
-    menus.default.modules.widgets = {
+    menus.systems.modules.widgets = {
         title: 'Widgets',
-        sort: 2,
+        sort: 4,
         icon: 'fa fa-file-text',
         menus: [
             {

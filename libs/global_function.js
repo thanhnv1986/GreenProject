@@ -81,8 +81,11 @@ exports.parseCondition = function (column, value) {
     else if (~value.indexOf('<=')) {
         return column + " <= ?";
     }
-    else if (~value.indexOf('-')) {
+    else if (~value.indexOf('><')) {
         return column + " between ? and ?";
+    }
+    else if (~value.indexOf('<>')) {
+        return column + " not between ? and ?";
     }
     else if (~value.indexOf(';')) {
         return column + " in (?)";
@@ -93,12 +96,45 @@ exports.parseCondition = function (column, value) {
 };
 exports.parseValue = function (value) {
     value = value.replace(/[^a-zA-Z0-9\%\?-]/g, "");
-    if (~value.indexOf('-')) {
-        return value.split('-');
+    if (~value.indexOf('><')) {
+        return value.split('><');
+    }
+    else if (~value.indexOf('<>')) {
+        return value.split('<>');
     }
     else {
         return value;
     }
 
 };
+exports.createFilter = function (req, res, route, reset_link, current_column, order, columns) {
+    //Add button Search
+    res.locals.searchButton = __acl.addButton(req, route, 'index');
+    res.locals.resetFilterButton = __acl.addButton(req, route, 'index', reset_link);
+    var conditions = [];
+    var values = [];
+    values.push('abc');
+    for (var i in req.query) {
+        if (req.query[i] != '') {
+            conditions.push(__.parseCondition(i, req.query[i]));
+            var value = __.parseValue(req.query[i]);
+            if (Array.isArray(value)) {
+                for (var y in value) {
+                    values.push(value[y].trim());
+                }
+            }
+            else {
+                values.push(value);
+            }
+
+        }
+    }
+    var stCondition = conditions.join(" AND ");
+    values[0] = stCondition;
+    res.locals.table_columns = columns;
+    res.locals.currentColumn = current_column;
+    res.locals.currentOrder = order;
+    res.locals.filters = req.query;
+    return {values: values};
+}
 

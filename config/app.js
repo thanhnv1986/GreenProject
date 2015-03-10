@@ -120,8 +120,6 @@ module.exports = function () {
         next();
     });
 
-    //module manager frontend
-    app.use('/^((?!admin\/).)*$', require('../app/plugins/modules-f-plugin.js'));
     app.use(require('../app/plugins/theme-plugin.js'));
 
     // Globbing admin module files
@@ -137,6 +135,20 @@ module.exports = function () {
             redis.set('all_modules', JSON.stringify(__modules), redis.print);
         }
     });
+
+
+
+    //module manager backend
+    app.use('/admin/*', require('../app/plugins/modules-plugin.js'));
+    // Globbing routing admin files
+    config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
+        app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
+    });
+
+    //module manager frontend
+    //app.use('/^((?!admin))/*', require('../app/plugins/modules-f-plugin.js'));
+    app.use('/*', require('../app/plugins/modules-f-plugin.js'));
+
     // Globbing frontend module files
     config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
@@ -147,13 +159,6 @@ module.exports = function () {
     config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
         require(path.resolve(routePath))(app);
-    });
-
-    //module manager backend
-    app.use('/admin/*', require('../app/plugins/modules-plugin.js'));
-    // Globbing routing admin files
-    config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
-        app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
     });
 
     // Globbing menu files

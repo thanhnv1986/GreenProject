@@ -40,33 +40,15 @@ exports.list = function (req, res) {
     var page = req.params.page || 1;
     var column = req.params.sort || 'id';
     var order = req.params.order || '';
-    console.log(req.query);
-    var conditions = [];
-    var values = [];
-    values.push('abc');
-    for (var i in req.query) {
-        if (req.query[i] != '') {
-            conditions.push(__.parseCondition(i, req.query[i]));
-            var value = __.parseValue(req.query[i]);
-            if(Array.isArray(value)){
-                for(var y in value){
-                    values.push(value[y].trim());
-                }
-            }
-            else{
-                values.push(value);
-            }
-
-        }
-    }
-    var stCondition = conditions.join(" AND ");
-    values[0] = stCondition;
     //Config columns
-    res.locals.table_columns = [
+    res.locals.root_link = '/admin/users/page/'+page+'/sort';
+    var filter = __.createFilter(req, res, route, '/admin/users', column, order, [
         {
             column: "display_name",
             width: '25%',
-            header: "Full Name"
+            header: "Full Name",
+            link: '/admin/users/{id}',
+            acl: 'users.update'
         },
         {
             column: "user_login",
@@ -81,14 +63,37 @@ exports.list = function (req, res) {
         {
             column: "role.name",
             width: '15%',
-            header: "Role"
+            header: "Role",
+            filter: {
+                type: 'select',
+                filter_key: 'role_id',
+                data_source: 'role',
+                display_key: 'name',
+                value_key: 'id'
+            }
         },
         {
             column: "user_status",
             width: '10%',
-            header: "Status"
+            header: "Status",
+            filter: {
+                type: 'select',
+                filter_key: 'user_status',
+                data_source: [
+                    {
+                        name: "publish"
+                    },
+                    {
+                        name: "un-publish"
+                    }
+                ],
+                display_key: 'name',
+                value_key: 'name'
+            }
         }
-    ];
+    ]);
+    //res = filter.res;
+
     __models.user.findAndCountAll({
         include: [
             {
@@ -98,17 +103,15 @@ exports.list = function (req, res) {
         order: column + " " + order,
         limit: config.pagination.number_item,
         offset: (page - 1) * config.pagination.number_item,
-        where: values
+        where: filter.values
     }).then(function (results) {
         var totalPage = Math.ceil(results.count / config.pagination.number_item);
         res.render(index_template, {
             title: "All Users",
             totalPage: totalPage,
             items: results.rows,
-            currentPage: page,
-            currentColumn: column,
-            currentOrder: order,
-            filters: req.query
+            currentPage: page
+
         });
     });
 };

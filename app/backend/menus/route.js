@@ -10,6 +10,7 @@ var controller = require('./controllers/index.js');
 var moduleName = 'menus';
 
 router.route('/menus').get(__acl.isAllow(moduleName, 'index'), controller.index);
+router.get('/menus/sort/:sort/:order', __acl.isAllow(moduleName, 'index'), controller.index);
 router.route('/menus').delete(__acl.isAllow(moduleName, 'delete'),controller.delete);
 router.route('/menus/create').get(__acl.isAllow(moduleName, 'create'), controller.create);
 router.route('/menus/create').post(__acl.isAllow(moduleName, 'create'), controller.save, controller.create);

@@ -1,12 +1,20 @@
 'use strict';
 
 module.exports = {
-	app: {
-		title: 'GREEN',
-		description: 'Sequelize, Express and Node.js',
-		keywords: 'Techmaster, Sequelize, Express and Node.js'
-	},
+    app: {
+        title: 'GREEN',
+        description: 'Sequelize, Express and Node.js',
+        keywords: 'Techmaster, Sequelize, Express and Node.js'
+    },
     admin_prefix: 'admin',
+    date_format: 'Y-m-d',//'d/m/Y'
+    number_format: {
+        thousand:'.',
+        decimal:',',
+        length:2,
+        header:'',
+        footer:'$'
+    },
     mailer_config: {
         service: 'Gmail',
         auth: {
@@ -16,21 +24,21 @@ module.exports = {
         mailer_from: "Techmaster <support@techmaster.vn>",
         mailer_to: "cuong@techmaster.vn"
     },
-    pagination:{
-        number_item:20
+    pagination: {
+        number_item: 20
     },
-	port: process.env.PORT || 3000,
-	templateEngine: 'nunjucks',
-	sessionSecret: 'GREEN',
-	sessionCollection: 'sessions',
-    themes:'default',
-	assets: {
-		lib: {
-			css: [
-				'public/lib/bootstrap/dist/css/bootstrap.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.css'
-			]
+    port: process.env.PORT || 3000,
+    templateEngine: 'nunjucks',
+    sessionSecret: 'GREEN',
+    sessionCollection: 'sessions',
+    themes: 'default',
+    assets: {
+        lib: {
+            css: [
+                'public/lib/bootstrap/dist/css/bootstrap.css',
+                'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+            ]
 
-		}
-	}
+        }
+    }
 };

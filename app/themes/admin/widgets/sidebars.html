@@ -6,6 +6,7 @@
             padding-left: 0px;
             font-size: 15px;
         }
+
         .widget-item {
             display: block;
             border: 1px solid;
@@ -76,6 +77,11 @@
                         <div class="box box-solid box-info" id="{{ bar.name }}">
                             <div class="box-header">
                                 <h3 class="box-title">{{ bar.title }}</h3>
+
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="box-body" id="{{ bar.alias }}">
                                 <ul class="widget-list connect-list sidebar-widget">
@@ -89,9 +95,9 @@
         </div>
     </div>
 {% endblock %}
-{% block jsExtends %}
-    {#{% include 'admin/editorScript.html' %}#}
-    {#<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>#}
-    <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
-    <script src="/admin/dist/js/widgets/sidebar.min.js"></script>
-{% endblock %}
+    {% block jsExtends %}
+        {#{% include 'admin/editorScript.html' %}#}
+        {#<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>#}
+        <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
+        <script src="/admin/dist/js/widgets/sidebar.min.js"></script>
+    {% endblock %}

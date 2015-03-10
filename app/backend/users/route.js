@@ -14,7 +14,7 @@ router.get('/users/profile',controller.profile);
 router.get('/users', __acl.isAllow(moduleName, 'index'), controller.list);
 router.get('/users/page/:page', __acl.isAllow(moduleName, 'index'), controller.list);
 router.get('/users/page/:page/sort/:sort/:order', __acl.isAllow(moduleName, 'index'), controller.list);
-router.post('/users/*', __acl.isAllow(moduleName, 'index'), controller.list);
+
 
 router.delete('/users', __acl.isAllow(moduleName, 'delete'), controller.delete);
 router.get('/users/create', __acl.isAllow(moduleName, 'create'), controller.create);

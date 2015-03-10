@@ -12,6 +12,7 @@ module.exports = function (req, res, next) {
     if (module == '') {
         module = 'dashboard';
     }
+    module = module.split('?')[0];
     var moduleName = module.replace('-', '_');
 
     if (moduleName == 'login' || moduleName == 'uploads') return next();
@@ -20,6 +21,7 @@ module.exports = function (req, res, next) {
     }
     else {
         req.flash.error('Module ' + module + ' is not active');
+        console.log('Error *****', moduleName);
         res.render('admin/500');
     }
 }
