@@ -71,7 +71,7 @@ exports.list = function (req, res) {
             filter: {
                 type: 'select',
                 filter_key: 'role_id',
-                data_source: 'role',
+                data_source: 'arr_role',
                 display_key: 'name',
                 value_key: 'id'
             }

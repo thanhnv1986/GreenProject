@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
         reset_password_token: DataTypes.STRING
     }, {
         timestamps: false,
-        tableName: 'users',
+        tableName: 'arr_users',
 
         classMethods: {
             associate: function (models) {

@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
         widget_type: DataTypes.STRING,
         ordering: DataTypes.INTEGER
     }, {
-        freezeTableName: true,
+        tableName: 'arr_widgets',
         timestamps: true,
         // I don't want createdAt
         createdAt: "created_at",
