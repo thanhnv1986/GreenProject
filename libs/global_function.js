@@ -17,6 +17,9 @@ exports.active_menu = function (value, string_to_compare, cls, index) {
     if (cls) {
         st = cls;
     }
+    if (~string_to_compare.indexOf('/')) {
+        string_to_compare = string_to_compare.split('/')[index];
+    }
     if (index) {
         return arr[index] === string_to_compare ? st : "";
     }
@@ -113,11 +116,25 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
     res.locals.resetFilterButton = __acl.addButton(req, route, 'index', reset_link);
     var conditions = [];
     var values = [];
-    values.push('abc');
+    values.push('command');
+    var getColumn = function (name) {
+        for (var i in columns) {
+            if (columns[i].column == name) {
+                return columns[i];
+            }
+        }
+    }
     for (var i in req.query) {
         if (req.query[i] != '') {
-            conditions.push(__.parseCondition(i, req.query[i]));
-            var value = __.parseValue(req.query[i]);
+            var col = getColumn(i);
+            if (col.query) {
+                conditions.push(col.query);
+            }
+            else {
+                conditions.push(__.parseCondition(i, req.query[i]));
+            }
+
+            var value = __.parseValue((col.value_start ? col.value_start : '') + req.query[i] + (col.value_end ? col.value_end : ''));
             if (Array.isArray(value)) {
                 for (var y in value) {
                     values.push(value[y].trim());
