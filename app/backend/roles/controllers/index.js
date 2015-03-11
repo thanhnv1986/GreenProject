@@ -59,12 +59,19 @@ exports.list = function (req, res) {
             header: "Status"
         }
     ]);
+    // List roles
     __models.role.findAll({
         order: column + " " + order
     }).then(function (roles) {
         res.render('roles/index', {
             title: "All Roles",
             items: roles
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+        res.render('roles/index', {
+            title: "All Roles",
+            roles: null
         });
     });
 };
@@ -76,54 +83,59 @@ exports.view = function (req, res) {
 
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Role'});
-    async.parallel([
-        function (callback) {
-            __models.role.find({
-                where: {
-                    id: req.params.cid
-                }
-            }).then(function (roles) {
-                callback(null, roles);
-            });
+
+    // Get role by id
+    __models.role.find({
+        where: {
+            id: req.params.cid
         }
-    ], function (err, results) {
-            res.render('roles/new', {
-                title: "Update Role",
-                modules: __modules,
-                role: results[0],
-                rules: JSON.parse(results[0].rules)
-            });
-        }
-    );
+    }).then(function (roles) {
+        res.render('roles/new', {
+            title: "Update Role",
+            modules: __modules,
+            role: roles,
+            rules: JSON.parse(roles.rules)
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+        res.render('roles/new', {
+            title: "Update Role",
+            modules: __modules,
+            role: null,
+            rules: null
+        });
+    });
 };
 
 exports.update = function (req, res) {
-    req.messages = [];
+    // Get role by id
     __models.role.find({
         where: {
             id: req.params.cid
         }
     }).then(function (role) {
         var rules = {};
+
         for (var k in req.body) {
             if (req.body.hasOwnProperty(k)) {
-                if (k == 'title') {
-                }
-                else if (k == 'status') {
-                }
-                else {
+                if (k != 'title' && k != 'status') {
                     rules[k] = req.body[k].join(':');
                 }
             }
         }
-        role.updateAttributes({
+
+        // Update role
+        return role.updateAttributes({
             name: req.body.title,
             status: req.body.status,
             rules: JSON.stringify(rules)
-        }).then(function () {
-            req.flash.success('Update role successfully');
-            res.redirect('/admin/roles/');
         });
+    }).then(function () {
+        req.flash.success('Update role successfully');
+        res.redirect('/admin/roles/');
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+        res.redirect('/admin/roles/');
     });
 };
 
@@ -134,6 +146,7 @@ exports.create = function (req, res) {
 
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Add New'});
+
     res.render('roles/new', {
         title: "New Role",
         modules: __modules
@@ -141,19 +154,17 @@ exports.create = function (req, res) {
 };
 
 exports.save = function (req, res) {
-    req.messages = [];
     var rules = {};
+
     for (var k in req.body) {
         if (req.body.hasOwnProperty(k)) {
-            if (k == 'title') {
-            }
-            else if (k == 'status') {
-            }
-            else {
+            if (k != 'title' && k != 'status') {
                 rules[k] = req.body[k].join(':');
             }
         }
     }
+
+    // Create role
     __models.role.create({
         name: req.body.title,
         status: req.body.status,
@@ -161,10 +172,14 @@ exports.save = function (req, res) {
     }).then(function () {
         req.flash.success('Create new role successfully');
         res.redirect('/admin/roles/');
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+        res.redirect('/admin/roles/');
     });
 };
 
 exports.delete = function (req, res) {
+    // Delete role
     __models.role.destroy({
         where: {
             id: {
@@ -173,6 +188,14 @@ exports.delete = function (req, res) {
         }
     }).then(function () {
         req.flash.success("Delete role successfully");
-        res.sendStatus(200);
+        res.sendStatus(204);
+    }).catch(function (error) {
+        if(error.name == 'SequelizeForeignKeyConstraintError'){
+            req.flash.error('Cannot delete role has already in use');
+            res.sendStatus(200);
+        }else{
+            req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+            res.sendStatus(200);
+        }
     });
 };

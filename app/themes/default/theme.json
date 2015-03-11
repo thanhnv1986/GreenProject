@@ -27,6 +27,16 @@
             "title": "Sidebar 4"
         }
     ],
+    "menus": [
+        {
+            "name": "main_menu",
+            "title": "Main menu"
+        },
+        {
+            "name": "left_menu",
+            "title": "Left menu"
+        }
+    ],
     "layouts": [
         {
             "name": "name",

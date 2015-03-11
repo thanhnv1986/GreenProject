@@ -15,30 +15,32 @@ var breadcrumb =
             href: '/admin/modules'
         }
     ];
+
 exports.index = function (req, res) {
-    //breadcrumb
+    // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
     res.render('modules/index', {
         title: "All Modules",
         modules: __modules
     });
-
-
 };
+
 exports.active = function (req, res, next) {
     if (__modules[req.params.route].active == undefined || __modules[req.params.route].active == false) {
-        req.flash.success('Module '+req.params.route+' has active');
+        req.flash.success('Module ' + req.params.route + ' has active');
         __modules[req.params.route].active = true;
     }
     else {
-        req.flash.error('Module '+req.params.route+' has un-active');
+        req.flash.error('Module ' + req.params.route + ' has un-active');
         __modules[req.params.route].active = false;
     }
+
     redis.set('all_modules', JSON.stringify(__modules), redis.print);
     next();
 };
+
 exports.reload = function (req, res, next) {
-    var md = require(__base+'libs/modules_backend_manager.js');
+    var md = require(__base + 'libs/modules_backend_manager.js');
     md.loadAllModules();
     req.flash.success("Reload all modules");
     next();

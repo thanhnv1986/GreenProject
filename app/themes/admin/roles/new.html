@@ -4,6 +4,7 @@
         .rule-item {
             min-height: 170px;
         }
+
         .label-rule {
             cursor: pointer;
         }
@@ -43,15 +44,15 @@
                                     <div class="rule-item">
                                         <div class="form-group">
                                             <label class="label-rule">
-                                                <input type="checkbox" class="check-rule" />&nbsp;
+                                                <input type="checkbox" class="check-rule-parent"/>&nbsp;
                                                 {{ module.title }}
                                             </label>
                                             {% for rule in module.rules %}
                                                 <div class="checkbox">
                                                     <label>
                                                         <input type="checkbox" name="{{ key }}[]"
-                                                               value="{{ rule.name }}"
-                                                               {{ rules|check_state(key, rule.name) }} />
+                                                               class="check-rule-children" value="{{ rule.name }}"
+                                                                {{ rules|check_state(key, rule.name) }} />
                                                         {{ rule.title }}
                                                     </label>
                                                 </div>
@@ -70,14 +71,34 @@
 
 {% block jsExtends %}
     <script>
-        $(function(){
-            $('input.check-rule').change(function(){
-                var cb_child = $(this).parent('label').parent('div')
+        $(function () {
+            var checkParent = $('input.check-rule-parent');
+
+            // Check parent if all children is checked
+            checkParent.each(function(){
+                var isCheckAll = true;
+                var cbChild = $(this).parent('label').parent('div')
                         .children('div').children('label').children('input[type="checkbox"]');
-                if($(this).is(':checked')){
-                    cb_child.prop('checked', true);
-                }else{
-                    cb_child.prop('checked', false);
+
+                cbChild.each(function(){
+                    if(!$(this).is(':checked')){
+                        isCheckAll = false;
+                    }
+                });
+
+                if(isCheckAll){
+                    $(this).prop('checked', true);
+                }
+            });
+
+            // Check rule event
+            checkParent.change(function () {
+                var cbChild = $(this).parent('label').parent('div')
+                        .children('div').children('label').children('input[type="checkbox"]');
+                if ($(this).is(':checked')) {
+                    cbChild.prop('checked', true);
+                } else {
+                    cbChild.prop('checked', false);
                 }
             });
         })
