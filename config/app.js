@@ -122,6 +122,7 @@ module.exports = function () {
 
     app.use(require('../app/plugins/theme-plugin.js'));
 
+
     // Globbing admin module files
     redis.get('all_modules', function (err, results) {
         if (results != null) {
@@ -136,13 +137,22 @@ module.exports = function () {
         }
     });
 
-
-
     //module manager backend
+    require(__base + 'app/backend/core_route')(app);
     app.use('/admin/*', require('../app/plugins/modules-plugin.js'));
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
+    });
+
+    app.use('/admin/*', function (req, res, next) {
+        //return next();
+        if (!req.isAuthenticated()) {
+            console.log("redirect to admin login");
+            return res.redirect('/admin/login');
+        }
+//        res.locals.__user = req.user;
+        next();
     });
 
     //module manager frontend

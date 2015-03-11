@@ -30,6 +30,12 @@ BaseWidget.prototype.getAllLayouts = function (alias) {
         var s = path.split('/');
         files.push(s[s.length - 1]);
     });
+    if (files.length == 0) {
+        config.getGlobbedFiles(__base + "app/themes/default/_widgets/" + alias + "/*.html").forEach(function (path) {
+            var s = path.split('/');
+            files.push(s[s.length - 1]);
+        });
+    }
     return files;
 }
 BaseWidget.prototype.save = function (data) {
@@ -87,10 +93,10 @@ BaseWidget.prototype.render = function (widget, data) {
             renderWidget = Promise.promisify(_this.env.render, _this.env);
         }
         /*else {
-            renderWidget = Promise.promisify(_this.env.render, _this.env);
+         renderWidget = Promise.promisify(_this.env.render, _this.env);
 
-            widgetFilePath = 'default/_widgets/' + widgetFile;
-        }*/
+         widgetFilePath = 'default/_widgets/' + widgetFile;
+         }*/
         console.log("User view: ", widgetFilePath);
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {
