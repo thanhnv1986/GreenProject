@@ -14,15 +14,13 @@ var _base_config = {
     author: "Nguyen Van Thanh",
     version: "0.1.0",
     options: {
-        id: '',
-        title: '',
-        menu_id: '',
-        file: ''
+        menu_id: ''
     }
 };
 function Menus() {
     Menus.super_.call(this);
     _.assign(this, _base_config);
+    this.files = BaseWidget.prototype.getAllLayouts.call(this, _base_config.alias);
 }
 util.inherits(Menus, BaseWidget);
 
@@ -30,22 +28,17 @@ util.inherits(Menus, BaseWidget);
 Menus.prototype.render_setting = function (widget_type, widget) {
     var _this = this;
     return new Promise(function (done, err) {
-        var files = [];
-        config.getGlobbedFiles(__base + "app/themes/" + config.themes + '/_menus/*.html').forEach(function (path) {
-            var s = path.split('/');
-            files.push(s[s.length - 1]);
-        });
         __models.menus.findAll({
             where: {
                 status: 'publish'
             },
-            order:["id"]
+            order: ["id"]
         }, {raw: true}).then(function (menus) {
-            console.log(menus);
             _this.env.render(widget_type + '/setting.html', {
+                    widget_type: widget_type,
                     widget: widget,
                     menus: menus,
-                    files: files
+                    files: _this.files
                 },
                 function (err, re) {
                     done(re);
@@ -67,13 +60,19 @@ Menus.prototype.render = function (widget, route) {
             }, {raw: true}).then(function (menu_details) {
                 //get menu order
                 var menu_order = JSON.parse(menu.menu_order);
-                _this.env.render(config.themes + '/_menus/' + widget.data.file, {
+                _this.env.render(config.themes + '/_widgets/' + widget.widget_type + '/' + widget.data.file, {
                         route: route,
                         _menus: menu_order,
                         _menus_data: menu_details
                     },
                     function (err, res) {
-                        resolve(res);
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(res);
+                        }
+
                     });
             });
 

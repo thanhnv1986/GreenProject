@@ -1,15 +1,5 @@
-<form method="post">
-    <input type="hidden" name="widget" value="menus">
-    <input type="hidden" name="id" value="{{ widget.id }}">
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" class="form-control" name="title" id="title" value="{{ widget.data.title }}">
-            </div>
-        </div>
-    </div>
+{% extends "_widget_setting.html" %}
+{% block content %}
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -26,28 +16,4 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Layout file</label>
-                <select class="form-control" name="file">
-                    {% for file in files %}
-                        {% if file == widget.data.file %}
-                            <option selected value="{{ file }}">{{ file }}</option>
-                        {% else %}
-                            <option value="{{ file }}">{{ file }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <button type="submit" class="btn btn-success" onclick="return saveWidget(this)">Save</button>
-                <button class="btn btn-danger" onclick="return removeWidget(this);">Remove</button>
-            </div>
-        </div>
-    </div>
-</form>
+{% endblock %}

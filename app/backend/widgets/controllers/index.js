@@ -41,7 +41,9 @@ exports.sidebar = function (req, res, next) {
 };
 exports.addWidget = function (req, res) {
     var widget = __.getWidget(req.params.widget);
-    widget.render_setting(req, res, req.params.widget);
+    widget.render_setting(req.params.widget).then(function (re) {
+        res.send(re);
+    });
 }
 exports.saveWidget = function (req, res) {
     console.log(req.body);
@@ -54,7 +56,7 @@ exports.saveWidget = function (req, res) {
 exports.read = function (req, res) {
     __models.widgets.find(req.params.cid).then(function (widget) {
         var widget = __.getWidget(widget.widget_type);
-        widget.render_setting(req, res, widget.widget_type, widget).then(function(re){
+        widget.render_setting(req, res, widget.widget_type, widget).then(function (re) {
             res.send(re);
         });
     });
