@@ -40,7 +40,7 @@ exports.index = function (req, res) {
             column: "name",
             width: '25%',
             header: "Name",
-            link: '/admin/roles/{id}',
+            link: '/admin/menus/{id}',
             acl: 'users.update'
         },
         {

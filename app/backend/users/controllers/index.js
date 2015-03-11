@@ -48,7 +48,10 @@ exports.list = function (req, res) {
             width: '25%',
             header: "Full Name",
             link: '/admin/users/{id}',
-            acl: 'users.update'
+            acl: 'users.update',
+            query:'lower(display_name) like lower(?)',
+            value_start:'',
+            value_end:'%'
         },
         {
             column: "user_login",

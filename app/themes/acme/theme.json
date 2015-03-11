@@ -7,6 +7,10 @@
     "thumbnail":"acme-thumbnail.jpg",
     "sidebars": [
         {
+            "name": "main-menu",
+            "title": "Main Menu"
+        },
+        {
             "name": "name",
             "title": "Title"
         }

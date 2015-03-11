@@ -7,9 +7,8 @@ var Promise = require('bluebird'),
     config = require(__base + 'config/config');
 
 //Base constructor
-
 function BaseWidget() {
-
+    this.env = __.createNewEnv();
 }
 var widget = BaseWidget;
 widget.prototype.save = function (data) {
@@ -41,6 +40,16 @@ widget.prototype.save = function (data) {
         }
 
     });
+}
+widget.prototype.render_setting = function (widget_type, widget) {
+    var _this = this;
+    return new Promise(function (done, reject) {
+        _this.env.render(widget_type + '/setting.html', {widget: widget},
+            function (err, re) {
+                done(re);
+            });
+    });
+
 }
 widget.prototype.render = function (widget, data) {
     return new Promise(function (resolve, reject) {
