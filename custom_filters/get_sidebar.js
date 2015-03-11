@@ -14,8 +14,8 @@ module.exports = function (env) {
             order: ['ordering']
         }, {raw: true}).then(function (widgets) {
             for (var i in widgets) {
-                var widget = __.getWidget(widgets[i].widget_type);
-                promises.push(widget.render(widgets[i], route));
+                var w = __.getWidget(widgets[i].widget_type);
+                promises.push(w.render(widgets[i], route));
             }
             Promise.all(promises).then(function (results) {
                 cb(null, results.join(''));

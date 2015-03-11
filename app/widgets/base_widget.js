@@ -24,8 +24,7 @@ function BaseWidget() {
     _.assign(this, _base_config);
     this.env = __.createNewEnv();
 }
-var widget = BaseWidget;
-widget.prototype.getAllLayouts = function (alias) {
+BaseWidget.prototype.getAllLayouts = function (alias) {
     var files = [];
     config.getGlobbedFiles(__base + "app/themes/" + config.themes + '/_widgets/' + alias + '/*.html').forEach(function (path) {
         var s = path.split('/');
@@ -33,7 +32,7 @@ widget.prototype.getAllLayouts = function (alias) {
     });
     return files;
 }
-widget.prototype.save = function (data) {
+BaseWidget.prototype.save = function (data) {
     return new Promise(function (done, reject) {
         var json_data = _.clone(data);
         delete json_data.sidebar;
@@ -64,7 +63,7 @@ widget.prototype.save = function (data) {
 
     });
 }
-widget.prototype.render_setting = function (widget_type, widget) {
+BaseWidget.prototype.render_setting = function (widget_type, widget) {
     var _this = this;
     return new Promise(function (done, reject) {
         _this.env.render(widget_type + '/setting.html', {widget: widget, widget_type: widget_type, files: _this.files},
@@ -76,24 +75,22 @@ widget.prototype.render_setting = function (widget_type, widget) {
     });
 
 }
-widget.prototype.render = function (widget, data) {
-    console.log(widget);
+BaseWidget.prototype.render = function (widget, data) {
+    var _this = this;
     return new Promise(function (resolve, reject) {
-        var env, renderWidget;
+        var renderWidget;
         var widgetFile = widget.widget_type + '/' + widget.data.file;
         var widgetFilePath = __base + 'app/themes/' + config.themes + '/_widgets/' + widgetFile;
         console.log('Widget Path : ', widgetFilePath);
         if (!fs.existsSync(widgetFilePath)) {
-            widgetFilePath = widgetFile;
-            env = __.createNewEnv();
-            renderWidget = Promise.promisify(env.render, env);
+            widgetFilePath = 'default/_widgets/' + widgetFile;
+            renderWidget = Promise.promisify(_this.env.render, _this.env);
         }
-        else {
-            env = __.createNewEnv([__base + 'app/themes']);
-            renderWidget = Promise.promisify(env.render, env);
+        /*else {
+            renderWidget = Promise.promisify(_this.env.render, _this.env);
 
-            widgetFilePath = config.themes + '/_widgets/' + widgetFile;
-        }
+            widgetFilePath = 'default/_widgets/' + widgetFile;
+        }*/
         console.log("User view: ", widgetFilePath);
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {
@@ -102,4 +99,4 @@ widget.prototype.render = function (widget, data) {
     });
 }
 
-module.exports = widget;
+module.exports = BaseWidget;

@@ -60,7 +60,12 @@ Menus.prototype.render = function (widget, route) {
             }, {raw: true}).then(function (menu_details) {
                 //get menu order
                 var menu_order = JSON.parse(menu.menu_order);
-                _this.env.render(config.themes + '/_widgets/' + widget.widget_type + '/' + widget.data.file, {
+                resolve(BaseWidget.prototype.render.call(_this, widget, {
+                    route: route,
+                    _menus: menu_order,
+                    _menus_data: menu_details
+                }));
+                /*_this.env.render(config.themes + '/_widgets/' + widget.widget_type + '/' + widget.data.file, {
                         route: route,
                         _menus: menu_order,
                         _menus_data: menu_details
@@ -73,7 +78,7 @@ Menus.prototype.render = function (widget, route) {
                             resolve(res);
                         }
 
-                    });
+                    });*/
             });
 
         });
