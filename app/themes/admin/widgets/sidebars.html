@@ -53,7 +53,8 @@
             min-height: 50px;
             text-align: center;
         }
-        .sidebar-widget{
+
+        .sidebar-widget {
             z-index: 9999;
             min-height: 50px;
         }
@@ -112,7 +113,7 @@
                 accept: ":not(.ui-sortable-helper)",
                 drop: function (event, ui) {
                     $(this).find(".placeholder").remove();
-                    var li = $("<li style='position: relative' id='"+(new Date().getTime())+"'></li>");
+                    var li = $("<li style='position: relative' id='" + (new Date().getTime()) + "'></li>");
                     li.append("<div class='widget-item'></div>");
                     li.append('<a href="#" class="fa fa-caret-down expand_arrow" onclick="return showDetail(this);"></a>');
                     _this = $(this);
@@ -149,10 +150,10 @@
                     }
                 }
                 /*start: function (event, ui) {
-                    if ($(this).find('.widget-item').length == 1 && $(this).find('.placeholder').length == 0) {
-                        $(this).find("ul").append("<li class='placeholder'>Drop widget here</li>");
-                    }
-                }*/
+                 if ($(this).find('.widget-item').length == 1 && $(this).find('.placeholder').length == 0) {
+                 $(this).find("ul").append("<li class='placeholder'>Drop widget here</li>");
+                 }
+                 }*/
             });
 
             /*$('.sidebar-widget .widget-list textarea').each(function(index){

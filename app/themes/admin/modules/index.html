@@ -60,7 +60,7 @@
                                     <td>{{ module.description }}</td>
                                     {% if module.system %}
                                         <td><span class="label label-success">system</span></td>
-                                    {% elif module.active == undefined or module.active == false %}
+                                        {% elif module.active == undefined or module.active == false %}
                                         <td><a class="label label-danger" href="/admin/modules/{{ key }}">un-active</a>
                                         </td>
                                     {% else %}

@@ -2,6 +2,7 @@
  * Created by thanhnv on 2/23/15.
  */
 var config = require(__base + 'config/config.js');
+
 module.exports = function (req, res, next) {
     //Check if is using admin view
     var pre_fix = '';
@@ -22,4 +23,4 @@ module.exports = function (req, res, next) {
         req.flash.error('Module ' + module + ' is not active');
         res.render('admin/500');
     }
-}
+};

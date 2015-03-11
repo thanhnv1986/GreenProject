@@ -1,6 +1,8 @@
 {% extends 'admin/layout.html' %}
+
 {% block content %}
     {% include 'admin/toolbar.html' %}
+
     <form method="delete">
         <div class="row">
             <div class="col-md-12">
@@ -25,6 +27,7 @@
                                     </th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
                                 {% for role in roles %}
                                     <tr>
@@ -45,8 +48,6 @@
             </div>
         </div>
     </form>
-
-    {% include 'admin/delete_modal.html' %}
 {% endblock %}
 
 {% block jsExtends %}
@@ -63,11 +64,9 @@
                     type: 'DELETE',
                     data: {
                         ids: ids.join()
-                    },
-                    success: function (result) {
-                        // Do something with the result
-                        window.location.href = "/admin/roles/";
                     }
+                }).done(function(result){
+                    window.location.href = "/admin/roles/";
                 });
             }
         }

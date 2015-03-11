@@ -7,7 +7,7 @@ module.exports = function (env) {
         var html = '';
         if (messages.length > 0) {
             html += '<div class="margin no-print">';
-            console.log('adsfasdfa', messages);
+
             for (var i in messages) {
                 var mgs_class = '';
                 var mgs_icon = '';
@@ -29,7 +29,7 @@ module.exports = function (env) {
                     mgs_icon = 'icon fa fa-info';
                 }
                 html += '<div class="callout ' + mgs_class + '" style="margin-bottom:0px;">' +
-                    '<h4><i class="' + mgs_icon + '"></i>' + message.type + '</h4>' +
+                    '<h4><i class="' + mgs_icon + '"></i> ' + message.type.toUpperCase() + '</h4>' +
                     '<p>' + message.content +
                     '</div>';
             }
