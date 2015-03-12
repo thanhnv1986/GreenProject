@@ -99,7 +99,7 @@
 
                     <div class="col-md-6">
                         {% for bar in sidebars %}
-                            {% if loop.index <= sidebars|length/2 %}
+                            {% if loop.index | even %}
                                 {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
                             {% endif %}
                         {% endfor %}
@@ -107,7 +107,7 @@
 
                     <div class="col-md-6">
                         {% for bar in sidebars %}
-                            {% if loop.index > sidebars|length/2 %}
+                            {% if loop.index | odd %}
                                 {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
                             {% endif %}
                         {% endfor %}
