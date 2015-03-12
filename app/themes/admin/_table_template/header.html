@@ -1,8 +1,15 @@
 {% if currentOrder =="asc" %}
     {% set order = "desc" %}
+    {% set route = route|replace('asc','desc') %}
 {% else %}
     {% set order = "asc" %}
+    {% set route = route|replace('desc','asc') %}
 {% endif %}
+<style>
+    .fa-sort-asc{
+        margin-top: 5px;
+    }
+</style>
 <tr role="row" class="heading">
     {% for col in table_columns %}
         <th width="{{ col.width }}">
@@ -10,7 +17,7 @@
                 <input type="checkbox" class="check-all">
             {% else %}
                 {% set link = root_link +'/'+col.column+'/'+order %}
-                <a href="{{ link }}">{{ col.header }}</a>
+                <a class="sort-link" href="{{ link }}">{{ col.header }}</a>
                 {% if currentColumn == col.column %}
                     <i class="fa fa-sort-{{ currentOrder }} pull-right"></i>
                 {% endif %}

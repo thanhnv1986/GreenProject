@@ -9,12 +9,15 @@ module.exports = function (env) {
             where: {
                 sidebar: sidebarName
             },
-            order:['ordering']
+            order: ['ordering']
         }, {raw: true}).then(function (widgets) {
             var promises = [];
             var getWidgetHtml = function (widget) {
                 var w = __.getWidget(widget.widget_type);
-                promises.push(w.render_setting(widget.widget_type, widget));
+                if (w) {
+                    promises.push(w.render_setting(widget.widget_type, widget));
+                }
+
             }
             for (var i in widgets) {
                 getWidgetHtml(widgets[i]);

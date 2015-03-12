@@ -33,35 +33,57 @@ exports.list = function (req, res) {
     var order = req.params.order || '';
     res.locals.root_link = '/admin/roles/sort';
     //Config columns
-    __.createFilter(req, res, '', '/admin/roles', column, order, [
+    var filter = __.createFilter(req, res, route, '/admin/roles', column, order, [
         {
             column: "id",
             width: '1%',
             header: "",
-            type:'checkbox'
+            type: 'checkbox'
         },
         {
             column: "name",
             width: '25%',
             header: "Name",
             link: '/admin/roles/{id}',
-            acl: 'users.update'
+            acl: 'users.update',
+            filter: {
+                data_type: 'string'
+            }
         },
         {
             column: "modified_at",
-            type:'datetime',
+            type: 'datetime',
             width: '10%',
-            header: "Modified Date"
+            header: "Modified Date",
+            filter: {
+                type: 'datetime'
+            }
         },
         {
             column: "status",
             width: '15%',
-            header: "Status"
+            header: "Status",
+            filter: {
+                type: 'select',
+                filter_key: 'status',
+                data_source: [
+                    {
+                        name: "publish"
+                    },
+                    {
+                        name: "un-publish"
+                    }
+                ],
+                display_key: 'name',
+                value_key: 'name'
+            }
         }
     ]);
     // List roles
     __models.role.findAll({
+        where: filter.values,
         order: column + " " + order
+
     }).then(function (roles) {
         res.render('roles/index', {
             title: "All Roles",
@@ -190,10 +212,10 @@ exports.delete = function (req, res) {
         req.flash.success("Delete role successfully");
         res.sendStatus(204);
     }).catch(function (error) {
-        if(error.name == 'SequelizeForeignKeyConstraintError'){
+        if (error.name == 'SequelizeForeignKeyConstraintError') {
             req.flash.error('Cannot delete role has already in use');
             res.sendStatus(200);
-        }else{
+        } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
             res.sendStatus(200);
         }

@@ -67,38 +67,48 @@ exports.getAllCustomFilter = function (env) {
     return env;
 };
 
-exports.parseCondition = function (column, value) {
-    var st = "";
-    if (~value.indexOf('%')) {
-        return column + " like ?";
+exports.parseCondition = function (column_name, value, col) {
+    column_name = (col.filter.model ? ('"' + col.filter.model + '".') : '') + column_name;
+    if (col.filter.data_type == 'string') {
+        return 'lower(' + column_name + ') like lower(?)';
     }
-    else if (~value.indexOf('>')) {
-        return column + " > ?";
-    }
-    else if (~value.indexOf('>=')) {
-        return column + " >= ?";
-    }
-    else if (~value.indexOf('<')) {
-        return column + " < ?";
-    }
-    else if (~value.indexOf('<=')) {
-        return column + " <= ?";
-    }
-    else if (~value.indexOf('><')) {
-        return column + " between ? and ?";
-    }
-    else if (~value.indexOf('<>')) {
-        return column + " not between ? and ?";
-    }
-    else if (~value.indexOf(';')) {
-        return column + " in (?)";
+    else if (col.filter.data_type == 'string') {
+        return column_name + " between ?::timestamp and ?::timestamp";
     }
     else {
-        return column + " = ?";
+        if (~value.indexOf('><') || col.filter.type == 'datetime') {
+            return column_name + " between ? and ?";
+        }
+        else if (~value.indexOf('<>')) {
+            return column_name + " not between ? and ?";
+        }
+        else if (~value.indexOf('>=')) {
+            return column_name + " >= ?";
+        }
+        else if (~value.indexOf('<=')) {
+            return column_name + " <= ?";
+        }
+        else if (~value.indexOf('<')) {
+            return column_name + " < ?";
+        }
+        else if (~value.indexOf('>')) {
+            return column_name + " > ?";
+        }
+        else if (~value.indexOf(';')) {
+            return column_name + " in (?)";
+        }
+        else {
+            return column_name + " = ?";
+        }
     }
+
 };
-exports.parseValue = function (value) {
-    value = value.replace(/[^a-zA-Z0-9\%\?-]/g, "");
+exports.parseValue = function (value, col) {
+    console.log(value);
+    if (col.filter.type == 'datetime') {
+        return value.split(/\s+-\s+/);
+    }
+    value = value.replace(/[^a-zA-Z0-9\%\?\-\\<\\>\/]/g, "");
     if (~value.indexOf('><')) {
         return value.split('><');
     }
@@ -131,14 +141,16 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
                 conditions.push(col.query);
             }
             else {
-                conditions.push(__.parseCondition(i, req.query[i]));
+                conditions.push(__.parseCondition(i, req.query[i], col));
             }
 
-            var value = __.parseValue((col.value_start ? col.value_start : '') + req.query[i] + (col.value_end ? col.value_end : ''));
+            var value = __.parseValue(req.query[i], col);
+            console.log(value);
             if (Array.isArray(value)) {
                 for (var y in value) {
                     values.push(value[y].trim());
                 }
+
             }
             else {
                 values.push(value);

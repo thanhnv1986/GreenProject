@@ -65,20 +65,6 @@ Menus.prototype.render = function (widget, route) {
                     _menus: menu_order,
                     _menus_data: menu_details
                 }));
-                /*_this.env.render(config.themes + '/_widgets/' + widget.widget_type + '/' + widget.data.file, {
-                        route: route,
-                        _menus: menu_order,
-                        _menus_data: menu_details
-                    },
-                    function (err, res) {
-                        if (err) {
-                            reject(err);
-                        }
-                        else {
-                            resolve(res);
-                        }
-
-                    });*/
             });
 
         });

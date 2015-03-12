@@ -77,7 +77,7 @@ exports.sidebar_sort = function (req, res) {
             index++;
             continue;
         }
-        promises.push(__models.sequelize.query("Update widgets set ordering=?, sidebar=? where id=?",
+        promises.push(__models.sequelize.query("Update "+__models.widgets.getTableName()+" set ordering=?, sidebar=? where id=?",
             {replacements: [index++, sidebar, ids[i]]}));
     }
     Promise.all(promises).then(function (results) {

@@ -42,27 +42,44 @@ exports.list = function (req, res) {
     var column = req.params.sort || 'id';
     var order = req.params.order || '';
     //Config columns
-    res.locals.root_link = '/admin/users/page/'+page+'/sort';
+    res.locals.root_link = '/admin/users/page/' + page + '/sort';
     var filter = __.createFilter(req, res, route, '/admin/users', column, order, [
+        {
+            column: "id",
+            width: '10%',
+            header: "Id",
+            filter: {
+                model: 'user',
+                data_type: 'number'
+            }
+
+        },
         {
             column: "display_name",
             width: '25%',
             header: "Full Name",
             link: '/admin/users/{id}',
             acl: 'users.update',
-            query:'lower(display_name) like lower(?)',
-            value_start:'',
-            value_end:'%'
+            filter: {
+                data_type: 'string'
+            }
+
         },
         {
             column: "user_login",
             width: '15%',
-            header: "UserName"
+            header: "UserName",
+            filter: {
+                data_type: 'string'
+            }
         },
         {
             column: "user_email",
             width: '15%',
-            header: "Email"
+            header: "Email",
+            filter: {
+                data_type: 'string'
+            }
         },
         {
             column: "role.name",
@@ -169,7 +186,7 @@ exports.update = function (req, res, next) {
         var form = new formidable.IncomingForm();
 
         return form.parseAsync(req);
-    }).then(function(result){
+    }).then(function (result) {
         var data = result[0];
         var files = result[1];
 
@@ -191,10 +208,10 @@ exports.update = function (req, res, next) {
             res.redirect('/admin/users/');
         });
     }).catch(function (error) {
-        if(error.name == 'SequelizeUniqueConstraintError'){
+        if (error.name == 'SequelizeUniqueConstraintError') {
             req.flash.error('Email already exist');
             return next();
-        }else{
+        } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
             return next();
         }
@@ -254,10 +271,10 @@ exports.save = function (req, res, next) {
             res.redirect('/admin/users/');
         });
     }).catch(function (error) {
-        if(error.name == 'SequelizeUniqueConstraintError'){
+        if (error.name == 'SequelizeUniqueConstraintError') {
             req.flash.error('Email already exist');
             return next();
-        }else{
+        } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
             return next();
         }

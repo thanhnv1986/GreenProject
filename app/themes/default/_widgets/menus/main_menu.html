@@ -5,7 +5,8 @@
             <i class="fa fa-angle-down"></i>
             <ul class="dropdown-menu">
                 {% for subMn in mn.children %}
-                    {{ render_child(subMn,'', subMn.id|get_menu_data(_menus_data)) }}
+                    {% set _data = subMn.id|get_menu_data(_menus_data) %}
+                    {{ render_child(subMn,'', _data) }}
                 {% endfor %}
             </ul>
         </li>

@@ -5,11 +5,9 @@
         <div class="col-md-12">
             {% include 'admin/toolbar.html' %}
             <div class="box box-solid box-primary">
-                <div class="box-body">
-                    <div class="table-container">
-                        {% include 'admin/basic_table.html' %}
-                        {{ totalPage|pagination(currentPage,'/admin/users/page/{page}')|safe }}
-                    </div>
+                <div class="box-body table-responsive no-padding">
+                    {% include 'admin/basic_table.html' %}
+                    {{ totalPage|pagination(currentPage,'/admin/users/page/{page}')|safe }}
                 </div>
             </div>
         </div>

@@ -82,7 +82,7 @@ BaseWidget.prototype.render_setting = function (widget_type, widget) {
     });
 
 }
-//Render data to frontend
+//Render v
 BaseWidget.prototype.render = function (widget, data) {
     var _this = this;
     return new Promise(function (resolve, reject) {
@@ -90,7 +90,6 @@ BaseWidget.prototype.render = function (widget, data) {
         var widgetFile = widget.widget_type + '/' + widget.data.file;
         var widgetFilePath = __base + 'app/themes/' + config.themes + '/_widgets/' + widgetFile;
 
-        //if file not exit system will get default themes
         if (!fs.existsSync(widgetFilePath)) {
             widgetFilePath = 'default/_widgets/' + widgetFile;
         }
