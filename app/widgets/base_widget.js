@@ -14,6 +14,7 @@ var _base_config = {
     version: "0.1.0",
     options: {
         id: '',
+        cls: '',
         title: '',
         file: ''
     }
@@ -84,19 +85,20 @@ BaseWidget.prototype.render_setting = function (widget_type, widget) {
 BaseWidget.prototype.render = function (widget, data) {
     var _this = this;
     return new Promise(function (resolve, reject) {
-        var renderWidget;
+        var renderWidget = Promise.promisify(_this.env.render, _this.env);
         var widgetFile = widget.widget_type + '/' + widget.data.file;
         var widgetFilePath = __base + 'app/themes/' + config.themes + '/_widgets/' + widgetFile;
+
         console.log('Widget Path : ', widgetFilePath);
         if (!fs.existsSync(widgetFilePath)) {
             widgetFilePath = 'default/_widgets/' + widgetFile;
-            renderWidget = Promise.promisify(_this.env.render, _this.env);
-        }
-        /*else {
-         renderWidget = Promise.promisify(_this.env.render, _this.env);
 
-         widgetFilePath = 'default/_widgets/' + widgetFile;
-         }*/
+
+        }
+
+        else {
+            widgetFilePath = config.themes + '/_widgets/' + widgetFile;
+        }
         console.log("User view: ", widgetFilePath);
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {
