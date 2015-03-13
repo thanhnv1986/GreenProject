@@ -7,6 +7,7 @@ var controller = require('./controllers/index.js');
 var moduleName = 'roles';
 
 router.get('/roles', __acl.isAllow(moduleName, 'index'), controller.list);
+router.get('/roles/sort/:sort/:order', __acl.isAllow(moduleName, 'index'), controller.list);
 router.delete('/roles', __acl.isAllow(moduleName, 'delete'), controller.delete);
 router.get('/roles/create', __acl.isAllow(moduleName, 'create'), controller.create);
 router.post('/roles/create', __acl.isAllow(moduleName, 'create'), controller.save, controller.list);

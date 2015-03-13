@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 2/26/15.
  */
-var config = require(__base+'config/config');
+var config = require(__base + 'config/config');
 
 exports.create_breadcrumb = function (root) {
     var arr = root.slice(0);
@@ -16,6 +16,9 @@ exports.active_menu = function (value, string_to_compare, cls, index) {
     var st = "active";
     if (cls) {
         st = cls;
+    }
+    if (~string_to_compare.indexOf('/')) {
+        string_to_compare = string_to_compare.split('/')[index];
     }
     if (index) {
         return arr[index] === string_to_compare ? st : "";
@@ -37,30 +40,130 @@ exports.sortMenus = function (menus) {
         return 0;
     });
     return sortable;
-}
+};
 exports.getWidget = function (alias) {
     for (var i in __widgets) {
         if (__widgets[i].alias == alias) {
             return __widgets[i];
         }
     }
-}
-exports.createNewEnv = function(views){
+};
+exports.createNewEnv = function (views) {
     var nunjucks = require('nunjucks');
-    if(views){
+    if (views) {
         var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(views));
     }
-    else{
+    else {
         var env = new nunjucks.Environment(new nunjucks.FileSystemLoader([__base + 'app/widgets', __base + 'app/themes']));
     }
     env = __.getAllCustomFilter(env);
     return env;
-}
-exports.getAllCustomFilter = function(env){
-    config.getGlobbedFiles(__base+'custom_filters/*.js').forEach(function (routePath) {
+};
+exports.getAllCustomFilter = function (env) {
+    config.getGlobbedFiles(__base + 'custom_filters/*.js').forEach(function (routePath) {
         console.log(routePath);
         require(routePath)(env);
     });
     return env;
+};
+
+exports.parseCondition = function (column_name, value, col) {
+    column_name = (col.filter.model ? ('"' + col.filter.model + '".') : '') + column_name;
+    if (col.filter.data_type == 'string') {
+        return 'lower(' + column_name + ') like lower(?)';
+    }
+    else if (col.filter.data_type == 'string') {
+        return column_name + " between ?::timestamp and ?::timestamp";
+    }
+    else {
+        if (~value.indexOf('><') || col.filter.type == 'datetime') {
+            return column_name + " between ? and ?";
+        }
+        else if (~value.indexOf('<>')) {
+            return column_name + " not between ? and ?";
+        }
+        else if (~value.indexOf('>=')) {
+            return column_name + " >= ?";
+        }
+        else if (~value.indexOf('<=')) {
+            return column_name + " <= ?";
+        }
+        else if (~value.indexOf('<')) {
+            return column_name + " < ?";
+        }
+        else if (~value.indexOf('>')) {
+            return column_name + " > ?";
+        }
+        else if (~value.indexOf(';')) {
+            return column_name + " in (?)";
+        }
+        else {
+            return column_name + " = ?";
+        }
+    }
+
+};
+exports.parseValue = function (value, col) {
+    console.log(value);
+    if (col.filter.type == 'datetime') {
+        return value.split(/\s+-\s+/);
+    }
+    value = value.replace(/[^a-zA-Z0-9\%\?\-\\<\\>\/]/g, "");
+    if (~value.indexOf('><')) {
+        return value.split('><');
+    }
+    else if (~value.indexOf('<>')) {
+        return value.split('<>');
+    }
+    else {
+        return value;
+    }
+
+};
+exports.createFilter = function (req, res, route, reset_link, current_column, order, columns) {
+    //Add button Search
+    res.locals.searchButton = __acl.addButton(req, route, 'index');
+    res.locals.resetFilterButton = __acl.addButton(req, route, 'index', reset_link);
+    var conditions = [];
+    var values = [];
+    values.push('command');
+    var getColumn = function (name) {
+        for (var i in columns) {
+            if (columns[i].column == name) {
+                return columns[i];
+            }
+        }
+    }
+    for (var i in req.query) {
+        if (req.query[i] != '') {
+            var col = getColumn(i);
+            if (col.query) {
+                conditions.push(col.query);
+            }
+            else {
+                conditions.push(__.parseCondition(i, req.query[i], col));
+            }
+
+            var value = __.parseValue(req.query[i], col);
+            console.log(value);
+            if (Array.isArray(value)) {
+                for (var y in value) {
+                    values.push(value[y].trim());
+                }
+
+            }
+            else {
+                values.push(value);
+            }
+
+        }
+    }
+    var stCondition = conditions.join(" AND ");
+    values[0] = stCondition;
+    res.locals.table_columns = columns;
+    res.locals.currentColumn = current_column;
+    res.locals.currentOrder = order;
+    res.locals.filters = req.query;
+    return {values: values};
 }
 

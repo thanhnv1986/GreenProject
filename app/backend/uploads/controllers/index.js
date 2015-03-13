@@ -4,11 +4,11 @@
 var fs = require('fs'),
     sizeOf = require('image-size'),
     im = require('imagemagick'),
-    //moment = require('moment'),
     formidable = require('formidable'),
     path = require('path');
 var rootPath = '/fileman/Uploads';
 var standardPath = __base + 'public/';
+
 exports.dirtree = function (req, res) {
     var results = [];
     getDirectories(rootPath, results);
@@ -26,8 +26,8 @@ exports.createdir = function (req, res) {
             res.jsonp({"res": "ok", "msg": ""});
         }
     });
-
 };
+
 exports.deletedir = function (req, res) {
     var dir = req.param('d');
 
@@ -40,19 +40,24 @@ exports.deletedir = function (req, res) {
         }
     });
 };
+
 exports.movedir = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.copydir = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.renamedir = function (req, res) {
     var d = req.param('d');
     var n = req.param('n');
     var path = d.substring(0, d.lastIndexOf('/'));
+
     fs.renameSync(standardPath + d, standardPath + path + '/' + n);
     res.jsonp({"res": "ok", "msg": ""});
 };
+
 exports.fileslist = function (req, res) {
     var folder = req.param('d');
     var type = req.param('type');
@@ -84,6 +89,7 @@ exports.fileslist = function (req, res) {
         }
     });
 };
+
 exports.upload = function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -95,16 +101,19 @@ exports.upload = function (req, res) {
             }
         });
     });
-    form.on('end', function() {
+    form.on('end', function () {
         res.jsonp({"res": "ok", "msg": ""});
     });
 };
+
 exports.download = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.downloaddir = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.deletefile = function (req, res) {
     var file = req.param('f');
     if (fs.existsSync(standardPath + file)) {
@@ -124,20 +133,23 @@ exports.deletefile = function (req, res) {
     } else {
         res.jsonp({"res": "ok", "msg": ""});
     }
-
 };
+
 exports.movefile = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.copyfile = function (req, res) {
     res.jsonp({"res": "error", "msg": "Chưa tích hợp"});
 };
+
 exports.renamefile = function (req, res) {
     var f = req.param('f');
     var n = req.param('n');
     var path = f.substring(0, f.lastIndexOf('/'));
     fs.renameSync(standardPath + f, standardPath + path + '/' + n);
-    //change name of thumb tmp
+
+    // Change name of thumb tmp
     var tmp = getFileName(f);
     var tmp_path = standardPath + '/fileman/tmp/' + tmp;
     if (fs.existsSync(tmp_path)) {
@@ -145,20 +157,21 @@ exports.renamefile = function (req, res) {
     }
     res.jsonp({"res": "ok", "msg": ""});
 };
+
 exports.thumb = function (req, res) {
     var filePath = req.param('f');
     var width = req.param('width');
     var height = req.param('height');
     var tmpFolder = standardPath + '/fileman/tmp';
-    //Check file exit
-    //Create thumbnail
     var filename = getFileName(filePath);
+
+    // Check file exit
     if (fs.existsSync(tmpFolder + '/' + filename)) {
         var img = fs.readFileSync(tmpFolder + '/' + filename);
         res.writeHead(200, {'Content-Type': 'image/' + getExtension(filename) });
         res.end(img, 'binary');
-    }
-    else {
+    } else {
+        // Create thumbnail
         im.resize({
             srcPath: standardPath + filePath,
             dstPath: tmpFolder + '/' + filename,
@@ -166,17 +179,17 @@ exports.thumb = function (req, res) {
             height: height
         }, function (err, stdout, stderr) {
             if (err) throw err;
-            console.log('resized image to fit');
             var img = fs.readFileSync(tmpFolder + '/' + filename);
             res.writeHead(200, {'Content-Type': 'image/' + getExtension(filename) });
             res.end(img, 'binary');
         });
     }
-
 };
+
 function getFileName(path) {
     return path.replace(/^.*[\\\/]/, '');
 }
+
 function checkFileType(path) {
     if (~path.indexOf('.png') || ~path.indexOf('.jpg') || ~path.indexOf('.gif') || ~path.indexOf('.jpeg')) {
         return "image";
@@ -184,11 +197,12 @@ function checkFileType(path) {
     else {
         return "un-know";
     }
-
 }
+
 function getExtension(path) {
     return path.split('.').pop();
 }
+
 function getDirectories(srcpath, results) {
     var files_and_dirs = fs.readdirSync(standardPath + srcpath);
     var totalSubFolders = 0;
@@ -215,5 +229,4 @@ function getDirectories(srcpath, results) {
         results = getDirectories(srcpath + '/' + dirs[i], results);
     }
     return results;
-
 }

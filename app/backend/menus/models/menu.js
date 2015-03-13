@@ -9,18 +9,9 @@ module.exports = function (sequelize, DataTypes) {
         created_at: DataTypes.DATE,
         created_by: DataTypes.INTEGER,
         modified_at: DataTypes.DATE,
-        modified_by: DataTypes.INTEGER,
-        root_ul_cls:DataTypes.STRING,
-        li_cls:DataTypes.STRING,
-        li_active_cls:DataTypes.STRING,
-        a_cls:DataTypes.STRING,
-        a_active_cls:DataTypes.STRING,
-        sub_ul_cls:DataTypes.STRING,
-        sub_li_cls:DataTypes.STRING,
-        sub_a_cls:DataTypes.STRING
-
+        modified_by: DataTypes.INTEGER
     }, {
-        freezeTableName: true,
+        tableName: 'arr_menus',
         timestamps: true,
         // I don't want createdAt
         createdAt: "created_at",

@@ -1,11 +1,19 @@
 {
-    "name":"ACME",
-    "alias":"Acme",
-    "folder":"acme",
-    "author":"cosmic",
-    "link":"http://shapebootstrap.net/item/acme-free-responsive-corporate-template/",
-    "thumbnail":"acme-thumbnail.jpg",
+    "name": "ACME",
+    "alias": "Acme",
+    "folder": "acme",
+    "author": "cosmic",
+    "link": "http://shapebootstrap.net/item/acme-free-responsive-corporate-template/",
+    "thumbnail": "acme-thumbnail.jpg",
     "sidebars": [
+        {
+            "name": "main-menu",
+            "title": "Main Menu"
+        },
+        {
+            "name": "sidebar1",
+            "title": "Sidebar 1"
+        },
         {
             "name": "name",
             "title": "Title"

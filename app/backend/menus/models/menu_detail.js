@@ -15,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
         modified_by: DataTypes.INTEGER
 
     }, {
-        freezeTableName: true,
+        tableName: 'arr_menu_detail',
         timestamps: true,
         // I don't want createdAt
         createdAt: "created_at",

@@ -13,28 +13,26 @@
                                 <div class="form-group">
                                     <label>Username <span class="required">*</span></label>
                                     <input type="text" class="form-control" name="user_login"
-                                           value="{{ user.user_login }}" required="required" />
+                                           value="{{ user.user_login }}" required="required"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Full Name <span class="required">*</span></label>
                                     <input type="text" class="form-control" name="display_name"
-                                           value="{{ user.display_name }}" required="required" />
+                                           value="{{ user.display_name }}" required="required"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Email <span class="required">*</span></label>
                                     <input type="email" class="form-control" name="user_email"
-                                           value="{{ user.user_email }}" required="required" />
+                                           value="{{ user.user_email }}" required="required"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label>URL</label>
                                     <input type="text" class="form-control" name="user_url"
-                                           value="{{ user.user_url }}" required="required" />
+                                           value="{{ user.user_url }}"/>
                                 </div>
-
-
 
                                 <div class="form-group">
                                     <label>Role <span class="required">*</span></label>
@@ -63,8 +61,6 @@
                                         {% endif %}
                                     </select>
                                 </div>
-
-
                             </div>
 
                             <div class="col-md-6">
@@ -72,25 +68,25 @@
                                     <div class="form-group">
                                         <label>Password <span class="required">*</span></label>
                                         <input type="password" class="form-control" id="user_pass" name="user_pass"
-                                               required="required" />
+                                               required="required"/>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Password confirmation <span class="required">*</span></label>
                                         <input type="password" class="form-control" id="confirm_pass"
-                                               required="required" />
+                                               required="required"/>
                                     </div>
                                 {% endif %}
 
                                 <div class="form-group">
-                                    <label>Avatar <span class="required">*</span></label>
+                                    <label>Avatar </label>
                                     <input type="file" class="form-control" name="user_image_url" id="user_image_url">
-                                    <img width="270" height="179" id="user_image" src="{{ user.user_image_url }}" />
+                                    <img width="270" height="179" id="user_image" src="{{ user.user_image_url }}"/>
                                 </div>
 
                                 {% if user %}
                                     <a class="btn btn-sm btn-danger" data-toggle="modal" href="#confirm">
-                                        <i class="fa fa-remove"></i> Delete
+                                        <i class="fa fa-remove"></i> Delete User
                                     </a>
                                 {% endif %}
                             </div>
@@ -162,10 +158,9 @@
                 type: 'DELETE',
                 data: {
                     ids: {{ id }}
-                },
-                success: function (result) {
-                    window.location.href = "/admin/users/page/1";
                 }
+            }).done(function (result) {
+                window.location.href = "/admin/users/";
             });
         }
         {% endif %}

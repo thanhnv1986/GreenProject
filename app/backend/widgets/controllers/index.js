@@ -7,9 +7,6 @@ var Promise = require("bluebird");
 var _ = require('lodash');
 var config = require(__base + 'config/config');
 var route = 'modules';
-// Loads templates from the "views" folder
-var nunjucks = require('nunjucks');
-var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__base + 'app/widgets'));
 
 var breadcrumb =
     [
@@ -43,7 +40,8 @@ exports.sidebar = function (req, res, next) {
     });
 };
 exports.addWidget = function (req, res) {
-    env.render(req.params.widget + '/setting.html', function (err, re) {
+    var widget = __.getWidget(req.params.widget);
+    widget.render_setting(req.params.widget).then(function (re) {
         res.send(re);
     });
 }
@@ -57,10 +55,10 @@ exports.saveWidget = function (req, res) {
 }
 exports.read = function (req, res) {
     __models.widgets.find(req.params.cid).then(function (widget) {
-        env.render(widget.widget_type + '/setting.html', {widget: widget},
-            function (err, re) {
-                res.send(re);
-            });
+        var widget = __.getWidget(widget.widget_type);
+        widget.render_setting(req, res, widget.widget_type, widget).then(function (re) {
+            res.send(re);
+        });
     });
 }
 exports.delete = function (req, res) {
@@ -75,11 +73,11 @@ exports.sidebar_sort = function (req, res) {
     var index = 1;
     var promises = [];
     for (var i in ids) {
-        if (ids[i] == ''){
+        if (ids[i] == '') {
             index++;
             continue;
         }
-        promises.push(__models.sequelize.query("Update widgets set ordering=?, sidebar=? where id=?",
+        promises.push(__models.sequelize.query("Update "+__models.widgets.getTableName()+" set ordering=?, sidebar=? where id=?",
             {replacements: [index++, sidebar, ids[i]]}));
     }
     Promise.all(promises).then(function (results) {

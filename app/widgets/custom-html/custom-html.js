@@ -21,22 +21,8 @@ var _base_config = {
 function CustomHtml() {
     CustomHtml.super_.call(this);
     _.assign(this, _base_config);
+    this.files = BaseWidget.prototype.getAllLayouts.call(this, _base_config.alias);
 }
 util.inherits(CustomHtml, BaseWidget);
-
-//Override save method
-CustomHtml.prototype.save = function (data) {
-    //Processing here
-    return BaseWidget.prototype.save.call(this, data);
-};
-
-//Override save method
-CustomHtml.prototype.render = function (widget) {
-    //Processing here
-    return new Promise(function (resolve, reject) {
-        resolve(BaseWidget.prototype.render.call(this, widget, {name: 'thanh', address: 'Nguyen Khuyen'}));
-    });
-
-};
 
 module.exports = CustomHtml;

@@ -1,4 +1,5 @@
 {% extends 'admin/layout.html' %}
+
 {% block cssExtends %}
     <style>
         .widget-list {
@@ -6,6 +7,7 @@
             padding-left: 0px;
             font-size: 15px;
         }
+
         .widget-item {
             display: block;
             border: 1px solid;
@@ -50,7 +52,6 @@
             z-index: 9999;
             min-height: 50px;
         }
-
     </style>
 {% endblock %}
 {% block content %}
@@ -61,6 +62,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Widgets Available</h3>
                     </div>
+
                     <div class="box-body">
                         <ul class="widget-list" id="widgets">
                             {% for widget in widgets %}
@@ -70,28 +72,53 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-9">
-                {% for bar in sidebars %}
-                    <div class="col-md-6">
-                        <div class="box box-solid box-info" id="{{ bar.name }}">
-                            <div class="box-header">
-                                <h3 class="box-title">{{ bar.title }}</h3>
-                            </div>
-                            <div class="box-body" id="{{ bar.alias }}">
-                                <ul class="widget-list connect-list sidebar-widget">
-                                    {{ bar.name|setting_sidebars|safe }}
-                                </ul>
+
+            <div class="col-sm-9 sidebar-list">
+                <div class="row">
+                    {% macro sidebar_list(sidebar, widget_list) %}
+                        <div class="col-md-12">
+                            <div class="box box-solid box-info" id="{{ bar.name }}">
+                                <div class="box-header">
+                                    <h3 class="box-title">{{ bar.title }}</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button class="btn btn-box-tool" data-widget="collapse"><i
+                                                    class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body" id="{{ bar.alias }}">
+                                    <ul class="widget-list connect-list sidebar-widget">
+                                        {{ widget_list }}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                    {% endmacro %}
+
+                    <div class="col-md-6">
+                        {% for bar in sidebars %}
+                            {% if loop.index | even %}
+                                {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                {% endfor %}
+
+                    <div class="col-md-6">
+                        {% for bar in sidebars %}
+                            {% if loop.index | odd %}
+                                {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
 {% block jsExtends %}
-    {#{% include 'admin/editorScript.html' %}#}
-    {#<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>#}
     <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
     <script src="/admin/dist/js/widgets/sidebar.min.js"></script>
 {% endblock %}

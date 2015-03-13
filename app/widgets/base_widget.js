@@ -6,19 +6,47 @@ var Promise = require('bluebird'),
     _ = require('lodash'),
     config = require(__base + 'config/config');
 
+var _base_config = {
+    alias: "Base",
+    name: "Base",
+    description: "Base",
+    author: "Nguyen Van Thanh",
+    version: "0.1.0",
+    options: {
+        id: '',
+        cls: '',
+        title: '',
+        file: ''
+    }
+};
+
 //Base constructor
-
 function BaseWidget() {
-
+    _.assign(this, _base_config);
+    this.env = __.createNewEnv();
 }
-var widget = BaseWidget;
-widget.prototype.save = function (data) {
+BaseWidget.prototype.getAllLayouts = function (alias) {
+    var files = [];
+    config.getGlobbedFiles(__base + "app/themes/" + config.themes + '/_widgets/' + alias + '/*.html').forEach(function (path) {
+        var s = path.split('/');
+        files.push(s[s.length - 1]);
+    });
+    if (files.length == 0) {
+        config.getGlobbedFiles(__base + "app/themes/default/_widgets/" + alias + "/*.html").forEach(function (path) {
+            var s = path.split('/');
+            files.push(s[s.length - 1]);
+        });
+    }
+    return files;
+}
+BaseWidget.prototype.save = function (data) {
     return new Promise(function (done, reject) {
         var json_data = _.clone(data);
         delete json_data.sidebar;
         delete json_data.id;
         json_data = JSON.stringify(json_data);
         if (data.id != '') {
+
             __models.widgets.find(data.id).then(function (widget) {
                 widget.updateAttributes({
                     sidebar: data.sidebar,
@@ -42,24 +70,33 @@ widget.prototype.save = function (data) {
 
     });
 }
-widget.prototype.render = function (widget, data) {
+BaseWidget.prototype.render_setting = function (widget_type, widget) {
+    var _this = this;
+    return new Promise(function (done, reject) {
+        _this.env.render(widget_type + '/setting.html', {widget: widget, widget_type: widget_type, files: _this.files},
+            function (err, re) {
+                done(re);
+            }).catch(function (err) {
+                reject(err);
+            });
+    });
+
+}
+//Render v
+BaseWidget.prototype.render = function (widget, data) {
+    var _this = this;
     return new Promise(function (resolve, reject) {
-        var env, renderWidget;
-        var widgetFile = widget.widget_type + '/view.html';
+        var renderWidget = Promise.promisify(_this.env.render, _this.env);
+        var widgetFile = widget.widget_type + '/' + widget.data.file;
         var widgetFilePath = __base + 'app/themes/' + config.themes + '/_widgets/' + widgetFile;
-        console.log('Widget Path : ', widgetFilePath);
+
         if (!fs.existsSync(widgetFilePath)) {
-            widgetFilePath = widgetFile;
-            env = __.createNewEnv();
-            renderWidget = Promise.promisify(env.render, env);
+            widgetFilePath = 'default/_widgets/' + widgetFile;
         }
         else {
-            env = __.createNewEnv([__base + 'app/themes']);
-            renderWidget = Promise.promisify(env.render, env);
-
             widgetFilePath = config.themes + '/_widgets/' + widgetFile;
         }
-        console.log("User view: ", widgetFilePath);
+
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {
             return "<p>" + err.cause;
@@ -67,4 +104,4 @@ widget.prototype.render = function (widget, data) {
     });
 }
 
-module.exports = widget;
+module.exports = BaseWidget;

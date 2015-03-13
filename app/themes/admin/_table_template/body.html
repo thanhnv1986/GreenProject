@@ -1,0 +1,24 @@
+{% macro getContent(col) %}
+    {% if col.type == 'datetime' %}
+        {{ col.column|get_value(item)|date_time }}
+    {% else %}
+        {{ col.column|get_value(item) }}
+    {% endif %}
+{% endmacro %}
+{% for item in items %}
+    <tr xmlns="http://www.w3.org/1999/html">
+        {% for col in table_columns %}
+            <td>
+                {% if col.link %}
+                    <a href="{{ col.link|table_link(item, acl) }}">
+                        {{ getContent(col) }}
+                    </a>
+                {% elif col.type=='checkbox' %}
+                    <input type="checkbox" class="check-element" name="ids[]" value="{{ col.column|get_value(item) }}">
+                {% else %}
+                    {{ getContent(col) }}
+                {% endif %}
+            </td>
+        {% endfor %}
+    </tr>
+{% endfor %}

@@ -2,16 +2,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>AdminLTE 2 | Log in</title>
+    <title>ArrowJS | Log in</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
-    <link href="/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- Font Awesome Icons -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
     <!-- Theme style -->
-    <link href="/admin/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css"/>
     <!-- iCheck -->
-    <link href="/admin/plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css" />
+    <link href="/admin/plugins/iCheck/square/blue.css" rel="stylesheet" type="text/css"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,19 +25,17 @@
 <div class="login-box">
     <div class="login-logo">
         <a href="/"><b>Admin</b></a>
-    </div><!-- /.login-logo -->
+    </div>
+    <!-- /.login-logo -->
     <div class="login-box-body">
-        {% if message %}
-        <div class="alert alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-            {{ message }}
+        <div style="margin-left: -10px; margin-right: -10px;">
+            {{ messages|flash_message|safe }}
         </div>
-        {% endif %}
+
         <!-- BEGIN LOGIN FORM -->
         <form method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="Email"  name="username"/>
+                <input type="text" class="form-control" placeholder="Email" name="username"/>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
@@ -50,36 +49,22 @@
                             <input type="checkbox"> Remember Me
                         </label>
                     </div>
-                </div><!-- /.col -->
+                </div>
+
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                </div><!-- /.col -->
+                </div>
+
                 <div class="col-md-12 col-sm-12 text-right">
-                    <a href="javascript:showForgotForm()">I forgot my password</a>
+                    <a href="/admin/forgot-password/">I forgot my password</a>
                 </div>
             </div>
         </form>
         <!-- END LOGIN FORM -->
-
-        <!-- BEGIN FORGOT PASSWORD FORM -->
-        <form class="forget-form" action="/users/forgot" method="post" style="display: none">
-            <p>
-                Enter your email to reset password
-            </p>
-            <div class="form-group">
-                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
-            </div>
-            <div class="form-actions">
-                <button type="button" onclick="hideForgotForm()" id="back-btn" class="btn btn-default btn-flat">Back</button>
-                <button type="submit" class="btn btn-primary btn-flat uppercase pull-right">Submit</button>
-            </div>
-        </form>
-        <!-- END FORGOT PASSWORD FORM -->
-
-    </div><!-- /.login-box-body -->
-</div><!-- /.login-box -->
-
-
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
 
 <!-- jQuery 2.1.3 -->
 <script src="/admin/plugins/jQuery/jQuery-2.1.3.min.js"></script>
@@ -95,16 +80,6 @@
             increaseArea: '20%' // optional
         });
     });
-    function showForgotForm() {
-        var form = $('form');
-        form.eq(0).hide();
-        form.eq(1).show();
-    }
-    function hideForgotForm() {
-        var form = $('form');
-        form.eq(1).hide();
-        form.eq(0).show();
-    }
 </script>
 </body>
 </html>

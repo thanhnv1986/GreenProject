@@ -7,6 +7,10 @@
     "thumbnail": "corlate-thumbail.jpg",
     "sidebars": [
         {
+            "name": "main-menu",
+            "title": "Main Menu"
+        },
+        {
             "name": "sidebar1",
             "title": "Sidebar 1"
         },
@@ -21,6 +25,16 @@
         {
             "name": "sidebar4",
             "title": "Sidebar 4"
+        }
+    ],
+    "menus": [
+        {
+            "name": "main_menu",
+            "title": "Main menu"
+        },
+        {
+            "name": "left_menu",
+            "title": "Left menu"
         }
     ],
     "layouts": [

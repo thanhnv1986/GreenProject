@@ -9,14 +9,14 @@ module.exports = function (env) {
             where: {
                 sidebar: sidebarName
             },
-            order:['ordering']
+            order: ['ordering']
         }, {raw: true}).then(function (widgets) {
             var promises = [];
             var getWidgetHtml = function (widget) {
-                var nunjucks = require('nunjucks');
-                var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__base + 'app/widgets'));
-                var renderWidget = Promise.promisifyAll(env);
-                promises.push(renderWidget.renderAsync(widget.widget_type + '/setting.html', {widget: widget}));
+                var w = __.getWidget(widget.widget_type);
+                if (w) {
+                    promises.push(w.render_setting(widget.widget_type, widget));
+                }
 
             }
             for (var i in widgets) {

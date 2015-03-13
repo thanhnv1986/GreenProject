@@ -10,7 +10,6 @@
             display: block;
             margin: 0;
             padding: 0;
-            /*max-width: 600px;*/
             list-style: none;
             font-size: 13px;
             line-height: 20px;
@@ -32,9 +31,7 @@
             display: none;
         }
 
-        .dd-item,
-        .dd-empty,
-        .dd-placeholder {
+        .dd-item, .dd-empty, .dd-placeholder {
             display: block;
             position: relative;
             margin: 0;
@@ -100,8 +97,7 @@
             content: '-';
         }
 
-        .dd-placeholder,
-        .dd-empty {
+        .dd-placeholder, .dd-empty {
             margin: 5px 0;
             padding: 0;
             min-height: 30px;
@@ -173,8 +169,11 @@
 
         .expand_arrow {
             position: absolute;
-            top: 15px;
+            top: 10px;
             right: 10px;
+            text-align: center;
+            width: 50px;
+            font-size: 25px;
         }
     </style>
 {% endblock %}
@@ -203,9 +202,17 @@
                             <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
 =======
         <form method="post" id="edit-form">
-            <div class="col-md-12">{% include 'admin/toolbar.html' %}</div>
+            {% if not menu %}
+                <div class="col-md-12">{% include 'admin/toolbar.html' %}</div>
+            {% else %}
+                <div class="col-md-12" style="margin-bottom: 10px;">
+                    <a href="/admin/menus" class="btn btn-default">Back</a>
+                    <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
+                    <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
+                </div>
+            {% endif %}
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="form-group">
@@ -219,10 +226,6 @@
                             <div class="form-group">
                                 <label>Details</label>
 
-                                <div class="col-md-12">
-                                    <button class="btn btn-success" onclick="saveDetail()">Save Detail</button>
-                                    <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
-                                </div>
                                 <div class="col-md-12">
                                     <div class="dd" id="nestable3">
                                         <ol class="dd-list">
@@ -239,50 +242,6 @@
                     </div>
                 </div>
             </div>
-
-            {% if menu %}
-                <div class="col-md-3">
-                    <div class="box box-solid box-info">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>Root menu class(ul)</label>
-                                <input type="text" class="form-control" name="root_ul_cls"
-                                       value="{{ menu.root_ul_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Menu item(li)</label>
-                                <input type="text" class="form-control" name="li_cls" value="{{ menu.li_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Menu item active(li active)</label>
-                                <input type="text" class="form-control" name="li_active_cls"
-                                       value="{{ menu.li_active_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>link class(a)</label>
-                                <input type="text" class="form-control" name="a_cls" value="{{ menu.a_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>link active class(a active)</label>
-                                <input type="text" class="form-control" name="a_active_cls"
-                                       value="{{ menu.a_active_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Sub menu class(ul)</label>
-                                <input type="text" class="form-control" name="sub_ul_cls" value="{{ menu.sub_ul_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Sub menu item class(li)</label>
-                                <input type="text" class="form-control" name="sub_li_cls" value="{{ menu.sub_li_cls }}">
-                            </div>
-                            <div class="form-group">
-                                <label>Sub link class(a)</label>
-                                <input type="text" class="form-control" name="sub_a_cls" value="{{ menu.sub_a_cls }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
         </form>
     </div>
 {% endblock %}
@@ -356,43 +315,43 @@
 
             var html = '';
             html += '<li class="dd-item" data-id="' + detail.id + '">' +
-                    '<div class="dd-handle" style="position: relative"> ' + detail.name + '</div>' +
-                    '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
-                    '<div class="box box-solid box-default close">' +
-                    '<div class="box-body">' +
-                    '<div class="row">' +
-                    '<div class="col-md-6">' +
-                    '<div class="form-group">' +
-                    '<label>Navigation Label</label>' +
-                    '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" value="' + detail.name + '">' +
-                    '<input type="hidden" id="mn_id" name="mn_id[]" value="' + detail.id + '">' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="col-md-6">' +
-                    '<div class="form-group">' +
-                    '<label>Title Attribute</label>' +
-                    '<input type="text" class="form-control" id="attribute" name="attribute[]" value="' + detail.type + '">' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="col-md-12">' +
-                    '<div class="form-group">' +
-                    '<label>URL</label>' +
-                    '<input type="text" class="form-control" id="url" name="url[]" value="' + detail.link + '">' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
+            '<div class="dd-handle" style="position: relative"> ' + detail.name + '</div>' +
+            '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
+            '<div class="box box-solid box-default close">' +
+            '<div class="box-body">' +
+            '<div class="row">' +
+            '<div class="col-md-6">' +
+            '<div class="form-group">' +
+            '<label>Navigation Label</label>' +
+            '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" value="' + detail.name + '">' +
+            '<input type="hidden" id="mn_id" name="mn_id[]" value="' + detail.id + '">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+            '<div class="form-group">' +
+            '<label>Title Attribute</label>' +
+            '<input type="text" class="form-control" id="attribute" name="attribute[]" value="' + detail.type + '">' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="row">' +
+            '<div class="col-md-12">' +
+            '<div class="form-group">' +
+            '<label>URL</label>' +
+            '<input type="text" class="form-control" id="url" name="url[]" value="' + detail.link + '">' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
 
-                    '<div class="row">' +
-                    '<div class="col-md-12">' +
-                    '<a href="#" class="btn btn-danger"  onclick="return removeMenu(this)">Remove</a>  |  ' +
-                    '<a href="#"  onclick="return showDetail(this, false)">Close</a>' +
-                    '</div>' +
+            '<div class="row">' +
+            '<div class="col-md-12">' +
+            '<a href="#" class="btn btn-danger"  onclick="return removeMenu(this)">Remove</a>  |  ' +
+            '<a href="#"  onclick="return showDetail(this, false)">Close</a>' +
+            '</div>' +
 
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+            '</div>' +
+            '</div>' +
+            '</div>';
             <!-- /.box-body -->
             <!-- /.box -->
             if (item.children) {

@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
         status: DataTypes.INTEGER
 
     }, {
-        freezeTableName: true,
+        tableName: 'arr_role',
         createdAt: 'created_at',
         updatedAt: 'modified_at',
         // And deletedAt to be called destroyTime (remember to enable paranoid for this to work)
