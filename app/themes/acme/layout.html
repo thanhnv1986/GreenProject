@@ -47,9 +47,12 @@
     <script src="/acme/js/respond.min.js">
     </script>
     <![endif]-->
+    {{ 'before_close_head_tag'|fire_event(null)|safe }}
 </head>
 
 <body>
+
+{{ 'after_open_body_tag'|fire_event(null)|safe }}
 <!--header start-->
 <header class="head-section">
     <div class="navbar navbar-default navbar-static-top container">
@@ -1075,7 +1078,6 @@
     });
 </script>
 
-
 <!--common script for all pages-->
 <script src="/acme/js/common-scripts.js">
 </script>
@@ -1116,13 +1118,9 @@
     });
 
     $(document).ready(function () {
-
         $("#owl-demo").owlCarousel({
-
             items: 4
-
         });
-
     });
 
     jQuery(document).ready(function () {
@@ -1133,5 +1131,6 @@
 
 
 </script>
+{{ 'before_close_body_tag'|fire_event(null)|safe }}
 </body>
 </html>

@@ -72,7 +72,7 @@ exports.parseCondition = function (column_name, value, col) {
     if (col.filter.data_type == 'string') {
         return 'lower(' + column_name + ') like lower(?)';
     }
-    else if (col.filter.data_type == 'string') {
+    else if (col.filter.data_type == 'datetime') {
         return column_name + " between ?::timestamp and ?::timestamp";
     }
     else {
@@ -108,7 +108,7 @@ exports.parseValue = function (value, col) {
     if (col.filter.type == 'datetime') {
         return value.split(/\s+-\s+/);
     }
-    value = value.replace(/[^a-zA-Z0-9\%\?\-\\<\\>\/]/g, "");
+    //value = value.replace(/[^a-zA-Z0-9\%\?\-\/]/g, "");
     if (~value.indexOf('><')) {
         return value.split('><');
     }

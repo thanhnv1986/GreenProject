@@ -7,7 +7,7 @@ module.exports = {
         keywords: 'Techmaster, Sequelize, Express and Node.js'
     },
     admin_prefix: 'admin',
-    date_format: 'Y-m-d',//'d/m/Y'
+    date_format: 'd/m/Y',//'Y-m-d'
     number_format: {
         thousand:'.',
         decimal:',',

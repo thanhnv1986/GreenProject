@@ -19,7 +19,8 @@ global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
 global.__messages = [];
 global.__current_theme = {};
-
+global.__pluginManager = require('./libs/plugins_manager');
+__pluginManager.loadAllPlugin();
 
 
 // Init the express application

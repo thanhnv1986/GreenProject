@@ -99,7 +99,7 @@ module.exports = function () {
     app.use(passport.session());
 
     //flash messages
-    app.use(require(__base + 'app/plugins/flash-plugin.js'));
+    app.use(require(__base + 'app/middleware/flash-plugin.js'));
 
     // Use helmet to secure Express headers
     app.use(helmet.xframe());
@@ -120,8 +120,7 @@ module.exports = function () {
         next();
     });
 
-    app.use(require('../app/plugins/theme-plugin.js'));
-
+    app.use(require('../app/middleware/theme-plugin.js'));
 
     // Globbing admin module files
     redis.get('all_modules', function (err, results) {
@@ -139,7 +138,7 @@ module.exports = function () {
 
     //module manager backend
     require(__base + 'app/backend/core_route')(app);
-    app.use('/admin/*', require('../app/plugins/modules-plugin.js'));
+    app.use('/admin/*', require('../app/middleware/modules-plugin.js'));
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
@@ -156,8 +155,8 @@ module.exports = function () {
     });
 
     //module manager frontend
-    //app.use('/^((?!admin))/*', require('../app/plugins/modules-f-plugin.js'));
-    app.use('/*', require('../app/plugins/modules-f-plugin.js'));
+    //app.use('/^((?!admin))/*', require('../app/middleware/modules-f-plugin.js'));
+    app.use('/*', require('../app/middleware/modules-f-plugin.js'));
 
     // Globbing frontend module files
     config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {

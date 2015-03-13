@@ -1,8 +1,8 @@
 {% extends "admin/layout.html" %}
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
 
+        <div class="col-md-12">
             {% for theme in themes %}
                 <div class="col-md-3">
                     <div class="box box-solid box-primary">
@@ -24,6 +24,29 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <div class="col-md-12">
+            <div class="box box-solid box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">{{ current_theme.name }}</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Alias</th>
+                            <td>{{ current_theme.alias }}</td>
+                        </tr>
+                        <tr>
+                            <th>Author</th>
+                            <td>{{ current_theme.author }}</td>
+                        </tr>
+                        <tr>
+                            <th>Link</th>
+                            <td><a href="{{ current_theme.link }}">{{ current_theme.link }}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="confirm" tabindex="-1" role="basic" aria-hidden="true">

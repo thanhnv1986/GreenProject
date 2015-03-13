@@ -45,5 +45,19 @@
             "file": "file",
             "thumbnail": "thumbnail"
         }
+    ],
+    "events": [
+        {
+            "name": "before_close_head_tag",
+            "description": "Occur before </head> tag"
+        },
+        {
+            "name": "after_open_body_tag",
+            "description": "Occur after <body> tag"
+        },
+        {
+            "name": "before_close_body_tag",
+            "description": "Occur before </body> tag"
+        }
     ]
 }
