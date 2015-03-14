@@ -5,6 +5,7 @@
 var init = require('./config/init')(),
     config = require('./config/config'),
     chalk = require('chalk');
+var redis = require("redis").createClient();
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -19,6 +20,23 @@ global.__models = require('./libs/models_manager');
 global.__acl = require('./libs/acl');
 global.__messages = [];
 global.__current_theme = {};
+
+redis.get('seo_enable', function (err, result) {
+    if(result != null) {
+        global.__seo_enable = result;
+    }
+    else
+    {
+        redis.set('seo_enable', true, function(err, res) {
+            if (err) {
+                console.log("Init app Redis reply error: " + err);
+            } else {
+                console.log("Init app Redis reply: " + res);
+            }
+        });
+        global.__seo_enable = true;
+    }
+});
 
 
 

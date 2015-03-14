@@ -1,4 +1,4 @@
-{% extends '../layout-admin.server.view.html' %}
+{% extends 'admin/layout.html' %}
 
 {% block cssExtends %}
     <link rel="stylesheet" href="/admin/global/plugins/select2/select2.css"/>
@@ -126,6 +126,11 @@
 
                     </div>
                     <!-- END RIGHTSIDE -->
+                    {% if __seo_enable == 'true' %}
+                        <!-- BEGIN extra SEO info -->
+                        {% include 'admin/seo-form.html' %}
+                        <!-- END SEO info -->
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -136,6 +141,11 @@
     {% include '../editorScript.html' %}
     <script type="text/javascript" src="/admin/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script>
+        {% if __seo_enable == 'true' %}
+        SEO.init({
+            title_field: 'title'
+        });
+        {% endif %}
         window.onload = function () {
             CKEDITOR.replace('content', {
                 height: 300
