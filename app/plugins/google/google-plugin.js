@@ -13,6 +13,7 @@ var _base_config = {
     version: '0.1.0',
     description: 'Integrate google analytic in webiste',
     active: true,
+    sync: false,
     options: {
         tracking_id: '347148475491688'
     }

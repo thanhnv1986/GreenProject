@@ -1,5 +1,11 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
+    {% if setting_form %}
+        <button type="submit" form="setting-form" class="btn btn-danger" style="margin-bottom: 10px;">
+            <i class="fa fa-save"></i> Save
+        </button>
+    {% endif %}
+    <a href="/admin/plugins" class="btn btn-default" style="margin-bottom: 10px;">Back</a>
     <div class="row">
         {% if setting_form %}
             <div class="col-md-6">
@@ -8,7 +14,9 @@
                         <h3 class="box-title">Options</h3>
                     </div>
                     <div class="box-body">
-                        {{ setting_form|safe }}
+                        <form method="post" id="setting-form">
+                            {{ setting_form|safe }}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -47,7 +55,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-default" href="/admin/plugins">Back</a>
                 </div>
             </div>
         </div>

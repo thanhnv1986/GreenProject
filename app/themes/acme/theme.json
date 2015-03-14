@@ -11,10 +11,6 @@
             "title": "Main Menu"
         },
         {
-            "name": "sidebar1",
-            "title": "Sidebar 1"
-        },
-        {
             "name": "name",
             "title": "Title"
         }

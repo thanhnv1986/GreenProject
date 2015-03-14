@@ -12,6 +12,7 @@ var moduleName = 'configurations';
 
 router.route('/configurations/site-info').get(__acl.isAllow(moduleName, 'update_info'), index.index);
 router.route('/configurations/themes').get(__acl.isAllow(moduleName, 'change_themes'), themes.index);
+router.route('/configurations/themes/:themeName').get(__acl.isAllow(moduleName, 'change_themes'), themes.detail);
 router.route('/configurations/themes/:themeName').post(__acl.isAllow(moduleName, 'change_themes'), themes.change_themes);
 router.route('/configurations/themes/import').get(__acl.isAllow(moduleName, 'import_themes'), themes.import);
 router.route('/configurations/themes').delete(__acl.isAllow(moduleName, 'delete_themes'), themes.delete);

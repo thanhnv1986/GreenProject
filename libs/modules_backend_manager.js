@@ -22,8 +22,9 @@ module.exports.loadAllModules = function () {
         if (__modules[i] == undefined) {
             __modules[i] = module_tmp[i];
         }
-        else{
-            __modules[i] = _.assign(__modules[i], module_tmp[i]);
+        else {
+            _.assign(module_tmp[i], __modules[i]);
+            __modules[i] = module_tmp[i];
         }
     }
     //remove module

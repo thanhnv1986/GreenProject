@@ -42,6 +42,27 @@ exports.index = function (req, res) {
     });
 };
 
+exports.detail = function (req, res) {
+    // Breadcrumb
+    res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: req.params.themeName});
+
+    var themes = [];
+
+    config.getGlobbedFiles(__base + 'app/themes/**/theme.json').forEach(function (filePath) {
+        themes.push(require(filePath));
+    });
+
+    for (var i in themes) {
+        if (themes[i].name.toLowerCase() == req.params.themeName) {
+            var current_theme = __current_theme = themes[i];
+        }
+    }
+
+    res.render('configurations/themes/detail', {
+        current_theme: current_theme
+    });
+};
+
 exports.change_themes = function (req, res) {
     config.themes = req.params.themeName;
     res.send("OK");

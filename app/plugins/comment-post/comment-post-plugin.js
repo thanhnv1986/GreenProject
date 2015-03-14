@@ -10,13 +10,13 @@ var _base_config = {
     version: '0.1.0',
     description: 'Add comment in a Post',
     active: true,
+    sync: false,
     options: {}
 };
 function CommentPostPlugin() {
     _.assign(this, _base_config);
     this.before_close_head_tag = function (data) {
         return new Promise(function (done, reject) {
-            console.log(data);
             done('Comment post plugins');
         });
     }

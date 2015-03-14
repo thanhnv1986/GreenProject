@@ -13,8 +13,9 @@ var _base_config = {
     version: '0.1.0',
     description: 'Authentication with facebook',
     active: true,
+    sync: false,
     options: {
-        appId:'347148475491688'
+        appId: '347148475491688'
     }
 };
 
@@ -27,7 +28,7 @@ function FacebookPlugin() {
             var html = '<script>' +
                 'window.fbAsyncInit = function () {' +
                 'FB.init({' +
-                'appId: "'+self.options.appId+'",' +
+                'appId: "' + self.options.appId + '",' +
                 'xfbml: true,' +
                 'version: "v2.2"' +
                 '});' +
