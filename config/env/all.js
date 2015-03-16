@@ -32,6 +32,24 @@ module.exports = {
     sessionSecret: 'GREEN',
     sessionCollection: 'sessions',
     themes: 'default',
+    default_editor:{
+      ckeditor:{
+          js:[
+              'public/admin/plugins/ckeditor/ckeditor.js'
+          ],
+          css:[
+              '/admin/plugins/ckeditor/ckeditor.js'
+          ]
+      },
+        markdown:{
+            js:[
+                
+            ],
+            css:[
+
+            ]
+        }
+    },
     assets: {
         lib: {
             css: [
