@@ -1,7 +1,6 @@
 /**
  * Created by thanhnv on 1/26/15.
  */
-var async = require('async');
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');

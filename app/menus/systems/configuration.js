@@ -10,7 +10,7 @@ module.exports = function (menus) {
             {
                 name: 'update_info',
                 title: 'Site Info',
-                link: '/'
+                link: '/site-info'
             },
             {
                 name: 'change_themes',

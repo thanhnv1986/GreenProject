@@ -11,6 +11,7 @@ var themes = require('./controllers/themes.js');
 var moduleName = 'configurations';
 
 router.route('/configurations/site-info').get(__acl.isAllow(moduleName, 'update_info'), index.index);
+router.route('/configurations/site-info').post(__acl.isAllow(moduleName, 'update_info'), index.update_setting, index.index);
 router.route('/configurations/themes').get(__acl.isAllow(moduleName, 'change_themes'), themes.index);
 router.route('/configurations/themes/:themeName').get(__acl.isAllow(moduleName, 'change_themes'), themes.detail);
 router.route('/configurations/themes/:themeName').post(__acl.isAllow(moduleName, 'change_themes'), themes.change_themes);

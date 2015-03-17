@@ -65,6 +65,7 @@ exports.detail = function (req, res) {
 
 exports.change_themes = function (req, res) {
     config.themes = req.params.themeName;
+    redis.set(config.key, JSON.stringify(config), redis.print);
     res.send("OK");
 };
 

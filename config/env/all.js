@@ -1,19 +1,22 @@
 'use strict';
 
 module.exports = {
+    key:'site_setting',
     app: {
         title: 'GREEN',
         description: 'Sequelize, Express and Node.js',
-        keywords: 'Techmaster, Sequelize, Express and Node.js'
+        keywords: 'Techmaster, Sequelize, Express and Node.js',
+        logo:'',
+        icon:''
     },
     admin_prefix: 'admin',
     date_format: 'd/m/Y',//'Y-m-d'
     number_format: {
-        thousand:'.',
-        decimal:',',
-        length:2,
-        header:'',
-        footer:'$'
+        thousand: '.',
+        decimal: ',',
+        length: 2,
+        header: '',
+        footer: '$'
     },
     mailer_config: {
         service: 'Gmail',
@@ -32,24 +35,6 @@ module.exports = {
     sessionSecret: 'GREEN',
     sessionCollection: 'sessions',
     themes: 'default',
-    default_editor:{
-      ckeditor:{
-          js:[
-              'public/admin/plugins/ckeditor/ckeditor.js'
-          ],
-          css:[
-              '/admin/plugins/ckeditor/ckeditor.js'
-          ]
-      },
-        markdown:{
-            js:[
-                
-            ],
-            css:[
-
-            ]
-        }
-    },
     assets: {
         lib: {
             css: [

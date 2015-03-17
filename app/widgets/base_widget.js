@@ -96,7 +96,7 @@ BaseWidget.prototype.render = function (widget, data) {
         else {
             widgetFilePath = config.themes + '/_widgets/' + widgetFile;
         }
-
+        console.log(_);
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {
             return "<p>" + err.cause;

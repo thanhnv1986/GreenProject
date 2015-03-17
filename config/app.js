@@ -23,20 +23,36 @@ var fs = require('fs'),
     redis = require("redis").createClient(),
     RedisStore = require('connect-redis')(session),
     nunjucks = require('nunjucks'),
+    _ = require('lodash'),
     path = require('path');
 
 module.exports = function () {
     // Initialize express app
     var app = express();
+
+
     // Setting application local variables
-    app.locals.title = config.app.title;
-    app.locals.description = config.app.description;
-    app.locals.keywords = config.app.keywords;
-    app.locals.facebookAppId = config.facebook.clientID;
+    /*app.locals.title = config.app.title;
+     app.locals.description = config.app.description;
+     app.locals.keywords = config.app.keywords;
+     app.locals.facebookAppId = config.facebook.clientID;*/
 //    app.locals.jsFiles = config.getJavaScriptAssets();
 //    app.locals.cssFiles = config.getCSSAssets();
 
+    redis.get(config.key, function (err, result) {
+        if (result != null) {
+            var tmp = JSON.parse(result);
+            _.assign(config, tmp);
 
+        }
+        else {
+            redis.set(config.key, JSON.stringify(config), redis.print);
+        }
+        app.locals.title = config.app.title;
+        app.locals.description = config.app.description;
+        app.locals.keywords = config.app.keywords;
+        app.locals.facebookAppId = config.facebook.clientID;
+    });
     // Should be placed before express.static
     app.use(compress({
         filter: function (req, res) {
@@ -85,7 +101,7 @@ module.exports = function () {
     // Express MongoDB session storage
     var secret = "hjjhdsu465aklsdjfhasdasdf342ehsf09kljlasdf";
     app.use(session({
-        store: new RedisStore({ host: 'localhost', port: 6379, client: redis }),
+        store: new RedisStore({host: config.redis.host, port: config.redis.port, client: redis}),
         secret: secret
     }));
     app.use(function (req, res, next) {
