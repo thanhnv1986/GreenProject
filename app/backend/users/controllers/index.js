@@ -4,7 +4,9 @@
 var promise = require('bluebird');
 
 var renameAsync = promise.promisify(require('fs').rename);
-
+var BaseModule = require(__base + 'app/base_module.js');
+var util = require('util'),
+    _ = require('lodash');
 var formidable = require('formidable');
 promise.promisifyAll(formidable);
 
@@ -31,7 +33,19 @@ var breadcrumb =
         }
     ];
 
-exports.list = function (req, res) {
+function UsersModule() {
+    BaseModule.call(this);
+    this.path = "/backend/users";
+    var self = this;
+    this.list = function (req, res) {
+        BaseModule.prototype.render.call(self, req, res, 'index.html');
+    };
+}
+
+var list = function (req, res) {
+    return function (req, res) {
+        BaseModule.prototype.render.call(this, req, res, 'index.html');
+    };
     // Add button
     res.locals.createButton = __acl.addButton(req, route, 'create', '/admin/users/create');
 
@@ -607,3 +621,5 @@ exports.userById = function (req, res, next, id) {
         next();
     })
 };
+util.inherits(UsersModule, BaseModule);
+module.exports = new UsersModule();
