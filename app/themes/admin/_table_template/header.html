@@ -1,12 +1,10 @@
 {% if currentOrder =="asc" %}
     {% set order = "desc" %}
-    {% set route = route|replace('asc','desc') %}
 {% else %}
     {% set order = "asc" %}
-    {% set route = route|replace('desc','asc') %}
 {% endif %}
 <style>
-    .fa-sort-asc{
+    .fa-sort-asc {
         margin-top: 5px;
     }
 </style>

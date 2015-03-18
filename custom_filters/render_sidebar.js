@@ -13,7 +13,6 @@ module.exports = function (env) {
             sortModules = __menus.sorting[sortGroups[i].menu];
             for (var y in sortModules) {
                 var moduleName = sortModules[y];
-                console.log('*******', moduleName);
                 if (user.acl[moduleName] == undefined) continue;
 
                 var subMenu = group.modules[moduleName];
