@@ -322,6 +322,10 @@ exports.signout = function (req, res) {
  * Profile
  */
 exports.profile = function (req, res) {
+    // Add button
+    res.locals.saveButton = __acl.addButton(req, route, 'create');
+    res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/users');
+    //breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Profile'});
     __models.role.findAll({
         order: "id asc"
@@ -337,6 +341,11 @@ exports.profile = function (req, res) {
             roles: null
         });
     });
+};
+
+exports.update_profile = function (req, res, next) {
+
+
 };
 
 /**

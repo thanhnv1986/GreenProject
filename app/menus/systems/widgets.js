@@ -8,12 +8,12 @@ module.exports = function (menus) {
         icon: 'fa fa-file-text',
         menus: [
             {
-                name: 'index',
+                rule: 'index',
                 title: 'All Widgets',
                 link: '/'
             },
             {
-                name: 'index',
+                rule: 'index',
                 title: 'Sidebars',
                 link: '/sidebars'
             }

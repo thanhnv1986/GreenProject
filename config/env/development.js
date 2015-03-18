@@ -4,7 +4,7 @@ module.exports = {
     db:{
         host:'192.168.1.69',
         port:'5432',
-        database:'green_huy',
+        database:'arrow-js',
         username:'postgres',
         password:'techmastercms234-',
         dialect: 'postgres',

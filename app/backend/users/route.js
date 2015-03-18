@@ -9,7 +9,8 @@ var moduleName = 'users';
 router.get('/users/signout',controller.signout);
 router.get('/users/change-pass',controller.changePass);
 router.post('/users/change-pass',controller.updatePass);
-router.get('/users/profile',controller.profile);
+router.get('/users/profile/:cid',controller.profile);
+router.post('/users/profile/:cid',controller.update, controller.profile);
 
 router.get('/users', __acl.isAllow(moduleName, 'index'), controller.list);
 router.get('/users/page/:page', __acl.isAllow(moduleName, 'index'), controller.list);

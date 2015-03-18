@@ -8,12 +8,12 @@ module.exports = function (menus) {
         icon:"fa fa-group",
         menus: [
             {
-                name: 'index',
+                rule: 'index',
                 title: 'All Roles',
                 link: '/'
             },
             {
-                name: 'create',
+                rule: 'create',
                 title: 'New Role',
                 link: '/create'
             }

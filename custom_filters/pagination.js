@@ -23,15 +23,15 @@ module.exports = function (env) {
                     '<div class="dataTables_paginate paging_simple_numbers" id="sample_2_paginate">' +
                     '<ul class="pagination pull-left">' +
                     '<li class="paginate_button previous ' + (parseInt(current_page) == 1 ? "disabled" : "") + '" aria-controls="sample_2" tabindex="0" id="sample_2_previous">' +
-                    '<a href="' + (parseInt(current_page) == 1 ? "#" : link.replace('{page}', parseInt(current_page) - 1)) + '"><i class="fa fa-angle-left"></i></a></li>';
+                    '<a class="page-link" href="' + (parseInt(current_page) == 1 ? "#" : link.replace('{page}', parseInt(current_page) - 1)) + '"><i class="fa fa-angle-left"></i></a></li>';
             if (start > 1) {
                 var url = link.replace('{page}', start - 1);
-                html += '<li class="paginate_button" aria-controls="sample_2" tabindex="0"><a href="' + url + '">...</a></li>'
+                html += '<li class="paginate_button" aria-controls="sample_2" tabindex="0"><a class="page-link" href="' + url + '">...</a></li>'
             }
             for (var i = start; i <= end; i++) {
                 var url = link.replace('{page}', i);
                 var active = parseInt(current_page) == i ? "active" : "";
-                html += '<li class="paginate_button ' + active + '" aria-controls="sample_2" tabindex="0"><a href="' + url + '">' + i + '</a></li>'
+                html += '<li class="paginate_button ' + active + '" aria-controls="sample_2" tabindex="0"><a class="page-link" href="' + url + '">' + i + '</a></li>'
             }
             if (end < totalPage) {
                 var url = link.replace('{page}', end + 1);
@@ -40,7 +40,7 @@ module.exports = function (env) {
             /*'<li class="paginate_button active" aria-controls="sample_2" tabindex="0"><a href="#">1</a></li>' +
              '<li class="paginate_button " aria-controls="sample_2" tabindex="0"><a href="#">2</a></li>' +
              '<li class="paginate_button " aria-controls="sample_2" tabindex="0"><a href="#">3</a></li>' +*/
-            html += '<li class="paginate_button next" aria-controls="sample_2" tabindex="0" id="sample_2_next"><a href="' + (parseInt(current_page) == totalPage ? "#" : link.replace('{page}', parseInt(current_page) + 1)) + '"><i class="fa fa-angle-right"></i></a></li>' +
+            html += '<li class="paginate_button next" aria-controls="sample_2" tabindex="0" id="sample_2_next"><a class="page-link" href="' + (parseInt(current_page) == totalPage ? "#" : link.replace('{page}', parseInt(current_page) + 1)) + '"><i class="fa fa-angle-right"></i></a></li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>' +

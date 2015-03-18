@@ -116,7 +116,7 @@ exports.parseValue = function (value, col) {
         return value.split('<>');
     }
     else {
-        return value;
+        return value.replace(/[^a-zA-Z0-9\%\?\-\/]/g, "");
     }
 
 };

@@ -8,7 +8,7 @@ module.exports = function (menus) {
         icon:"fa fa-thumb-tack",
         menus: [
             {
-                name: 'index',
+                rule: 'index',
                 title: 'All Plugins',
                 link: '/'
             }

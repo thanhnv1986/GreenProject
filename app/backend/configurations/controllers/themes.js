@@ -31,7 +31,7 @@ exports.index = function (req, res) {
     });
 
     for (var i in themes) {
-        if (themes[i].name.toLowerCase() == config.themes.toLowerCase()) {
+        if (themes[i].alias.toLowerCase() == config.themes.toLowerCase()) {
             var current_theme = __current_theme = themes[i];
         }
     }

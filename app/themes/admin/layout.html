@@ -156,7 +156,7 @@
                         </a>
                         <ul class="dropdown-menu" style="width: 100%">
                             <li>
-                                <a href="/admin/users/profile"><i class="fa fa-user"></i>Profile</a>
+                                <a href="/admin/users/profile/{{ __user.id }}"><i class="fa fa-user"></i>Profile</a>
                             </li>
                             <li>
                                 <a href="/admin/users/change-pass"><i class="fa fa-lock"></i>Change password</a>
@@ -262,6 +262,11 @@
 //        $('.date-range').daterangepicker({format: 'MM/DD/YYYY h:mm A'});
         $('.date-range').daterangepicker({format: 'YYYY-MM-DD'});
         $('.sort-link').each(function () {
+            var link = $(this).attr('href');
+            $(this).attr('href', link + location.search);
+
+        });
+        $('.page-link').each(function () {
             var link = $(this).attr('href');
             $(this).attr('href', link + location.search);
 

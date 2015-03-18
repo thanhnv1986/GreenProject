@@ -8,7 +8,7 @@ module.exports = function (menus) {
         icon:"fa fa-rocket",
         menus: [
             {
-                name: 'index',
+                rule: 'index',
                 title: 'All Modules',
                 link: '/'
             }

@@ -8,12 +8,12 @@ module.exports = function (menus) {
         icon:"fa fa-cog",
         menus: [
             {
-                name: 'update_info',
+                rule: 'update_info',
                 title: 'Site Info',
                 link: '/site-info'
             },
             {
-                name: 'change_themes',
+                rule: 'change_themes',
                 title: 'Themes',
                 link: '/themes'
             }

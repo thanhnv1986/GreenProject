@@ -7,7 +7,7 @@
             <div class="box box-solid box-primary">
                 <div class="box-body table-responsive no-padding">
                     {% include 'admin/basic_table.html' %}
-                    {{ totalPage|pagination(currentPage,'/admin/users/page/{page}')|safe }}
+                    {{ totalPage|pagination(currentPage,'/admin/users/page/{page}/sort/'+currentColumn+'/'+currentOrder)|safe }}
                 </div>
             </div>
         </div>

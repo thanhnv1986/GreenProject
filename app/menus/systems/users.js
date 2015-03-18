@@ -8,12 +8,12 @@ module.exports = function (menus) {
         icon:"fa fa-user",
         menus: [
             {
-                name: 'index',
+                rule: 'index',
                 title: 'All Users',
                 link: '/'
             },
             {
-                name: 'create',
+                rule: 'create',
                 title: 'New User',
                 link: '/create'
             }

@@ -25,7 +25,7 @@ exports.index = function (req, res) {
     });
 };
 
-exports.active = function (req, res, next) {
+exports.active = function (req, res) {
     if (__modules[req.params.route].active == undefined || __modules[req.params.route].active == false) {
         req.flash.success('Module ' + req.params.route + ' has active');
         __modules[req.params.route].active = true;
@@ -36,7 +36,7 @@ exports.active = function (req, res, next) {
     }
 
     redis.set('all_modules', JSON.stringify(__modules), redis.print);
-    next();
+    return res.redirect('/admin/modules');
 };
 
 exports.reload = function (req, res, next) {

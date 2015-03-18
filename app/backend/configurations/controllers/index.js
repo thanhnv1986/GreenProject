@@ -29,6 +29,7 @@ exports.update_setting = function (req, res, next) {
     config.app.title = data.title;
     config.app.logo = data.logo;
     config.app.icon = data.icon;
+    config.pagination.number_item = data.number_item;
     //database info
     config.db.host = data.db_host;
     config.db.port = data.db_port;
@@ -45,6 +46,7 @@ exports.update_setting = function (req, res, next) {
     config.redis.port = data.redis_port;
 
     redis.set(config.key, JSON.stringify(config), redis.print);
+    req.flash.success('Saved success');
     next();
 
 };
