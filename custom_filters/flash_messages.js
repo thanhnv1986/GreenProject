@@ -5,7 +5,8 @@
 module.exports = function (env) {
     env.addFilter('flash_message', function (messages) {
         var html = '';
-        if (messages.length > 0) {
+        console.log(messages);
+        if (messages && messages.length > 0) {
             html += '<div class="margin no-print">';
 
             for (var i in messages) {

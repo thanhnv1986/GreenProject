@@ -2,20 +2,30 @@
  * Created by thanhnv on 3/11/15.
  */
 var passport = require('passport');
+var _ = require('lodash');
 var config = require(__base + 'config/config.js');
 
 var mailer = require('nodemailer');
 
 var promise = require('bluebird');
 var randomBytesAsync = promise.promisify(require('crypto').randomBytes);
-
+var env = __.createNewEnv(__dirname + '/views_layout');
+var render = function (req, res, view, options) {
+    res.locals.messages = req.session.messages;
+    req.session.messages = [];
+    env.render(view, _.assign(res.locals, options), function (err, re) {
+        console.log(err);
+        res.send(re);
+    });
+}
 module.exports = function (app) {
     app.route('/admin/login').get(function (req, res) {
         if (req.isAuthenticated()) {
             return res.redirect('/admin');
         }
         else {
-            res.render('login');
+            render(req, res, 'login.html');
+
         }
     }).post(function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {
@@ -24,7 +34,8 @@ module.exports = function (app) {
 
             if (info) {
                 req.flash.error(info.message);
-                return res.render('login');
+                console.log(req.flash, info.message, res.locals);
+                return render(req, res, 'login.html');
             }
             else {
                 req.login(user, function (err) {
@@ -39,11 +50,12 @@ module.exports = function (app) {
     });
 
     app.route('/admin/forgot-password').get(function (req, res) {
-        res.render('forgot-password');
+        env.render('forgot-password.html');
     }).post(function (req, res, next) {
         if (!req.body.email) {
             req.flash.warning('Email is required');
-            return res.render('forgot-password');
+
+            return render(req, res, 'forgot-password.html');
         }
 
         var token = '';
@@ -59,7 +71,7 @@ module.exports = function (app) {
         }).then(function (user) {
             if (!user) {
                 req.flash.warning('No account with that email has been found');
-                res.render('forgot-password');
+                render(req, res, 'forgot-password.html');
                 return promises.cancel();
             } else {
                 // Block spam
@@ -70,7 +82,7 @@ module.exports = function (app) {
                     {
                         var min = 15 - Math.ceil((time - user.reset_password_expires) / 60000);
                         req.flash.warning('An reset password email has already been sent. Please try again in ' + min + ' minutes.');
-                        res.render('reset-password');
+                        render('reset-password.html');
                         return promises.cancel();
                     }
                 }
@@ -83,7 +95,7 @@ module.exports = function (app) {
             }
         }).then(function (user) {
             // Send reset password email
-            res.render('email-templates/reset-password-email', {
+            render(req, res, 'email-templates/reset-password-email', {
                 name: user.display_name,
                 appName: config.app.title,
                 url: 'http://' + req.headers.host + '/admin/reset/' + user.id + '/' + token
@@ -101,7 +113,7 @@ module.exports = function (app) {
 
                     return sendMail(mailOptions).then(function (info) {
                         req.flash.success('An email has been sent to ' + user.user_email + ' with further instructions. Please follow the guide in email to reset password');
-                        return res.render('reset-password');
+                        return render(req, res, 'reset-password');
                     });
                 }
             });
@@ -123,13 +135,13 @@ module.exports = function (app) {
         }).then(function (user) {
             if (!user) {
                 req.flash.error('Password reset token is invalid or has expired');
-                return res.render('reset-password');
+                return render(req, res, 'reset-password.html');
             } else {
                 return next();
             }
         });
-    },function (req, res) {
-        res.render('reset-password', {
+    }, function (req, res) {
+        render(req, res, 'reset-password.html', {
             form: true
         });
     }).post(function (req, res) {
@@ -154,16 +166,16 @@ module.exports = function (app) {
                     return user.updateAttributes(data);
                 } else {
                     req.flash.warning('Passwords do not match');
-                    res.render('reset-password', {form: true});
+                    render(req, res, 'reset-password.html', {form: true});
                     return promises.cancel();
                 }
             } else {
                 req.flash.warning('Password reset token is invalid or has expired');
-                res.render('reset-password');
+                render(req, res, 'reset-password.html');
                 return promises.cancel();
             }
         }).then(function (user) {
-            res.render('email-templates/reset-password-confirm-email', {
+            render(req, res, 'email-templates/reset-password-confirm-email', {
                 name: user.display_name,
                 appName: config.app.title,
                 site: 'http://' + req.headers.host,
@@ -178,7 +190,7 @@ module.exports = function (app) {
 
                 return sendMail(mailOptions).then(function (info) {
                     req.flash.success('Reset password successfully');
-                    return res.render('reset-password');
+                    return render(req, res, 'reset-password.html');
                 });
             });
         }).catch(function (error) {

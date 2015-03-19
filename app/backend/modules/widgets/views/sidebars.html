@@ -1,0 +1,124 @@
+{% extends 'layout.html' %}
+
+{% block cssExtends %}
+    <style>
+        .widget-list {
+            list-style: none;
+            padding-left: 0px;
+            font-size: 15px;
+        }
+
+        .widget-item {
+            display: block;
+            border: 1px solid;
+            line-height: 35px;
+            padding-left: 15px;
+            background-color: aliceblue;
+            margin-bottom: 10px;
+        }
+
+        .widget-state-hover {
+            border: 1px dashed #000000;
+            min-height: 50px;
+        }
+
+        .ui-sortable-placeholder {
+            border: 1px dashed #000000;
+            min-height: 50px;
+        }
+
+        .open {
+            display: block;
+        }
+
+        .close {
+            display: none;
+        }
+
+        .expand_arrow {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        .placeholder {
+            border: 1px dashed #000000;
+            min-height: 50px;
+            text-align: center;
+        }
+
+        .sidebar-widget {
+            z-index: 9999;
+            min-height: 50px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-3">
+                <div class="box box-solid box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Widgets Available</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <ul class="widget-list" id="widgets">
+                            {% for widget in widgets %}
+                                <li class="widget-item" data-alias="{{ widget.alias }}">{{ widget.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-9 sidebar-list">
+                <div class="row">
+                    {% macro sidebar_list(sidebar, widget_list) %}
+                        <div class="col-md-12">
+                            <div class="box box-solid box-info" id="{{ bar.name }}">
+                                <div class="box-header">
+                                    <h3 class="box-title">{{ bar.title }}</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button class="btn btn-box-tool" data-widget="collapse"><i
+                                                    class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body" id="{{ bar.alias }}">
+                                    <ul class="widget-list connect-list sidebar-widget">
+                                        {{ widget_list }}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endmacro %}
+
+                    <div class="col-md-6">
+                        {% for bar in sidebars %}
+                            {% if loop.index | even %}
+                                {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        {% for bar in sidebars %}
+                            {% if loop.index | odd %}
+                                {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsExtends %}
+    <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
+    <script src="/admin/dist/js/widgets/sidebar.min.js"></script>
+{% endblock %}

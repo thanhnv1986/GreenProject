@@ -136,7 +136,7 @@ module.exports = function () {
         next();
     });
 
-    app.use(require('../app/middleware/theme-plugin.js'));
+    //app.use(require('../app/middleware/theme-plugin.js'));
 
     // Globbing admin module files
     redis.get('all_modules', function (err, results) {
@@ -144,7 +144,7 @@ module.exports = function () {
             global.__modules = JSON.parse(results);
         }
         else {
-            config.getGlobbedFiles('./app/backend/*/module.js').forEach(function (routePath) {
+            config.getGlobbedFiles('./app/backend/modules/*/module.js').forEach(function (routePath) {
                 console.log(path.resolve(routePath));
                 require(path.resolve(routePath))(__modules);
             });
@@ -156,7 +156,7 @@ module.exports = function () {
     require(__base + 'app/backend/core_route')(app);
     app.use('/admin/*', require('../app/middleware/modules-plugin.js'));
     // Globbing routing admin files
-    config.getGlobbedFiles('./app/backend/*/route.js').forEach(function (routePath) {
+    config.getGlobbedFiles('./app/backend/modules/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
     });
 
@@ -175,13 +175,13 @@ module.exports = function () {
     app.use('/*', require('../app/middleware/modules-f-plugin.js'));
 
     // Globbing frontend module files
-    config.getGlobbedFiles('./app/frontend/*/module.js').forEach(function (routePath) {
+    config.getGlobbedFiles('./app/frontend/modules/*/module.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
         require(path.resolve(routePath))(__fmodules);
     });
 
     // Globbing routing files
-    config.getGlobbedFiles('./app/frontend/*/route.js').forEach(function (routePath) {
+    config.getGlobbedFiles('./app/frontend/modules/*/route.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
         require(path.resolve(routePath))(app);
     });
@@ -208,10 +208,12 @@ module.exports = function () {
 
     // Assume 404 since no middleware responded
     app.use(function (req, res) {
-        res.status(404).render('404', {
-            url: req.originalUrl,
-            error: 'Not Found'
+        var env = __.createNewEnv([__base + 'app/frontend/themes', __base + 'app/frontend/themes/' + config.themes]);
+        env.render('404.html', res.locals, function (err, re) {
+            console.log(err);
+            res.send(re);
         });
+
     });
 
     if (process.env.NODE_ENV === 'secure') {
