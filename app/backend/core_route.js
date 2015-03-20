@@ -10,13 +10,22 @@ var mailer = require('nodemailer');
 var promise = require('bluebird');
 var randomBytesAsync = promise.promisify(require('crypto').randomBytes);
 var env = __.createNewEnv(__dirname + '/views_layout');
-var render = function (req, res, view, options) {
+var render = function (req, res, view, options, fn) {
     res.locals.messages = req.session.messages;
     req.session.messages = [];
-    env.render(view, _.assign(res.locals, options), function (err, re) {
-        console.log(err);
-        res.send(re);
-    });
+    if (view.indexOf('.html') == -1) {
+        view += '.html';
+    }
+    if (fn) {
+        env.render(view, _.assign(res.locals, options), fn);
+    }
+    else {
+        env.render(view, _.assign(res.locals, options), function (err, re) {
+            console.log("Render error: ", err);
+            res.send(re);
+        });
+    }
+
 }
 module.exports = function (app) {
     app.route('/admin/login').get(function (req, res) {
@@ -50,11 +59,10 @@ module.exports = function (app) {
     });
 
     app.route('/admin/forgot-password').get(function (req, res) {
-        env.render('forgot-password.html');
+        render(req, res, 'forgot-password.html');
     }).post(function (req, res, next) {
         if (!req.body.email) {
             req.flash.warning('Email is required');
-
             return render(req, res, 'forgot-password.html');
         }
 
@@ -82,7 +90,7 @@ module.exports = function (app) {
                     {
                         var min = 15 - Math.ceil((time - user.reset_password_expires) / 60000);
                         req.flash.warning('An reset password email has already been sent. Please try again in ' + min + ' minutes.');
-                        render('reset-password.html');
+                        render(req, res, 'reset-password.html');
                         return promises.cancel();
                     }
                 }

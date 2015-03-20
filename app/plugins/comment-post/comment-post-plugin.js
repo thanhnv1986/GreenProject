@@ -9,7 +9,7 @@ var _base_config = {
     author: 'Jack',
     version: '0.1.0',
     description: 'Add comment in a Post',
-    active: true,
+    active: false,
     sync: false,
     options: {}
 };

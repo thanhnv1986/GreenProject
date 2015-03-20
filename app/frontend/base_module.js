@@ -17,10 +17,10 @@ function BaseModule() {
         if (view.indexOf('.html') == -1) {
             view += '.html';
         }
-        var tmp = config.themes + '/' + self.path + '/' + view;
+        var tmp = config.themes + '/_modules/' + self.path + '/' + view;
 
         if (fs.existsSync(__base + 'app/frontend/themes/' + tmp)) {
-            var env = __.createNewEnv([__dirname + '/themes', __dirname + '/themes/' + config.themes + '/' + self.path]);
+            var env = __.createNewEnv([__dirname + '/themes', __dirname + '/themes/' + config.themes + '/_modules/' + self.path]);
         }
         else {
             var env = __.createNewEnv([__dirname + '/themes', __dirname + '/modules/' + self.path + '/views']);

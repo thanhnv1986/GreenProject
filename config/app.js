@@ -24,6 +24,7 @@ var fs = require('fs'),
     RedisStore = require('connect-redis')(session),
     nunjucks = require('nunjucks'),
     _ = require('lodash'),
+    serveStatic = require('serve-static'),
     path = require('path');
 
 module.exports = function () {
@@ -124,8 +125,21 @@ module.exports = function () {
     app.use(helmet.ienoopen());
     app.disable('x-powered-by');
 
+    var setStaticResourceFolder = function (req, res, next) {
+        console.log(process.cwd());
+        var myRegex = /^(\/admin\/?)/g;
+        var match = myRegex.exec(req.url);
+        if (match) {
+            var serve = serveStatic(__base + 'app/backend/views_layout');
+        }
+        else {
+            var serve = serveStatic(__base + 'app/frontend/themes');
+        }
+        serve(req, res, next);
+    };
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
+    app.use(setStaticResourceFolder);
     // Passing the request url to environment locals
     app.use(function (req, res, next) {
         res.locals.url = req.protocol + '://' + req.headers.host + req.url;

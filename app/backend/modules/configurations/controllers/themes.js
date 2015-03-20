@@ -65,7 +65,7 @@ _module.detail = function (req, res) {
     });
 
     for (var i in themes) {
-        if (themes[i].name.toLowerCase() == req.params.themeName) {
+        if (themes[i].alias.toLowerCase() == req.params.themeName) {
             var current_theme = __current_theme = themes[i];
         }
     }

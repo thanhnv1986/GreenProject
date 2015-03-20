@@ -40,7 +40,7 @@ _module.index = function (req, res) {
 _module.sidebar = function (req, res, next) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Sidebars'});
     Promise.promisifyAll(fs);
-    fs.readFileAsync(__base + "app/themes/" + config.themes + "/theme.json", "utf8").then(function (data) {
+    fs.readFileAsync(__base + "app/frontend/themes/" + config.themes + "/theme.json", "utf8").then(function (data) {
         _module.render(req, res, 'sidebars', {
             title: "Sidebars",
             sidebars: JSON.parse(data).sidebars,
