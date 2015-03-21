@@ -20,6 +20,8 @@ global.__acl = require('./libs/acl');
 global.__messages = [];
 global.__current_theme = {};
 global.__pluginManager = require('./libs/plugins_manager');
+global.BaseModuleBackend = require('./app/backend/base_module');
+global.BaseModuleFrontend = require('./app/frontend/base_module');
 __pluginManager.loadAllPlugin();
 
 

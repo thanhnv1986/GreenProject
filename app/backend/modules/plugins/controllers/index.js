@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 2/17/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 var redis = require('redis').createClient();
@@ -20,7 +20,7 @@ var breadcrumb =
         }
     ];
 function PluginsModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/plugins";
 }
 var _module = new PluginsModule();
@@ -79,5 +79,5 @@ _module.reload = function (req, res, next) {
     req.flash.success("Reload all plugins");
     next();
 };
-util.inherits(PluginsModule, BaseModule);
+util.inherits(PluginsModule, BaseModuleBackend);
 module.exports = _module;

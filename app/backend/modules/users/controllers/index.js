@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 1/26/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 
@@ -36,7 +36,7 @@ var breadcrumb =
     ];
 
 function UsersModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/users";
 }
 var _module = new UsersModule();
@@ -166,7 +166,7 @@ _module.view = function (req, res) {
 
     // Get user by session and list roles
     __models.role.findAll().then(function (roles) {
-        BaseModule.prototype.render.call(self, edit_template, {
+        BaseModuleBackend.prototype.render.call(self, edit_template, {
             title: "Update Users",
             roles: roles,
             user: req._user,
@@ -417,5 +417,5 @@ _module.userById = function (req, res, next, id) {
     })
 };
 
-util.inherits(UsersModule, BaseModule);
+util.inherits(UsersModule, BaseModuleBackend);
 module.exports = _module;

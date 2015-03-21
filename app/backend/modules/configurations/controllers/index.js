@@ -1,8 +1,8 @@
 /**
  * Created by thanhnv on 2/17/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
-    util = require('util'),
+
+var   util = require('util'),
     _ = require('lodash');
 var config = require(__base + 'config/config');
 var redis = require('redis').createClient();
@@ -24,7 +24,7 @@ var breadcrumb =
     ];
 
 function ConfigurationsModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/configurations";
 }
 var _module = new ConfigurationsModule();
@@ -61,5 +61,5 @@ _module.update_setting = function (req, res, next) {
 
 };
 
-util.inherits(ConfigurationsModule, BaseModule);
+util.inherits(ConfigurationsModule, BaseModuleBackend);
 module.exports = _module;

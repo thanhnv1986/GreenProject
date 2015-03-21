@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 1/26/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 var fs = require('fs');
@@ -23,7 +23,7 @@ var breadcrumb =
     ];
 
 function RolesModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/roles";
 }
 var _module = new RolesModule();
@@ -230,5 +230,5 @@ _module.delete = function (req, res) {
     });
 };
 
-util.inherits(RolesModule, BaseModule);
+util.inherits(RolesModule, BaseModuleBackend);
 module.exports = _module;

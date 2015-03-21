@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 2/17/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 var redis = require('redis').createClient();
@@ -24,7 +24,7 @@ var breadcrumb =
     ];
 
 function WidgetsModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/widgets";
 }
 var _module = new WidgetsModule();
@@ -95,5 +95,5 @@ _module.sidebar_sort = function (req, res) {
 
 };
 
-util.inherits(WidgetsModule, BaseModule);
+util.inherits(WidgetsModule, BaseModuleBackend);
 module.exports = _module;

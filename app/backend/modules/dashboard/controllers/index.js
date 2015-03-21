@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 2/17/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 
@@ -18,7 +18,7 @@ var breadcrumb =
         }
     ];
 function DashboardModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/dashboard";
 }
 var _module = new DashboardModule();
@@ -36,5 +36,5 @@ _module.index = function (req, res) {
     _module.render(req, res, 'index');
 };
 
-util.inherits(DashboardModule, BaseModule);
+util.inherits(DashboardModule, BaseModuleBackend);
 module.exports = _module;

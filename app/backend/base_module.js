@@ -4,7 +4,7 @@
 var nunjucks = require('nunjucks'),
     _ = require('lodash');
 
-function BaseModule() {
+function BaseModuleBackend() {
 
     this.render = function (req, res, view, options) {
         var self = this;
@@ -24,4 +24,4 @@ function BaseModule() {
     }
 }
 
-module.exports = BaseModule;
+module.exports = BaseModuleBackend;

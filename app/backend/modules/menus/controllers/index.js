@@ -1,7 +1,7 @@
 /**
  * Created by thanhnv on 2/17/15.
  */
-var BaseModule = require(__base + 'app/backend/base_module.js'),
+var
     util = require('util'),
     _ = require('lodash');
 var promise = require('bluebird');
@@ -20,7 +20,7 @@ var breadcrumb =
         }
     ];
 function MenusModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/menus";
 }
 var _module = new MenusModule();
@@ -189,5 +189,5 @@ _module.menuitem = function (req, res) {
     _module.render(req, res, 'menuitem');
 };
 
-util.inherits(MenusModule, BaseModule);
+util.inherits(MenusModule, BaseModuleBackend);
 module.exports = _module;

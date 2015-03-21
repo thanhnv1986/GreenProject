@@ -5,13 +5,13 @@
 /**
  * Module dependencies.
  */
-var BaseModule = require(__base + 'app/frontend/base_module.js'),
-    util = require('util'),
+
+var util = require('util'),
     config = require(__base + 'config/config.js'),
     _ = require('lodash');
 
 function IndexModule() {
-    BaseModule.call(this);
+    BaseModuleFrontend.call(this);
     this.path = "/index";
 }
 var _module = new IndexModule();
@@ -21,5 +21,5 @@ _module.index = function (req, res) {
         user: req.user || null
     });
 };
-util.inherits(IndexModule, BaseModule);
+util.inherits(IndexModule, BaseModuleFrontend);
 module.exports = _module;

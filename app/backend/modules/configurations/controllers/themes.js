@@ -2,8 +2,7 @@
  * Created by thanhnv on 3/4/15.
  */
 
-var BaseModule = require(__base + 'app/backend/base_module.js'),
-    util = require('util'),
+var util = require('util'),
     _ = require('lodash');
 var config = require(__base + 'config/config');
 
@@ -26,7 +25,7 @@ var breadcrumb =
 
 
 function ConfigurationsThemesModule() {
-    BaseModule.call(this);
+    BaseModuleBackend.call(this);
     this.path = "/configurations";
 }
 var _module = new ConfigurationsThemesModule();
@@ -89,5 +88,5 @@ _module.import = function (req, res) {
     res.send("ok")
 };
 
-util.inherits(ConfigurationsThemesModule, BaseModule);
+util.inherits(ConfigurationsThemesModule, BaseModuleBackend);
 module.exports = _module;
