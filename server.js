@@ -31,7 +31,8 @@ var app = require('./config/app')();
 // Bootstrap passport config
 require('./config/passport')();
 
-app.listen(config.port);
+var server = app.listen(config.port);
+global.__socketManager = new require('./libs/socket_manager')(server);
 // Start the app by listening on <port>
 
 
