@@ -27,12 +27,12 @@ function BaseWidget() {
 }
 BaseWidget.prototype.getAllLayouts = function (alias) {
     var files = [];
-    config.getGlobbedFiles(__base + "app/themes/" + config.themes + '/_widgets/' + alias + '/*.html').forEach(function (path) {
+    config.getGlobbedFiles(__base + "app/frontend/themes/" + config.themes + '/_widgets/' + alias + '/*.html').forEach(function (path) {
         var s = path.split('/');
         files.push(s[s.length - 1]);
     });
     if (files.length == 0) {
-        config.getGlobbedFiles(__base + "app/themes/default/_widgets/" + alias + "/*.html").forEach(function (path) {
+        config.getGlobbedFiles(__base + "app/frontend/themes/default/_widgets/" + alias + "/*.html").forEach(function (path) {
             var s = path.split('/');
             files.push(s[s.length - 1]);
         });
@@ -88,13 +88,16 @@ BaseWidget.prototype.render = function (widget, data) {
     return new Promise(function (resolve, reject) {
         var renderWidget = Promise.promisify(_this.env.render, _this.env);
         var widgetFile = widget.widget_type + '/' + widget.data.file;
-        var widgetFilePath = __base + 'app/themes/' + config.themes + '/_widgets/' + widgetFile;
+        var widgetFilePath = __base + 'app/frontend/themes/' + config.themes + '/_widgets/' + widgetFile;
 
         if (!fs.existsSync(widgetFilePath)) {
             widgetFilePath = 'default/_widgets/' + widgetFile;
         }
         else {
             widgetFilePath = config.themes + '/_widgets/' + widgetFile;
+        }
+        if (widgetFilePath.indexOf('.html') == -1) {
+            widgetFilePath += '.html';
         }
         var context = _.assign({widget: widget}, data);
         resolve(renderWidget(widgetFilePath, context).catch(function (err) {

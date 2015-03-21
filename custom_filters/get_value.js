@@ -6,7 +6,12 @@ module.exports = function (env) {
     env.addFilter('get_value', function(input, item){
         if(~input.indexOf('.')){
             var arr = input.split('.');
-            return item[arr[0]][arr[1]];
+            var value = '';
+            for(var i in arr){
+                item = item[arr[i]];
+                value = item;
+            }
+            return value;
         }
         else{
             return item[input];
