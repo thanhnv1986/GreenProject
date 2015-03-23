@@ -23,7 +23,7 @@ exports.isAllow = function (route, action, orAction, hasAuthorize) {
         }
 
         req.flash.error("You do not have permission to access");
-        res.render('/404');
+        res.redirect('/admin/err/404');
     }
 };
 

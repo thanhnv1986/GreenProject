@@ -8,7 +8,7 @@ function SocketManager(server) {
     self.clients = [];
     self.io = socket.listen(server);
     self.io.on('connection', function (socket) {
-        console.log('has connection connected', socket);
+        console.log('has connection connected');
         self.clients[socket.id] = socket;
         socket.on('disconnect', function () {
             delete self.clients[socket.id];

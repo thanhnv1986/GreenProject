@@ -16,13 +16,13 @@ module.exports = function (req, res, next) {
     module = module.split('?')[0];
     var moduleName = module.replace('-', '_');
 
-    if (moduleName == 'login' || moduleName == 'uploads') return next();
+    if (moduleName == 'login' || moduleName == 'uploads' || moduleName == 'err') return next();
     if (__modules[moduleName] != undefined && (__modules[moduleName].system || __modules[moduleName].active)) {
         next();
     }
     else {
         req.flash.error('Module ' + module + ' is not active');
         console.log('Error *****', moduleName);
-        res.render('admin/500');
+        res.redirect('/admin/err/500');
     }
 };

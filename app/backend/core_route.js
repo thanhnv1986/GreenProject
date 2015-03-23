@@ -28,6 +28,7 @@ var render = function (req, res, view, options, fn) {
 
 }
 module.exports = function (app) {
+
     app.route('/admin/login').get(function (req, res) {
         if (req.isAuthenticated()) {
             return res.redirect('/admin');
@@ -216,7 +217,13 @@ module.exports = function (app) {
 //        res.locals.__user = req.user;
         next();
     });
-
+    //Error in backend
+    app.route('/admin/err/500').get(function (req, res) {
+        render(req, res, '500.html');
+    });
+    app.route('/admin/err/404').get(function (req, res) {
+        render(req, res, '404.html');
+    });
     function sendMail(mailOptions) {
         return new Promise(function (fulfill, reject) {
             var transporter = mailer.createTransport(config.mailer_config);
