@@ -33,7 +33,6 @@ module.exports = function () {
                         message: 'Username or password invalid'
                     });
                 }
-                //console.log('*******************',user);
                 return done(null, user);
 
             });

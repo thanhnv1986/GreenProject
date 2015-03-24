@@ -120,10 +120,12 @@ exports.parseValue = function (value, col) {
     }
 
 };
-exports.createFilter = function (req, res, route, reset_link, current_column, order, columns) {
+exports.createFilter = function (req, res, route, reset_link, current_column, order, columns, customCondition) {
     //Add button Search
-    res.locals.searchButton = __acl.addButton(req, route, 'index');
-    res.locals.resetFilterButton = __acl.addButton(req, route, 'index', reset_link);
+    if(route!=''){
+        res.locals.searchButton = __acl.customButton(route);
+        res.locals.resetFilterButton = __acl.customButton(reset_link);
+    }
     var conditions = [];
     var values = [];
     values.push('command');
@@ -158,7 +160,8 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
 
         }
     }
-    var stCondition = conditions.join(" AND ");
+    var tmp = conditions.length > 0 ? "(" + conditions.join(" AND ") + ")" : " 1=1 ";
+    var stCondition = tmp + (customCondition ? customCondition : '');
     values[0] = stCondition;
     res.locals.table_columns = columns;
     res.locals.currentColumn = current_column;

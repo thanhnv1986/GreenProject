@@ -2,26 +2,29 @@
  * Created by thanhnv on 3/21/15.
  */
 
-var socket = require('socket.io');
+var socket = require('socket.io'),
+    config = require(__base + 'config/config');
+
 function SocketManager(server) {
     var self = this;
-    self.clients = [];
+    self.sockets = [];
     self.io = socket.listen(server);
     self.io.on('connection', function (socket) {
-        console.log('has connection connected');
-        self.clients[socket.id] = socket;
-        socket.on('disconnect', function () {
-            delete self.clients[socket.id];
-            console.log('connection disconnected');
+        /*socket.on('disconnect', function () {
+            socket.disconnect();
+        });*/
+        config.getGlobbedFiles(__base + 'app/socket_io/*.js').forEach(function (path) {
+            require(path)(self, socket);
         });
-    });
 
+    });
+    self.publish = function (key, data, options) {
+        self.io.emit(key, data);
+    };
 }
 
-SocketManager.prototype.publish = function (key, data, options) {
-    this.io.emit(key, data);
+module.exports = function (server) {
+    return new SocketManager(server);
 };
-
-module.exports = SocketManager;
 
 

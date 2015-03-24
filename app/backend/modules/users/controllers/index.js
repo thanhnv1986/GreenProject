@@ -166,7 +166,7 @@ _module.view = function (req, res) {
 
     // Get user by session and list roles
     __models.role.findAll().then(function (roles) {
-        BaseModuleBackend.prototype.render.call(self, edit_template, {
+        _module.render(req, res, edit_template, {
             title: "Update Users",
             roles: roles,
             user: req._user,
