@@ -26,7 +26,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72"
           href="/default/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/default/images/ico/apple-touch-icon-57-precomposed.png">
-
+    {% block cssExtends %}{% endblock %}
     {{ 'before_close_head_tag'|fire_event('here is close head tag')|safe }}
 </head>
 <!--/head-->

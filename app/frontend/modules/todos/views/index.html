@@ -1,0 +1,154 @@
+{% extends 'default_layout.html' %}
+{% block cssExtends %}
+    <style>
+
+        #todo-app {
+            margin: 1em;
+            text-align: center;
+        }
+
+        #todo-list,
+        #todo-stats {
+            margin: 1em auto;
+            text-align: left;
+            width: 450px;
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #todo-stats,
+        .todo-clear {
+            color: #777;
+        }
+
+        .todo-clear {
+            float: right;
+        }
+
+        .todo-done .todo-content {
+            color: #666;
+            text-decoration: line-through;
+        }
+
+        .todo-edit,
+        .editing .todo-view {
+            display: none;
+        }
+
+        .editing .todo-edit {
+            display: block;
+        }
+
+        .todo-input {
+            display: block;
+            font-family: Helvetica, sans-serif;
+            font-size: 20px;
+            line-height: normal;
+            margin: 5px auto 0;
+            padding: 6px;
+            width: 420px;
+        }
+
+        .todo-item {
+            border-bottom: 1px dotted #cfcfcf;
+            font-size: 20px;
+            padding: 6px;
+            position: relative;
+        }
+
+        .todo-label {
+            color: #444;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .todo-remaining {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .todo-remove {
+            position: absolute;
+            right: 0;
+            top: 12px;
+        }
+
+        .todo-remove-icon {
+            /*
+            Delete icon courtesy of The Noun Project:
+            http://thenounproject.com/noun/delete/
+            */
+            background: url(../assets/app/remove.png) no-repeat;
+            display: block;
+            height: 16px;
+            opacity: 0.6;
+            visibility: hidden;
+            width: 23px;
+        }
+
+        .todo-remove:hover .todo-remove-icon {
+            opacity: 1.0;
+        }
+
+        .todo-hover .todo-remove-icon,
+        .todo-remove:focus .todo-remove-icon {
+            visibility: visible;
+        }
+
+        .editing .todo-remove-icon {
+            visibility: hidden;
+        }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <section id="content" ng-app="app" ng-controller="TodoController as todoCtrl">
+        <div class="container">
+            <!-- This is the main container and "shell" for the todo app. -->
+            <div id="todo-app">
+                <form id="todo-form" ng-submit="todoCtrl.addTodo()">
+                    <label class="todo-label" for="new-todo">What do you want to do today?</label>
+                    <input ng-model="todo.text" type="text" id="new-todo" class="todo-input">
+                </form>
+                <ul id="todo-list">
+                    <li ng-repeat="todo in todos" class="todo-item" ng-class="{'todo-done':todo.done}">
+                        <div class="todo-view">
+                            <input ng-model="todo.done" type="checkbox" class="todo-checkbox">
+                            <span class="todo-content">{[{todo.text}]}</span>
+                        </div>
+                        <a href="#" class="todo-remove" title="Remove this task">
+                            <span class="todo-remove-icon"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block jsExtends %}
+    {% include 'socket.html' %}
+    <script>
+        app.controller('TodoController', ['$scope', 'socket',
+            function ($scope, socket) {
+                $scope.todos = [];
+                $scope.todo = {};
+                socket.on('todos:list', function (data) {
+                    $scope.todos = data;
+                });
+                this.addTodo = function () {
+                    if ($scope.todo.text != undefined) {
+                        $scope.todo.done = false;
+                        $scope.todos.push($scope.todo);
+                        socket.emit('todos:add', $scope.todo);
+                        $scope.todo = {};
+                    }
+
+                }
+            }
+        ]);
+    </script>
+{% endblock %}

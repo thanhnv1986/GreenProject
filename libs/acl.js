@@ -42,6 +42,9 @@ exports.addButton = function (req, route, action, url) {
     }
     return false;
 };
+exports.customButton = function (url) {
+    return url;
+};
 
 exports.customButton = function (url) {
     return url;

@@ -49,9 +49,8 @@ var app = require('./config/app')();
 require('./config/passport')();
 
 var server = app.listen(config.port);
-global.__socketManager = new require('./libs/socket_manager')(server);
+global.__socketManager = require('./libs/socket_manager')(server);
 // Start the app by listening on <port>
-
 
 // Expose app
 module.exports = app;

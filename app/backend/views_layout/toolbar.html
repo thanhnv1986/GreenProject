@@ -23,7 +23,7 @@
     {% endif %}
 
     {% if saveButton %}
-        <button type="submit" id="saveForm" class="btn btn-success" for="edit-form">
+        <button type="submit" id="saveForm" class="btn btn-success" form="edit-form" onclick='return document.forms["edit-form"].submit();'>
             <i class="fa fa-check"></i> Save
         </button>
     {% endif %}
@@ -46,7 +46,7 @@
 
     {% if searchButton %}
         <div class="pull-right">
-            <button type="submit" form="search-form" class="btn btn-warning">
+            <button type="submit" form="search-form" class="btn btn-warning" onclick='return document.forms["search-form"].submit();'>
                 <i class="fa fa-search"></i> Search
             </button>
 

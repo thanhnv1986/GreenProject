@@ -31,18 +31,27 @@ function BaseModule() {
             res.send(re);
         });
     };
+    var render_error = function (req, res, view) {
+        var self = this;
+        //get messages from session
+        res.locals.messages = req.session.messages;
+        //clear session messages
+        req.session.messages = [];
+        if (view.indexOf('.html') == -1) {
+            view += '.html';
+        }
+        var env = __.createNewEnv([__dirname + '/themes', __dirname + '/themes/' + config.themes]);
+        env.render(view, _.assign(res.locals, options), function (err, re) {
 
-    var render_error = function(req, res, view){
-
+            res.send(re);
+        });
     };
-
-    this.render404 = function(req, res){
+    this.render404 = function (req, res) {
         render_error(req, res, '404');
     };
-
-    this.render500 = function(req, res){
+    this.render500 = function (req, res) {
         render_error(req, res, '500');
-    }
+    };
 }
 
 module.exports = BaseModule;
