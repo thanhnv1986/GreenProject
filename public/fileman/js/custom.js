@@ -33,7 +33,11 @@ function FileSelected(file){
    * height - if the file is image, this will be the height of the original image, 0 otherwise
    * 
    */
-  alert('"' + file.fullPath + "\" selected.\n To integrate with CKEditor or TinyMCE change INTEGRATION setting in conf.json. For more details see the Installation instructions at http://www.roxyfileman.com/install.");
+  //alert('"' + file.fullPath + "\" selected.\n To integrate with CKEditor or TinyMCE change INTEGRATION setting in conf.json. For more details see the Installation instructions at http://www.roxyfileman.com/install.");
+  var fieldId = RoxyUtils.GetUrlParam('txtFieldId');
+    $(window.parent.document).find('#' + fieldId).attr('value', file.fullPath);
+    $(window.parent.document).find('#' + fieldId).prev('img').attr('src', file.fullPath);
+    window.parent.closeCustomRoxy2();
 }
 function GetSelectedValue(){
   /**

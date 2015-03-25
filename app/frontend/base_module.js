@@ -30,6 +30,18 @@ function BaseModule() {
             console.log(err);
             res.send(re);
         });
+    };
+
+    var render_error = function(req, res, view){
+
+    };
+
+    this.render404 = function(req, res){
+        render_error(req, res, '404');
+    };
+
+    this.render500 = function(req, res){
+        render_error(req, res, '500');
     }
 }
 

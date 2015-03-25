@@ -4,7 +4,6 @@
 module.exports = function (menus) {
     menus.systems.modules.menus = {
         title:'Menus',
-        sort: 3,
         icon:"fa fa-bars",
         menus: [
             {

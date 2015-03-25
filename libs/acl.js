@@ -32,9 +32,9 @@ exports.addButton = function (req, route, action, url) {
         var rules = req.user.acl[route].split(':');
         for (var i in rules) {
             if (action == rules[i]) {
-                if(url === undefined){
+                if (url === undefined) {
                     return route.replace('_', '-');
-                }else{
+                } else {
                     return url.replace('_', '-');
                 }
             }
@@ -42,6 +42,11 @@ exports.addButton = function (req, route, action, url) {
     }
     return false;
 };
+
+exports.customButton = function (url) {
+    return url;
+};
+
 
 
 

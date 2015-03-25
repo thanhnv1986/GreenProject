@@ -15,7 +15,7 @@ module.exports = function (env) {
                 end = totalPage;
             }
             var html =
-                '<div class="row">' +
+//                '<div class="row">' +
                     /*'<div class="col-md-5 col-sm-12">' +
                      '<div class="dataTables_info" id="sample_2_info" role="status" aria-live="polite">Showing 1 to 5 of '+totalPage+' entries</div>' +
                      '</div>' +*/
@@ -43,7 +43,7 @@ module.exports = function (env) {
             html += '<li class="paginate_button next" aria-controls="sample_2" tabindex="0" id="sample_2_next"><a class="page-link" href="' + (parseInt(current_page) == totalPage ? "#" : link.replace('{page}', parseInt(current_page) + 1)) + '"><i class="fa fa-angle-right"></i></a></li>' +
                 '</ul>' +
                 '</div>' +
-                '</div>' +
+//                '</div>' +
                 '</div>';
             return html;
         }else{

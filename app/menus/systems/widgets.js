@@ -4,20 +4,18 @@
 module.exports = function (menus) {
     menus.systems.modules.widgets = {
         title: 'Widgets',
-        sort: 4,
         icon: 'fa fa-file-text',
         menus: [
             {
                 rule: 'index',
-                title: 'All Widgets',
-                link: '/'
+                title: 'Sidebars',
+                link: '/sidebars'
             },
             {
                 rule: 'index',
-                title: 'Sidebars',
-                link: '/sidebars'
+                title: 'All Widgets',
+                link: '/'
             }
-
         ]
     };
     return menus;

@@ -25,4 +25,4 @@ module.exports = function (env) {
         });
         return html;
     }, true);
-}
+};

@@ -1,0 +1,10 @@
+<fieldset>
+    <legend>{{ widget.data.title|title }}</legend>
+    <ul>
+        {% for item in items %}
+            <li>
+                <a href="/{{ item.alias }}/p{{ item.id }}/">{{ item.title|safe }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</fieldset>

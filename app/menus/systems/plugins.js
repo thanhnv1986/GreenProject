@@ -4,7 +4,6 @@
 module.exports = function (menus) {
     menus.systems.modules.plugins = {
         title:'Plugins',
-        sort: 4,
         icon:"fa fa-thumb-tack",
         menus: [
             {

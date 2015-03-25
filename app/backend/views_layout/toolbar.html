@@ -35,13 +35,15 @@
             </a>
         </div>
     {% endif %}
+
     {% if resetFilterButton %}
         <div class="pull-right">
-            <a class="btn btn-danger" href="{{ resetFilterButton }}">
-                <i class="fa fa-remove"></i> Clear
+            <a class="btn btn-info" href="{{ resetFilterButton }}">
+                <i class="fa fa-refresh"></i> Clear
             </a>
         </div>
     {% endif %}
+
     {% if searchButton %}
         <div class="pull-right">
             <button type="submit" form="search-form" class="btn btn-warning">
@@ -50,7 +52,6 @@
 
         </div>
     {% endif %}
-
 </div>
 
 {% include 'delete_modal.html' %}

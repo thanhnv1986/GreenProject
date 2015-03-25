@@ -1,8 +1,7 @@
 /**
  * Created by thanhnv on 1/26/15.
  */
-var
-    util = require('util'),
+var util = require('util'),
     _ = require('lodash');
 
 var promise = require('bluebird');
@@ -18,7 +17,6 @@ var path = require('path');
 var slug = require('slug');
 var config = require(__base + 'config/config.js');
 
-var list_template = 'index.html';
 var edit_template = 'new.html';
 var folder_upload = '/img/users/';
 var route = 'users';
@@ -156,7 +154,6 @@ _module.list = function (req, res) {
 };
 
 _module.view = function (req, res) {
-    var self = this;
     // Add button
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/users');
@@ -166,7 +163,7 @@ _module.view = function (req, res) {
 
     // Get user by session and list roles
     __models.role.findAll().then(function (roles) {
-        BaseModuleBackend.prototype.render.call(self, edit_template, {
+        _module.render(req, res, edit_template, {
             title: "Update Users",
             roles: roles,
             user: req._user,

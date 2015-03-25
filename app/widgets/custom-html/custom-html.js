@@ -18,6 +18,7 @@ var _base_config = {
         content: ''
     }
 };
+
 function CustomHtml() {
     CustomHtml.super_.call(this);
     _.assign(this, _base_config);

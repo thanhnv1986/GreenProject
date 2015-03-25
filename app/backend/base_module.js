@@ -16,9 +16,8 @@ function BaseModuleBackend() {
             view += '.html';
         }
         var env = __.createNewEnv([__dirname + '/views_layout', __dirname + '/modules/' + self.path + '/views']);
-        console.log(env.loaders, view);
+
         env.render(view, _.assign(res.locals, options), function (err, re) {
-            console.log(err);
             res.send(re);
         });
     }

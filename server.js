@@ -24,6 +24,23 @@ global.BaseModuleBackend = require('./app/backend/base_module');
 global.BaseModuleFrontend = require('./app/frontend/base_module');
 __pluginManager.loadAllPlugin();
 
+// Init SEO
+redis.get('seo_enable', function (err, result) {
+    if(result != null) {
+        global.__seo_enable = result;
+    }
+    else
+    {
+        redis.set('seo_enable', true, function(err, res) {
+            if (err) {
+                console.log("Init app Redis reply error: " + err);
+            } else {
+                console.log("Init app Redis reply: " + res);
+            }
+        });
+        global.__seo_enable = true;
+    }
+});
 
 // Init the express application
 var app = require('./config/app')();

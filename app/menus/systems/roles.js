@@ -4,7 +4,6 @@
 module.exports = function (menus) {
     menus.systems.modules.roles = {
         title:'Roles',
-        sort: 2,
         icon:"fa fa-group",
         menus: [
             {

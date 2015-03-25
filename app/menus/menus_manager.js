@@ -3,22 +3,24 @@
  */
 var menus = {};
 module.exports = function () {
-    //Main Navigation group
+    // Main Navigation group
     menus.default = {
         title: 'Main Navigation',
         sort: 1,
         modules: {}
     };
-    //System group
+
+    // System group
     menus.systems = {
         title: 'Systems',
         sort: 2,
         modules: {}
     };
+
+    // Sorting menu
     menus.sorting = {};
     menus.sorting.default = [
-        "pages",
-        "post"
+        "blog"
     ];
     menus.sorting.systems = [
         "users",

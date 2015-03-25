@@ -23,8 +23,8 @@
             "title": "Sidebar 3"
         },
         {
-            "name": "sidebar4",
-            "title": "Sidebar 4"
+            "name": "right-sidebar",
+            "title": "Right Sidebar"
         }
     ],
     "menus": [

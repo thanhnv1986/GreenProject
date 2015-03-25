@@ -1,2 +1,6 @@
 <link href="/admin/plugins/ckeditor/plugins/codemirror/theme/monokai.css" rel="stylesheet">
 <script src="/admin/plugins/ckeditor/ckeditor.js"></script>
+
+{% if seo_enable == 'true' %}
+    <script src="/admin/plugins/seo.js" type="text/javascript"></script>
+{% endif %}

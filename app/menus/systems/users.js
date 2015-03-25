@@ -4,7 +4,6 @@
 module.exports = function (menus) {
     menus.systems.modules.users = {
         title:'Users',
-        sort: 1,
         icon:"fa fa-user",
         menus: [
             {
