@@ -14,8 +14,8 @@ module.exports = function (env) {
             for (var y in sortModules) {
                 var moduleName = sortModules[y];
                 if (user.acl[moduleName] == undefined) continue;
-
                 var subMenu = group.modules[moduleName];
+                if (subMenu == undefined) continue;
                 var icon = 'fa fa-circle-o text-danger';
                 if (subMenu.icon) {
                     icon = subMenu.icon;
@@ -35,7 +35,7 @@ module.exports = function (env) {
                         if (user.acl[moduleName].indexOf(mn.rule) > -1) {
                             var cls = __.active_menu(route, mn.link.replace('/', ''), "active", 3);
                             html += '<li class="treeview ' + cls + '">' +
-                            '<a href="/admin/' + (moduleName.replace('_','-') + mn.link) + '">' +
+                            '<a href="/admin/' + (moduleName.replace('_', '-') + mn.link) + '">' +
                             '<i class="fa fa-circle-o"></i> <span>' + mn.title + '</span>' +
                             '</a>' +
                             '</li>';
@@ -45,7 +45,7 @@ module.exports = function (env) {
                     html += '</li>';
                 }
                 else {
-                    html = html.replace('{{link}}', '/admin/' + (moduleName.replace('_','-') + subMenu.menus[0].link));
+                    html = html.replace('{{link}}', '/admin/' + (moduleName.replace('_', '-') + subMenu.menus[0].link));
                     html += '</a></li>';
                 }
 

@@ -122,7 +122,7 @@ exports.parseValue = function (value, col) {
 };
 exports.createFilter = function (req, res, route, reset_link, current_column, order, columns, customCondition) {
     //Add button Search
-    if(route!=''){
+    if (route != '') {
         res.locals.searchButton = __acl.customButton(route);
         res.locals.resetFilterButton = __acl.customButton(reset_link);
     }
@@ -135,10 +135,12 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
                 return columns[i];
             }
         }
-    }
+        return {filter: {}};
+    };
     for (var i in req.query) {
         if (req.query[i] != '') {
             var col = getColumn(i);
+            if (!col) continue;
             if (col.query) {
                 conditions.push(col.query);
             }

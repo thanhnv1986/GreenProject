@@ -6,6 +6,7 @@ var nunjucks = require('nunjucks'),
     config = require(__base + 'config/config'),
     _ = require('lodash');
 
+var env = __.createNewEnv([__dirname + '/themes', __dirname + '']);
 function BaseModule() {
 
     this.render = function (req, res, view, options) {
@@ -18,14 +19,15 @@ function BaseModule() {
             view += '.html';
         }
         var tmp = config.themes + '/_modules/' + self.path + '/' + view;
-
         if (fs.existsSync(__base + 'app/frontend/themes/' + tmp)) {
-            var env = __.createNewEnv([__dirname + '/themes', __dirname + '/themes/' + config.themes + '/_modules/' + self.path]);
+            env.loaders[0].searchPaths = [__dirname + '/themes'];
+            view = config.themes + '/_modules' + self.path + '/' + view;
         }
         else {
-            var env = __.createNewEnv([__dirname + '/themes', __dirname + '/modules/' + self.path + '/views']);
+            env.loaders[0].searchPaths = [__dirname + '/themes', __dirname + '/modules'];
+            view = self.path + '/views/' + view;
         }
-        console.log(env.loaders, view, tmp);
+        console.log('*************', env.loaders, view, tmp);
         env.render(view, _.assign(res.locals, options), function (err, re) {
             console.log(err);
             res.send(re);
@@ -41,9 +43,8 @@ function BaseModule() {
         if (view.indexOf('.html') == -1) {
             view += '.html';
         }
-        var env = __.createNewEnv([__dirname + '/themes', __dirname + '/themes/' + config.themes]);
+        env.loaders[0].searchPaths = [__dirname + '/themes', __dirname + '/themes/' + config.themes];
         env.render(view, _.assign(res.locals, options), function (err, re) {
-
             res.send(re);
         });
     };
