@@ -31,9 +31,9 @@ Categories.prototype.render = function (widget) {
     var _this = this;
     return new Promise(function (resolve) {
         __models.categories.findAll({
-            attributes: ['name', 'alias', 'id', 'created_at', 'parents', 'level'],
+            attributes: ['name', 'alias', 'id', 'created_at', 'parent', 'level'],
             where : 'id <> 1',
-            order: "id , parents ASC"
+            order: "id , parent ASC"
         }).then(function (categories) {
             var resultsCategories = [];
             categories.forEach(function (parent) {

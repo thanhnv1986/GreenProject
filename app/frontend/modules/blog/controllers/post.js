@@ -28,7 +28,7 @@ module.exports.index = function (req, res) {
                 // Find all categories
                 __models.categories.findAndCountAll({
                     where: "published = 1 AND id <> 1",
-                    order: "id,parents ASC"
+                    order: "id,parent ASC"
                 })
             ]
         ).then(function (results) {

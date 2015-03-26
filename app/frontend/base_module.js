@@ -31,6 +31,7 @@ function BaseModule() {
             res.send(re);
         });
     };
+
     var render_error = function (req, res, view) {
         var self = this;
         //get messages from session
@@ -52,6 +53,7 @@ function BaseModule() {
     this.render500 = function (req, res) {
         render_error(req, res, '500');
     };
+
 }
 
 module.exports = BaseModule;
