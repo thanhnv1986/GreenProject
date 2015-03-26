@@ -19,6 +19,7 @@ function BaseModuleBackend() {
         view = self.path.substring(1) + '/views/' + view;
         console.log('**********', env.loaders, view);
         env.render(view, _.assign(res.locals, options), function (err, re) {
+            console.log('???????', err);
             res.send(re);
         });
     }

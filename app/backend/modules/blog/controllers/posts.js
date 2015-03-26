@@ -108,11 +108,12 @@ exports.index = function (req, res) {
         }
     ], " AND type='post' ");
 
-    // List posts
+    // Find all posts
     __models.posts.findAndCountAll({
         include: [
             {
-                model: __models.user, attribute: ['display_name']
+                model: __models.user, attribute: ['display_name'],
+                where: '1 = 1'
             }
         ],
         where: filter.values,
@@ -127,6 +128,16 @@ exports.index = function (req, res) {
             title: "All Posts",
             totalPage: totalPage,
             items: results.rows,
+            currentPage: page
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+
+        // Render view if has error
+        _module.render(req, res, '/posts/index.html', {
+            title: "All Posts",
+            totalPage: 1,
+            items: null,
             currentPage: page
         });
     });
@@ -156,15 +167,26 @@ exports.create = function (req, res) {
         categories = getCategoriesTree(1, categories);
         categoryTree = categoryTree.concat(categories);
 
+        // Render view
         _module.render(req, res, '/posts/new.html', {
             title: "New Post",
             categories: categoryTree,
+            seo_enable: __seo_enable
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+
+        // Render view if has error
+        _module.render(req, res, '/posts/new.html', {
+            title: "New Post",
+            categories: null,
             seo_enable: __seo_enable
         });
     });
 };
 
 exports.saveCreate = function (req, res) {
+    // Get post data
     var data = req.body;
 
     // Generate alias
@@ -182,6 +204,8 @@ exports.saveCreate = function (req, res) {
     // Save post
     __models.posts.create(data).then(function (post) {
         req.flash.success('New post was created successfully');
+
+        // Redirect to edit page
         res.redirect('/admin/blog/posts/edit/' + post.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -189,7 +213,24 @@ exports.saveCreate = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/posts/');
+
+        // Re-render view if has error
+        __models.categories.findAll({
+            order: 'name ASC',
+            where: 'id <> 1 AND published = 1'
+        }).then(function (categories) {
+            // Add breadcrumb and buttons
+            res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New Post'});
+            res.locals.saveButton = __acl.addButton(req, route, 'post_edit');
+            res.locals.backButton = '/admin/blog/posts/';
+
+            _module.render(req, res, '/posts/new.html', {
+                title: "New Post",
+                categories: categories,
+                seo_enable: __seo_enable,
+                post: data
+            });
+        });
     });
 };
 
@@ -239,7 +280,7 @@ exports.edit = function (req, res) {
         }).catch(function (error) {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
 
-            // Render view
+            // Render view if has error
             _module.render(req, res, '/posts/new.html', {
                 title: "Update Post",
                 categories: null,
@@ -255,6 +296,7 @@ exports.saveEdit = function (req, res) {
     // Get post data
     var data = req.body;
 
+    // Find post by id
     __models.posts.find(req.params.cid).then(function (post) {
         // Generate alias
         if (data.alias == undefined || data.alias == '') {
@@ -272,6 +314,8 @@ exports.saveEdit = function (req, res) {
         return post.updateAttributes(data);
     }).then(function (post) {
         req.flash.success('Post was updated successfully');
+
+        // Redirect to edit page
         res.redirect('/admin/blog/posts/edit/' + post.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -279,11 +323,44 @@ exports.saveEdit = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/posts/edit/' + req.params.cid);
+
+        // Re-render view if has error
+        __models.categories.findAll({
+            where: 'id <> 1 AND published = 1',
+            order: 'name ASC'
+        }).then(function (categories) {
+            // Add breadcrumb and buttons
+            res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Post'});
+            res.locals.saveButton = __acl.addButton(req, route, 'post_edit');
+            res.locals.backButton = '/admin/blog/posts/';
+
+            // Get categories tree
+            var categoryTree = [];
+            for (var i in categories) {
+                if (categories.hasOwnProperty(i) && categories[i].id == 1) {
+                    categoryTree.push(categories[i]);
+                    break;
+                }
+            }
+            categories = getCategoriesTree(1, categories);
+            categoryTree = categoryTree.concat(categories);
+
+            // Render view
+            _module.render(req, res, '/posts/new.html', {
+                title: "Update Post",
+                categories: categoryTree,
+                post: data,
+                categories_text: data.categories,
+                seo_info: data.seo_info,
+                seo_enable: __seo_enable
+            });
+        });
+
     });
 };
 
 exports.deleteRecord = function (req, res) {
+    // Delete posts by array of ids
     __models.posts.destroy({
         where: {
             id: {
@@ -299,8 +376,8 @@ exports.deleteRecord = function (req, res) {
     });
 };
 
-// Add prefix to string
 var StringUtilities = {
+    // Add prefix to string
     repeat: function (str, times) {
         str = (str == null) ? '—' : str;
         return (new Array(times + 1)).join(str);

@@ -97,9 +97,9 @@ exports.index = function (req, res) {
                 value_key: 'value'
             }
         }
-    ], " AND id<>1 ");
+    ], " AND id <> 1 ");
 
-    // List categories
+    // Find all categories
     __models.categories.findAndCountAll({
         where: filter.values,
         order: column + " " + order,
@@ -113,6 +113,16 @@ exports.index = function (req, res) {
             title: "All Categories",
             totalPage: totalPage,
             items: results.rows,
+            currentPage: page
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+
+        // Render view if has error
+        _module.render(req, res, '/categories/index.html', {
+            title: "All Categories",
+            totalPage: 1,
+            items: null,
             currentPage: page
         });
     });
@@ -152,7 +162,7 @@ exports.create = function (req, res) {
     }).catch(function (error) {
         req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
 
-        // Render view
+        // Render view if has error
         _module.render(req, res, '/categories/new.html', {
             title: "New Category",
             categories: null
@@ -171,7 +181,6 @@ exports.saveCreate = function (req, res) {
         }
     }).then(function (parentCategory) {
         // Save Author
-        data.created_at = new Date().getTime();
         data.created_by = req.user.id;
 
         // Set level
@@ -183,9 +192,12 @@ exports.saveCreate = function (req, res) {
         }
         data.alias = slug(data.alias.toLowerCase());
 
+        // Create category
         return __models.categories.create(data);
     }).then(function (category) {
         req.flash.success("Add new category successfully");
+
+        // Redirect to edit page
         res.redirect('/admin/blog/categories/edit/' + category.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -193,7 +205,37 @@ exports.saveCreate = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/categories/');
+
+        // Re-render view if has error
+        __models.categories.findAll({
+            where: {
+                published: 1
+            },
+            order: "name ASC"
+        }).then(function (categories) {
+            // Add breadcrumb and buttons
+            res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New Category'});
+            res.locals.saveButton = __acl.addButton(req, route, 'category_create');
+            res.locals.backButton = "/admin/blog/categories/";
+
+            // Get categories tree
+            var categoryTree = [];
+            for(var i in categories){
+                if(categories.hasOwnProperty(i) && categories[i].id == 1){
+                    categoryTree.push(categories[i]);
+                    break;
+                }
+            }
+            categories = getCategoriesTree(1, categories);
+            categoryTree = categoryTree.concat(categories);
+
+            // Render view
+            _module.render(req, res, '/categories/new.html', {
+                title: "New Category",
+                categories: categoryTree,
+                category: data
+            });
+        })
     });
 };
 
@@ -248,7 +290,7 @@ exports.edit = function (req, res) {
         }).catch(function (error) {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
 
-            // Render view
+            // Render view if has error
             _module.render(req, res, '/categories/new.html', {
                 title: "Update Category",
                 categories: null,
@@ -294,6 +336,8 @@ exports.saveEdit = function (req, res) {
         return category.updateAttributes(data);
     }).then(function (category) {
         req.flash.success("Update category successfully");
+
+        // Redirect to edit page
         res.redirect('/admin/blog/categories/edit/' + category.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -301,11 +345,45 @@ exports.saveEdit = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/categories/edit/' + req.params.cid);
+
+        // Re-render view if has error
+        __models.categories.findAll({
+            where: {
+                id: {
+                    $not: req.params.cid
+                },
+                published: 1
+            },
+            order: "name ASC"
+        }).then(function (categories) {
+            // Add breadcrumb and buttons
+            res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Category'});
+            res.locals.saveButton = __acl.addButton(req, route, 'category_edit');
+            res.locals.backButton = "/admin/blog/categories/";
+
+            // Get categories tree
+            var categoryTree = [];
+            for(var i in categories){
+                if(categories.hasOwnProperty(i) && categories[i].id == 1){
+                    categoryTree.push(categories[i]);
+                    break;
+                }
+            }
+            categories = getCategoriesTree(1, categories);
+            categoryTree = categoryTree.concat(categories);
+
+            // Render view
+            _module.render(req, res, '/categories/new.html', {
+                title: "Update Category",
+                categories: categoryTree,
+                category: data
+            });
+        })
     });
 };
 
 exports.deleteRecord = function (req, res) {
+    // Delete records by array of ids
     __models.categories.destroy({
         where: {
             id: {
@@ -326,8 +404,8 @@ exports.deleteRecord = function (req, res) {
     });
 };
 
-// Add prefix to string
 var StringUtilities = {
+    // Add prefix to string
     repeat: function (str, times) {
         str = (str == null) ? '—' : str;
         return (new Array(times + 1)).join(str);

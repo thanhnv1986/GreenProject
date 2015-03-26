@@ -224,7 +224,6 @@ module.exports = function () {
     app.use(function (req, res) {
         var env = __.createNewEnv([__base + 'app/frontend/themes', __base + 'app/frontend/themes/' + config.themes]);
         env.render('404.html', res.locals, function (err, re) {
-            console.log(err);
             res.send(re);
         });
 

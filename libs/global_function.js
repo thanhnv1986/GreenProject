@@ -69,8 +69,9 @@ exports.getAllCustomFilter = function (env) {
 
 exports.parseCondition = function (column_name, value, col) {
     column_name = (col.filter.model ? ('"' + col.filter.model + '".') : '') + column_name;
+    column_name = column_name.replace(/(.*)\.(.*)/,'"$1"."$2"');
     if (col.filter.data_type == 'string') {
-        return 'lower(' + column_name + ') like lower(?)';
+        return column_name + ' ilike ?';
     }
     else if (col.filter.data_type == 'datetime') {
         return column_name + " between ?::timestamp and ?::timestamp";

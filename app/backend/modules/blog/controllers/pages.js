@@ -112,7 +112,8 @@ exports.index = function (req, res) {
     __models.posts.findAndCountAll({
         include: [
             {
-                model: __models.user, attribute: ['display_name']
+                model: __models.user, attribute: ['display_name'],
+                where: '1 = 1'
             }
         ],
         where: filter.values,
@@ -127,6 +128,16 @@ exports.index = function (req, res) {
             title: "All Pages",
             totalPage: totalPage,
             items: results.rows,
+            currentPage: page
+        });
+    }).catch(function (error) {
+        req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
+
+        // Render view if has error
+        _module.render(req, res, '/pages/index.html', {
+            title: "All Pages",
+            totalPage: 1,
+            items: null,
             currentPage: page
         });
     });
@@ -165,6 +176,8 @@ exports.saveCreate = function (req, res) {
     // Save page
     __models.posts.create(data).then(function (page) {
         req.flash.success('New page was created successfully');
+
+        // Redirect to edit page
         res.redirect('/admin/blog/pages/edit/' + page.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -172,7 +185,16 @@ exports.saveCreate = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/pages/');
+
+        // Re-render view if has error
+        res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'New Page'});
+        res.locals.saveButton = __acl.addButton(req, route, 'page_edit');
+        res.locals.backButton = '/admin/blog/pages/';
+        _module.render(req, res, '/pages/new.html', {
+            title: "New Page",
+            seo_enable: __seo_enable,
+            page: data
+        });
     });
 };
 
@@ -196,7 +218,7 @@ exports.edit = function (req, res) {
     }).catch(function (error) {
         req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
 
-        // Render view
+        // Render view if has error
         _module.render(req, res, '/pages/new.html', {
             title: "Update Page",
             page: null,
@@ -207,9 +229,10 @@ exports.edit = function (req, res) {
 };
 
 exports.saveEdit = function (req, res) {
-    // Get page data
+    // Get post data
     var data = req.body;
 
+    // Find page by id
     __models.posts.find(req.params.cid).then(function (page) {
         // Generate alias
         if (data.alias == undefined || data.alias == '') {
@@ -227,6 +250,8 @@ exports.saveEdit = function (req, res) {
         return page.updateAttributes(data);
     }).then(function (page) {
         req.flash.success('Page was updated successfully');
+
+        // Redirect to edit page
         res.redirect('/admin/blog/pages/edit/' + page.id);
     }).catch(function (error) {
         if (error.name == 'SequelizeUniqueConstraintError') {
@@ -234,11 +259,22 @@ exports.saveEdit = function (req, res) {
         } else {
             req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
         }
-        res.redirect('/admin/blog/pages/edit/' + req.params.cid);
+
+        // Re-render view if has error
+        res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Update Page'});
+        res.locals.saveButton = __acl.addButton(req, route, 'page_edit');
+        res.locals.backButton = '/admin/blog/pages/';
+        _module.render(req, res, '/pages/new.html', {
+            title: "Update Page",
+            page: data,
+            seo_info: data.seo_info,
+            seo_enable: __seo_enable
+        });
     });
 };
 
 exports.deleteRecord = function (req, res) {
+    // Delete posts by array of ids
     __models.posts.destroy({
         where: {
             id: {
