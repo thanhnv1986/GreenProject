@@ -80,16 +80,21 @@ exports.index = function (req, res) {
             column: "published",
             width: '10%',
             header: "Status",
+            type: 'custom',
+            alias: {
+                "1": "Publish",
+                "0": "Unpublish"
+            },
             filter: {
                 type: 'select',
                 filter_key: 'published',
                 data_source: [
                     {
-                        name: "publish",
+                        name: "Publish",
                         value: 1
                     },
                     {
-                        name: "un-publish",
+                        name: "Unpublish",
                         value: 0
                     }
                 ],
