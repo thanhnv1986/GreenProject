@@ -13,8 +13,16 @@
                     <a href="{{ col.link|table_link(item, acl) }}">
                         {{ getContent(col) }}
                     </a>
-                {% elif col.type=='checkbox' %}
+                    {% elif col.type=='checkbox' %}
                     <input type="checkbox" class="check-element" name="ids[]" value="{{ col.column|get_value(item) }}">
+                    {% elif col.type=='custom' %}
+                        {% for key,value in col.alias %}
+                            {% if key == col.column|get_value(item) %}
+                                {{ value|safe }}
+                            {% endif %}
+
+                        {% endfor %}
+
                 {% else %}
                     {{ getContent(col) }}
                 {% endif %}

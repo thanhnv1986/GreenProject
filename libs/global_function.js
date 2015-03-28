@@ -68,7 +68,7 @@ exports.getAllCustomFilter = function (env) {
 };
 
 exports.parseCondition = function (column_name, value, col) {
-    column_name = (col.filter.model ? ('"' + col.filter.model + '".') : '') + column_name;
+    column_name = (col.filter.model ? (col.filter.model + '.') : '') + column_name;
     column_name = column_name.replace(/(.*)\.(.*)/,'"$1"."$2"');
     if (col.filter.data_type == 'string') {
         return column_name + ' ilike ?';
