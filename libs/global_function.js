@@ -109,6 +109,9 @@ exports.parseValue = function (value, col) {
     if (col.filter.type == 'datetime') {
         return value.split(/\s+-\s+/);
     }
+    else if (col.filter.data_type == 'string') {
+        value="%"+value+"%";
+    }
     //value = value.replace(/[^a-zA-Z0-9\%\?\-\/]/g, "");
     if (~value.indexOf('><')) {
         return value.split('><');

@@ -25,9 +25,7 @@
                                value="{{ filters[col.column] }}"/>
                     {% else %}
                         {% set toolTip = '' %}
-                        {% if filter.data_type=='string' %}
-                            {% set toolTip = 'The "%" sign is used to define wildcards (missing letters) both before and after the pattern. </br>Ex: %ja, ja%, %ja%' %}
-                        {% else %}
+                        {% if filter.data_type!='string' %}
                             {% set toolTip = 'Use operator ">" "<" ">=" "<=" "><" "<>" ";". </br>Ex: >15, 15><25' %}                        {% endif %}
                         <div class="input-group">
                             <input type="text" name="{{ col.column }}"
@@ -36,15 +34,15 @@
                                     {#data-toggle="tooltip" data-placement="bottom" title="{{ toolTip }}"#}
                                     >
                             <span class="input-group-btn">
-                                                  <button type="button" class="btn btn-default popover-btn"
-                                                          data-container="body"
-                                                          data-placement="bottom"
-                                                          data-toggle="popover"
-                                                          data-html="true"
-                                                          data-content='{{ toolTip }}'>
-                                                      <i class="fa fa-question"></i>
-                                                  </button>
-                    </span>
+                                <button type="button" class="btn btn-default popover-btn"
+                                        data-container="body"
+                                        data-placement="bottom"
+                                        data-toggle="popover"
+                                        data-html="true"
+                                        data-content='{{ toolTip }}'>
+                                    <i class="fa fa-question"></i>
+                                </button>
+                            </span>
 
                         </div>
                     {% endif %}
