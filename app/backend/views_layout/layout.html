@@ -275,9 +275,9 @@
             };
             socket.emit('user:connected', data_usr);
             socket.on('user:user-list', function (data) {
-                console.log(data);
+                //console.log(data);
                 $scope.notifies = data;
-                console.log($scope.notifies);
+                //console.log($scope.notifies);
             });
         }]);
 

@@ -27,9 +27,9 @@ function BaseModule() {
             env.loaders[0].searchPaths = [__dirname + '/themes', __dirname + '/modules'];
             view = self.path + '/views/' + view;
         }
-        console.log('*************', env.loaders, view, tmp);
+        //console.log('*************', env.loaders, view, tmp);
         env.render(view, _.assign(res.locals, options), function (err, re) {
-            console.log(err);
+            //console.log(err);
             res.send(re);
         });
     };

@@ -97,7 +97,7 @@ exports.upload = function (req, res) {
         var folder_to_upload = standardPath + folder;
         fs.rename(files["files[]"].path, folder_to_upload + '/' + files["files[]"].name, function (err) {
             if (err) {
-                console.log(err);
+                //console.log(err);
             }
         });
     });

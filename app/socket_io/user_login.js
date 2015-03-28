@@ -27,7 +27,7 @@ module.exports = function (socket_manager, socket) {
             socket_manager.clients.push(user);
             socket.user_index = socket_manager.clients.length - 1;
         }
-//        console.log('###########', socket_manager.clients);
+//        //console.log('###########', socket_manager.clients);
         socket_manager.publish('user:user-list', socket_manager.clients);
     });
 }

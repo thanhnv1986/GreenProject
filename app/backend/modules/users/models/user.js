@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         instanceMethods: {
             authenticate: function (password) {
-                console.log(this.user_pass, this.hashPassword(password));
+                //console.log(this.user_pass, this.hashPassword(password));
                 return this.user_pass === this.hashPassword(password);
             },
             hashPassword: function (password) {

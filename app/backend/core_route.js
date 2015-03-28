@@ -21,7 +21,7 @@ var render = function (req, res, view, options, fn) {
     }
     else {
         env.render(view, _.assign(res.locals, options), function (err, re) {
-            console.log("Render error: ", err);
+            //console.log("Render error: ", err);
             res.send(re);
         });
     }
@@ -44,7 +44,7 @@ module.exports = function (app) {
 
             if (info) {
                 req.flash.error(info.message);
-                console.log(req.flash, info.message, res.locals);
+                //console.log(req.flash, info.message, res.locals);
                 return render(req, res, 'login.html');
             }
             else {
@@ -211,7 +211,7 @@ module.exports = function (app) {
     app.use('/admin/*', function (req, res, next) {
         //return next();
         if (!req.isAuthenticated()) {
-            console.log("redirect to admin login");
+            //console.log("redirect to admin login");
             return res.redirect('/admin/login');
         }
 //        res.locals.__user = req.user;

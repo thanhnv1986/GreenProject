@@ -55,7 +55,7 @@ _module.addWidget = function (req, res) {
     });
 }
 _module.saveWidget = function (req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     var widget_type = req.body.widget;
     var widget = __.getWidget(widget_type);
     widget.save(req.body).then(function (id) {
@@ -76,7 +76,7 @@ _module.delete = function (req, res) {
     });
 }
 _module.sidebar_sort = function (req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     var ids = req.body.ids.split(',');
     var sidebar = req.body.sidebar;
     var index = 1;

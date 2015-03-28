@@ -120,7 +120,7 @@ exports.parseValue = function (value, col) {
         return value.split('<>');
     }
     else {
-        return value.replace(/[^a-zA-Z0-9\%\?\-\/]/g, "");
+        return value.replace(/[^a-zA-Z0-9\%\?\-\/\.]/g, "");
     }
 
 };

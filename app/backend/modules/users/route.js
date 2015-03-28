@@ -6,7 +6,7 @@ var router = express.Router();
 var controller = require('./controllers/index.js');
 var moduleName = 'users';
 
-console.log(controller);
+//console.log(controller);
 
 router.get('/users/signout', controller.signout);
 router.get('/users/change-pass', controller.changePass);
