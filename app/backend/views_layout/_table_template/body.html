@@ -8,7 +8,7 @@
 {% for item in items %}
     <tr xmlns="http://www.w3.org/1999/html">
         {% for col in table_columns %}
-            <td>
+            <td class="{{ col.cls }}" style="{{ col.style }}">
                 {% if col.link %}
                     <a href="{{ col.link|table_link(item, acl) }}">
                         {{ getContent(col) }}
