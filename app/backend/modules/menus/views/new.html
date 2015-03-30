@@ -190,8 +190,18 @@
                     <button class="btn btn-primary" onclick="return hideAll()">Collapse All</button>
                 </div>
             {% endif %}
+            {% set col_md=12 %}
+            {% if menu %}
+                {% set col_md=9 %}
+            {% endif %}
+            {% if menu %}
+                <div class="col-md-3">
+                    {% for module in modules %}
 
-            <div class="col-md-12">
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="col-md-{{ col_md }}">
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="form-group">
@@ -221,6 +231,24 @@
                 </div>
             </div>
         </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="select-module-modal" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Select a module</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="">Apply</button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -316,7 +344,7 @@
             '<div class="row">' +
             '<div class="col-md-12">' +
             '<div class="form-group">' +
-            '<label>URL</label>' +
+            '<label>URL <a href="#"><i class="fa fa-link"></i></a></label>' +
             '<input type="text" class="form-control" id="url" name="url[]" value="' + detail.link + '">' +
             '</div>' +
             '</div>' +

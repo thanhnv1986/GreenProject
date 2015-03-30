@@ -1,13 +1,14 @@
+"use strict"
 /**
  * Created by thanhnv on 3/18/15.
  */
-var nunjucks = require('nunjucks'),
+let nunjucks = require('nunjucks'),
     _ = require('lodash');
-var env = __.createNewEnv([__dirname + '/views_layout', __dirname + '/modules']);
+let env = __.createNewEnv([__dirname + '/views_layout', __dirname + '/modules']);
 function BaseModuleBackend() {
 
     this.render = function (req, res, view, options) {
-        var self = this;
+        let self = this;
         //get messages from session
         res.locals.messages = req.session.messages;
         //clear session messages

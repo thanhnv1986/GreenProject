@@ -224,7 +224,7 @@
 <script src='/admin/plugins/fastclick/fastclick.min.js'></script>
 <!-- AdminLTE App -->
 <script src="/admin/dist/js/app.min.js" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js" type="text/javascript"></script>
+
 
 <!-- Global script -->
 <script>
@@ -257,10 +257,11 @@
     });
 </script>
 
-{% include 'socket.html' %}
+
 
 <script>
 
+/*
     app.controller('NotifyController', ['$scope', 'socket', '$http',
         function ($scope, socket, $http) {
             var self = this;
@@ -280,6 +281,7 @@
                 //console.log($scope.notifies);
             });
         }]);
+*/
 
 </script>
 {% block jsExtends %}

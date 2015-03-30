@@ -174,6 +174,11 @@ module.exports = function () {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));
     });
 
+    // Globbing routing admin files
+    config.getGlobbedFiles('./app/frontend/modules/*/settings/*.js').forEach(function (routePath) {
+        require(path.resolve(routePath))(app, config);
+    });
+
     app.use('/admin/*', function (req, res, next) {
         //return next();
         if (!req.isAuthenticated()) {
@@ -191,7 +196,7 @@ module.exports = function () {
     // Globbing frontend module files
     config.getGlobbedFiles('./app/frontend/modules/*/module.js').forEach(function (routePath) {
         console.log(path.resolve(routePath));
-        require(path.resolve(routePath))(__fmodules);
+        require(path.resolve(routePath))(__f_modules);
     });
 
     // Globbing routing files

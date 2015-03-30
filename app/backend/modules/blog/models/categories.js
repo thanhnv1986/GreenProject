@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
         created_by: DataTypes.INTEGER,
         modified_at: DataTypes.DATE,
         modified_by: DataTypes.INTEGER
-    },{
+    }, {
         tableName: 'arr_categories',
         createdAt: 'created_at',
         updatedAt: 'modified_at',

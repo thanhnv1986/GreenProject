@@ -3,8 +3,8 @@
  * Module dependencies.
  */
 var init = require('./config/init')(),
-    config = require('./config/config'),
-    chalk = require('chalk');
+    config = require('./config/config');
+
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
