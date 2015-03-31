@@ -34,7 +34,7 @@ module.exports = function() {
                     }
                 }).then(function (user) {
                     user.acl = JSON.parse(user.role.rules);
-                    redis.setex(key,30000, JSON.stringify(user));
+                    redis.setex(key,300, JSON.stringify(user));
                     done(null, user);
                 });
 

@@ -68,14 +68,20 @@ module.exports = function(grunt) {
 					mangle: false
 				},
 				files: {
-					'public/dist/application.min.js': 'public/dist/application.js'
+					'public/dist/application.min.js': [
+						'public/acme/assets/jquery.bxslider.js',
+						'public/acme/assets/owlcarousel/owl.carousel.js',
+						'public/acme/js/jquery.flexslider.js',
+						'public/acme/js/jquery.easing.min.js',
+						'public/acme/js/hover-dropdown.js'
+					]
 				}
 			}
 		},
 		cssmin: {
 			combine: {
 				files: {
-					'public/dist/application.min.css': '<%= applicationCSSFiles %>'
+					'public/dist/application.min.css': 'public/acme/css/style.min.css'
 				}
 			}
 		},
@@ -168,7 +174,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', ['jshint', 'csslint']);
 
 	// Build task(s).
-	grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
+	grunt.registerTask('build', ['uglify', 'cssmin']);
 
 	// Test task.
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);

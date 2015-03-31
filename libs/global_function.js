@@ -61,7 +61,6 @@ exports.createNewEnv = function (views) {
 };
 exports.getAllCustomFilter = function (env) {
     config.getGlobbedFiles(__base + 'custom_filters/*.js').forEach(function (routePath) {
-        console.log(routePath);
         require(routePath)(env);
     });
     return env;

@@ -1187,7 +1187,7 @@ ul.tag li {
     float: left;
     margin: 0px 5px 0 0;
     border-bottom: none;
-    padding-top: ;
+    /*padding-top: ;*/
     list-style: none;
 }
 ul.tag li a {

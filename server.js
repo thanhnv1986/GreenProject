@@ -2,6 +2,7 @@
 /**
  * Module dependencies.
  */
+var debug = require('debug')('ArrowJs');
 var init = require('./config/init')(),
     config = require('./config/config');
 
@@ -26,12 +27,11 @@ __pluginManager.loadAllPlugin();
 
 // Init SEO
 redis.get('seo_enable', function (err, result) {
-    if(result != null) {
+    if (result != null) {
         global.__seo_enable = result;
     }
-    else
-    {
-        redis.set('seo_enable', true, function(err, res) {
+    else {
+        redis.set('seo_enable', true, function (err, res) {
             if (err) {
                 console.log("Init app Redis reply error: " + err);
             } else {
@@ -44,6 +44,8 @@ redis.get('seo_enable', function (err, result) {
 
 // Init the express application
 var app = require('./config/app')();
+
+global.__config = require('./config/config');
 
 // Bootstrap passport config
 require('./config/passport')();

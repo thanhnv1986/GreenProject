@@ -81,7 +81,7 @@ module.exports = function () {
     // Environment dependent middleware
     if (process.env.NODE_ENV === 'development') {
         // Enable logger (morgan)
-        app.use(morgan('dev'));
+        //app.use(morgan('dev'));
 
         // Disable views cache
         app.set('view cache', false);
@@ -126,7 +126,7 @@ module.exports = function () {
     app.disable('x-powered-by');
 
     var setStaticResourceFolder = function (req, res, next) {
-        console.log(process.cwd());
+        //console.log(process.cwd());
         var myRegex = /^(\/admin\/?)/g;
         var match = myRegex.exec(req.url);
         if (match) {
@@ -139,7 +139,7 @@ module.exports = function () {
     };
     // Setting the app router and static folder
     app.use(express.static(path.resolve('./public')));
-    app.use(setStaticResourceFolder);
+    //app.use(setStaticResourceFolder);
     // Passing the request url to environment locals
     app.use(function (req, res, next) {
         res.locals.url = req.protocol + '://' + req.headers.host + req.url;

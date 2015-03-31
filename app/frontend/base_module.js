@@ -29,7 +29,10 @@ function BaseModule() {
         }
         //console.log('*************', env.loaders, view, tmp);
         env.render(view, _.assign(res.locals, options), function (err, re) {
-            //console.log(err);
+            if(err){
+                console.log('??????????', err, env.loaders);
+            }
+
             res.send(re);
         });
     };
