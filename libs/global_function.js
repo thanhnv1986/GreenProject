@@ -59,6 +59,7 @@ exports.createNewEnv = function (views) {
         env = new nunjucks.Environment(new nunjucks.FileSystemLoader([__base + 'app/widgets', __base + 'app/frontend/themes']));
     }
     env = __.getAllCustomFilter(env);
+    env = __.getAllGlobalVariable(env);
     return env;
 };
 exports.getAllCustomFilter = function (env) {
@@ -67,10 +68,17 @@ exports.getAllCustomFilter = function (env) {
     });
     return env;
 };
+exports.getAllGlobalVariable = function (env) {
+    env.addGlobal('create_link', function (module_name, link) {
+        return module_name + '/' + link;
+    });
+    return env;
+};
+
 
 exports.parseCondition = function (column_name, value, col) {
     column_name = (col.filter.model ? (col.filter.model + '.') : '') + column_name;
-    column_name = column_name.replace(/(.*)\.(.*)/,'"$1"."$2"');
+    column_name = column_name.replace(/(.*)\.(.*)/, '"$1"."$2"');
     if (col.filter.data_type == 'string') {
         return column_name + ' ilike ?';
     }
@@ -111,7 +119,7 @@ exports.parseValue = function (value, col) {
         return value.split(/\s+-\s+/);
     }
     else if (col.filter.data_type == 'string') {
-        value="%"+value+"%";
+        value = "%" + value + "%";
     }
     //value = value.replace(/[^a-zA-Z0-9\%\?\-\/]/g, "");
     if (~value.indexOf('><')) {

@@ -1,52 +1,53 @@
 'use strict';
 let _ = require('lodash'),
+    debug = require('debug')("POST Frontend"),
     promise = require('bluebird');
 
 function BlogModule() {
     BaseModuleFrontend.call(this);
     this.path = "/blog";
 }
-let _module = new BlogModule();
+var _module = new BlogModule();
 
-module.exports.index = function (req, res) {
+_module.index = function (req, res) {
     let data = null;
-    let Promise = promise.all(
-            [
-                // Find post by alias
-                __models.posts.find({
-                    include: [
-                        {
-                            model: __models.user,
-                            attributes: ['id', 'display_name', 'user_login', 'user_email', 'user_image_url']
-                        }
-                    ],
-                    where: {
-                        alias: req.params.alias
+    promise.all(
+        [
+            // Find post by alias
+            __models.posts.find({
+                include: [
+                    {
+                        model: __models.user,
+                        attributes: ['id', 'display_name', 'user_login', 'user_email', 'user_image_url']
                     }
-                }),
+                ],
+                where: {
+                    alias: req.params.alias
+                }
+            }),
 
-                // Find all categories
-                __models.categories.findAndCountAll({
-                    where: "published = 1 AND id <> 1",
-                    order: "id,parent ASC"
-                })
-            ]
-        ).then(function (results) {
+            // Find all categories
+            __models.categories.findAndCountAll({
+                where: "published = 1 AND id <> 1",
+                order: "id,parent ASC"
+            })
+        ]
+    ).then(function (results) {
             data = results;
-
-            if (results[0]) {
+            if (data[0]) {
                 // Check page or post
-                if(results[0].type == 'post'){
+                if (data[0].type == 'post') {
+
                     // Update hit if post exist
-                    return results[0].updateAttributes({
-                        hit: parseInt(results[0].hit) + 1
+                    return data[0].updateAttributes({
+                        hit: parseInt(data[0].hit) + 1
                     });
-                }else{
-                    return results[0];
+                } else {
+                    return data[0];
                 }
             } else {
                 // Redirect to 404 if post not exist
-                res.render404(req, res);
+                _module.render404(req, res);
 
                 return Promise.cancel();
             }
@@ -54,10 +55,11 @@ module.exports.index = function (req, res) {
             if (Array.isArray(data)) {
                 // Get SEO info
                 let seo_info = null;
+
                 if (data[0].seo_info && data[0].seo_info != '') seo_info = JSON.parse(data[0].seo_info);
 
                 // Render view
-                if(data[0].type == 'post'){
+                if (data[0].type === 'post') {
                     _module.render(req, res, 'post.html', {
                         item: data[0],
                         seo_info: seo_info,
@@ -69,14 +71,17 @@ module.exports.index = function (req, res) {
                             }
                         ]
                     });
-                }else{
+                } else {
                     _module.render(req, res, 'page.html', {
                         item: data[0],
                         seo_info: seo_info
                     });
                 }
             }
-        }).catch(function (err) {
-            res.redirect('/');
         });
+    /*.catch(function (err) {
+     debug('##############', err);
+     res.redirect('/');
+     });*/
 };
+module.exports = _module;

@@ -2,18 +2,17 @@
 /**
  * Created by thanhnv on 3/18/15.
  */
-let debug = require('debug')("BaseModule Front End");
+var debug = require('debug')("BaseModule Front End");
 
-let nunjucks = require('nunjucks'),
+var nunjucks = require('nunjucks'),
     fs = require('fs'),
     config = require(__base + 'config/config'),
     _ = require('lodash');
-let env = __.createNewEnv([__dirname + '/themes', __dirname + '']);
+var env = __.createNewEnv([__dirname + '/themes']);
 function BaseModule() {
 
     this.render = function (req, res, view, options) {
         let self = this;
-        debug('############ Begin render #############');
         //get messages from session
         res.locals.messages = req.session.messages;
         //clear session messages
@@ -30,14 +29,14 @@ function BaseModule() {
             env.loaders[0].searchPaths = [__dirname + '/themes', __dirname + '/modules'];
             view = self.path + '/views/' + view;
         }
-        //console.log('*************', env.loaders, view, tmp);
         env.render(view, _.assign(res.locals, options), function (err, re) {
             if (err) {
-                console.log('??????????', err, env.loaders);
+                res.send(err.stack);
+            }
+            else {
+                res.send(re);
             }
 
-            res.send(re);
-            debug('############ End render #############');
         });
     };
 

@@ -5,22 +5,22 @@
 /**
  * Created by thanhnv on 3/13/15.
  */
-let Promise = require('bluebird'),
+var Promise = require('bluebird'),
     _ = require('lodash');
-let _base_config = {
-    alias: 'google',
-    name: 'Google analytics',
-    author: 'Jack',
-    version: '0.1.0',
-    description: 'Integrate google analytic in webiste',
-    active: true,
-    sync: false,
-    options: {
-        tracking_id: '347148475491688'
-    }
-};
 
 function GooglePlugin() {
+    let _base_config = {
+        alias: 'google',
+        name: 'Google analytics',
+        author: 'Jack',
+        version: '0.1.0',
+        description: 'Integrate google analytic in webiste',
+        active: true,
+        sync: false,
+        options: {
+            tracking_id: '347148475491688'
+        }
+    };
     let self = this;
     _.assign(self, _base_config);
 

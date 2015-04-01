@@ -3,22 +3,24 @@
  * Created by thanhnv on 2/17/15.
  */
 
-let BaseWidget = require('../base_widget'),
+var BaseWidget = require('../base_widget'),
     util = require('util'),
     config = require(__base + 'config/config'),
     _ = require('lodash');
 
-let _base_config = {
-    alias: "menus",
-    name: "Menus",
-    description: "Show menu",
-    author: "Nguyen Van Thanh",
-    version: "0.1.0",
-    options: {
-        menu_id: ''
-    }
-};
+
 function Menus() {
+    let _base_config = {
+        alias: "menus",
+        name: "Menus",
+        description: "Show menu",
+        author: "Nguyen Van Thanh",
+        version: "0.1.0",
+        options: {
+            menu_id: ''
+        }
+    };
+
     Menus.super_.call(this);
     _.assign(this, _base_config);
     this.files = BaseWidget.prototype.getAllLayouts.call(this, _base_config.alias);

@@ -1,25 +1,26 @@
 "use strict"
-let BaseWidget = require('../base_widget'),
+var BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash'),
     Promise = require('bluebird');
 
-let _base_config = {
-    alias: "picked-post",
-    name: "Picked post",
-    description: "Picked post",
-    author: "ZaiChi",
-    version: "0.1.0",
-    options: {
-        id: '',
-        title: '',
-        text_ids: '',
-        display_date: '',
-        display_index: ''
-    }
-};
+
 
 function PickedPost() {
+    let _base_config = {
+        alias: "picked-post",
+        name: "Picked post",
+        description: "Picked post",
+        author: "ZaiChi",
+        version: "0.1.0",
+        options: {
+            id: '',
+            title: '',
+            text_ids: '',
+            display_date: '',
+            display_index: ''
+        }
+    };
     PickedPost.super_.call(this);
     _.assign(this, _base_config);
     this.files = BaseWidget.prototype.getAllLayouts.call(this, _base_config.alias);

@@ -3,10 +3,10 @@
  * Created by thanhnv on 3/4/15.
  */
 
-let util = require('util'),
-    _ = require('lodash');
-let config = require(__base + 'config/config');
-
+var util = require('util'),
+    _ = require('lodash'),
+    redis = require('redis').createClient(),
+    config = require(__base + 'config/config');
 let breadcrumb =
     [
         {
@@ -24,8 +24,8 @@ let breadcrumb =
         }
     ];
 
-
 function ConfigurationsThemesModule() {
+
     BaseModuleBackend.call(this);
     this.path = "/configurations";
 }
@@ -41,10 +41,10 @@ _module.index = function (req, res) {
     config.getGlobbedFiles(__base + 'app/frontend/themes/*/theme.json').forEach(function (filePath) {
         themes.push(require(filePath));
     });
-
+    let current_theme;
     for (let i in themes) {
         if (themes[i].alias.toLowerCase() == config.themes.toLowerCase()) {
-            let current_theme = __current_theme = themes[i];
+            current_theme = global.__current_theme = themes[i];
         }
     }
 
@@ -66,7 +66,7 @@ _module.detail = function (req, res) {
 
     for (let i in themes) {
         if (themes[i].alias.toLowerCase() == req.params.themeName) {
-            let current_theme = __current_theme = themes[i];
+            let current_theme = global.__current_theme = themes[i];
         }
     }
 

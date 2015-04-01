@@ -24,40 +24,31 @@ let fs = require('fs'),
     RedisStore = require('connect-redis')(session),
     nunjucks = require('nunjucks'),
     _ = require('lodash'),
-    serveStatic = require('serve-static'),
+    //serveStatic = require('serve-static'),
     path = require('path');
 
 module.exports = function () {
     // Initialize express app
     let app = express();
-    // Setting the app router and static folder
-    let setStaticResourceFolder = function (req, res, next) {
-        //console.log(process.cwd());
-        let myRegex = /^(\/admin\/?)/g;
-        let match = myRegex.exec(req.url);
-        if (match) {
-            let serve = serveStatic(__base + 'app/backend/views_layout');
-        }
-        else{
-            next();
-        }
-        serve(req, res, next);
-    };
-    app.use(express.static(path.resolve('./public')));
 
-    // Setting application local variables
-    /*app.locals.title = config.app.title;
-     app.locals.description = config.app.description;
-     app.locals.keywords = config.app.keywords;
-     app.locals.facebookAppId = config.facebook.clientID;*/
-//    app.locals.jsFiles = config.getJavaScriptAssets();
-//    app.locals.cssFiles = config.getCSSAssets();
+    // Setting the app router and static folder
+    /*let setStaticResourceFolder = function (req, res, next) {
+     //console.log(process.cwd());
+     let myRegex = /^(\/admin\/?)/g;
+     let match = myRegex.exec(req.url);
+     if (match) {
+     let serve = serveStatic(__base + 'app/backend/views_layout');
+     }
+     else {
+     next();
+     }
+     serve(req, res, next);
+     };*/
 
     redis.get(config.key, function (err, result) {
         if (result != null) {
             let tmp = JSON.parse(result);
             _.assign(config, tmp);
-
         }
         else {
             redis.set(config.key, JSON.stringify(config), redis.print);
@@ -74,18 +65,18 @@ module.exports = function () {
         },
         level: 9
     }));
-
+    app.use(express.static(path.resolve('./public')));
     // Showing stack errors
     app.set('showStackError', true);
 
     // Set swig as the template engine
     //app.engine('html', nunjucks);
-    let e = nunjucks.configure(__base + 'app/themes', {
+    /*let e = nunjucks.configure(__base + 'app/themes', {
         autoescape: true,
         express: app
     });
     //Initials custom filter
-    __.getAllCustomFilter(e);
+    __.getAllCustomFilter(e);*/
 
     // Set views path and view engine
     app.set('view engine', 'html');
@@ -112,11 +103,13 @@ module.exports = function () {
     // CookieParser should be above session
     app.use(cookieParser());
 
-    // Express MongoDB session storage
+    // Express redis session storage
     let secret = "hjjhdsu465aklsdjfhasdasdf342ehsf09kljlasdf";
     app.use(session({
         store: new RedisStore({host: config.redis.host, port: config.redis.port, client: redis}),
-        secret: secret
+        secret: secret,
+        resave: false,
+        saveUninitialized: true
     }));
     app.use(function (req, res, next) {
         if (!req.session) {
@@ -179,18 +172,7 @@ module.exports = function () {
         __setting_menu_module.push(require(path.resolve(routePath))(app, config));
     });
 
-    app.use('/admin/*', function (req, res, next) {
-        //return next();
-        if (!req.isAuthenticated()) {
-            console.log("redirect to admin login");
-            return res.redirect('/admin/login');
-        }
-//        res.locals.__user = req.user;
-        next();
-    });
-
     //module manager frontend
-    //app.use('/^((?!admin))/*', require('../app/middleware/modules-f-plugin.js'));
     app.use('/*', require('../app/middleware/modules-f-plugin.js'));
 
     // Globbing frontend module files
@@ -200,11 +182,7 @@ module.exports = function () {
     });
 
     // Globbing routing files
-    config.getGlobbedFiles('./app/frontend/modules/*/route.js').forEach(function (routePath) {
-        console.log(path.resolve(routePath));
-        require(path.resolve(routePath))(app);
-    });
-
+    require(__base + 'app/frontend/modules/routes')(app);
     // Globbing menu files
     config.getGlobbedFiles('./app/menus/*/*.js').forEach(function (routePath) {
         console.log(routePath);
