@@ -23,6 +23,7 @@ global.__current_theme = {};
 global.__pluginManager = require('./libs/plugins_manager');
 global.BaseModuleBackend = require('./app/backend/base_module');
 global.BaseModuleFrontend = require('./app/frontend/base_module');
+global.__setting_menu_module = [];
 __pluginManager.loadAllPlugin();
 
 let redis = require('redis').createClient();

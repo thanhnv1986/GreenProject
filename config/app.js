@@ -176,7 +176,7 @@ module.exports = function () {
 
     // Globbing routing admin files
     config.getGlobbedFiles('./app/frontend/modules/*/settings/*.js').forEach(function (routePath) {
-        require(path.resolve(routePath))(app, config);
+        __setting_menu_module.push(require(path.resolve(routePath))(app, config));
     });
 
     app.use('/admin/*', function (req, res, next) {
