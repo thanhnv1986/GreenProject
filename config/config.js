@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
+let _ = require('lodash'),
 	glob = require('glob');
 
 /**
@@ -19,13 +19,13 @@ module.exports = _.extend(
  */
 module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
 	// For context switching
-	var _this = this;
+	let _this = this;
 
 	// URL paths regex
-	var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
+	let urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
 
 	// The output array
-	var output = [];
+	let output = [];
 
 	// If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob 
 	if (_.isArray(globPatterns)) {
@@ -57,7 +57,7 @@ module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
  * Get the modules JavaScript files
  */
 module.exports.getJavaScriptAssets = function(includeTests) {
-	var output = this.getGlobbedFiles(this.assets.lib.js.concat(this.assets.js), 'public/');
+	let output = this.getGlobbedFiles(this.assets.lib.js.concat(this.assets.js), 'public/');
 
 	// To include tests
 	if (includeTests) {
@@ -71,6 +71,6 @@ module.exports.getJavaScriptAssets = function(includeTests) {
  * Get the modules CSS files
  */
 module.exports.getCSSAssets = function() {
-	var output = this.getGlobbedFiles(this.assets.lib.css.concat(this.assets.css), 'public/');
+	let output = this.getGlobbedFiles(this.assets.lib.css.concat(this.assets.css), 'public/');
 	return output;
 };

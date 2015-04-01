@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 3/13/15.
  */
 /**
  * Created by thanhnv on 3/13/15.
  */
-var Promise = require('bluebird'),
+let Promise = require('bluebird'),
     _ = require('lodash');
-var _base_config = {
+let _base_config = {
     alias: 'facebook',
     name: 'Facebook login',
     author: 'Jack',
@@ -20,12 +21,12 @@ var _base_config = {
 };
 
 function FacebookPlugin() {
-    var self = this;
+    let self = this;
     _.assign(self, _base_config);
 
     this.before_close_body_tag = function (data) {
         return new Promise(function (done, reject) {
-            var html = '<script>' +
+            let html = '<script>' +
                 'window.fbAsyncInit = function () {' +
                 'FB.init({' +
                 'appId: "' + self.options.appId + '",' +
@@ -35,7 +36,7 @@ function FacebookPlugin() {
                 '};' +
 
                 '(function (d, s, id) {' +
-                'var js, fjs = d.getElementsByTagName(s)[0];' +
+                'let js, fjs = d.getElementsByTagName(s)[0];' +
                 'if (d.getElementById(id)) {' +
                 'return;' +
                 '}' +

@@ -1,17 +1,18 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
 
 module.exports = function (env) {
     env.addFilter('render_menu', function (route, menus, user) {
-        var html = '';
-        var sortedMenus = __.sortMenus(menus);
+        let html = '';
+        let sortedMenus = __.sortMenus(menus);
         sortedMenus.forEach(function (m) {
             //console.log(m);
-            var i = m.menu;
+            let i = m.menu;
             if (menus[i] != undefined) {
                 if (user.acl[i] != undefined) {
-                    var cls = __.active_menu(route, i.replace('_', '-'));
+                    let cls = __.active_menu(route, i.replace('_', '-'));
                     html += '<li class="' + cls + '">';
                     if (menus[i].menus.length == 1)
                         html += '<a href="/admin/' + (i.replace('_', '-') + menus[i].menus[0].link) + '">';
@@ -25,7 +26,7 @@ module.exports = function (env) {
                     if (menus[i].menus.length > 1) {
                         //check submenu
                         html += '<ul class="sub-menu">';
-                        for (var y in menus[i].menus) {
+                        for (let y in menus[i].menus) {
                             if (user.acl[i].indexOf(menus[i].menus[y].name) > -1) {
                                 html += '<li>';
                                 html += '<a href="/admin/' + (i.replace('_', '-') + menus[i].menus[y].link) + '">';

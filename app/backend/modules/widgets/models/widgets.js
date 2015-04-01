@@ -1,8 +1,8 @@
 "use strict";
-var crypto = require('crypto');
+let crypto = require('crypto');
 
 module.exports = function (sequelize, DataTypes) {
-    var Widgets = sequelize.define("widgets", {
+    let Widgets = sequelize.define("widgets", {
         id: DataTypes.BIGINT,
         sidebar: DataTypes.STRING,
         data: DataTypes.STRING,

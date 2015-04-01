@@ -1,8 +1,9 @@
+'use strict'
 /**
  * Created by thanhnv on 1/28/15.
  */
-var passport = require('passport');
-var config = require(__base + 'config/config.js');
+let passport = require('passport');
+let config = require(__base + 'config/config.js');
 module.exports = function (app) {
     // Passport Router
     app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email' ] }));

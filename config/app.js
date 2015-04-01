@@ -7,7 +7,7 @@
 /**
  * Module dependencies.
  */
-var fs = require('fs'),
+let fs = require('fs'),
     http = require('http'),
     https = require('https'),
     express = require('express'),
@@ -29,8 +29,21 @@ var fs = require('fs'),
 
 module.exports = function () {
     // Initialize express app
-    var app = express();
-
+    let app = express();
+    // Setting the app router and static folder
+    let setStaticResourceFolder = function (req, res, next) {
+        //console.log(process.cwd());
+        let myRegex = /^(\/admin\/?)/g;
+        let match = myRegex.exec(req.url);
+        if (match) {
+            let serve = serveStatic(__base + 'app/backend/views_layout');
+        }
+        else{
+            next();
+        }
+        serve(req, res, next);
+    };
+    app.use(express.static(path.resolve('./public')));
 
     // Setting application local variables
     /*app.locals.title = config.app.title;
@@ -42,7 +55,7 @@ module.exports = function () {
 
     redis.get(config.key, function (err, result) {
         if (result != null) {
-            var tmp = JSON.parse(result);
+            let tmp = JSON.parse(result);
             _.assign(config, tmp);
 
         }
@@ -67,7 +80,7 @@ module.exports = function () {
 
     // Set swig as the template engine
     //app.engine('html', nunjucks);
-    var e = nunjucks.configure(__base + 'app/themes', {
+    let e = nunjucks.configure(__base + 'app/themes', {
         autoescape: true,
         express: app
     });
@@ -100,7 +113,7 @@ module.exports = function () {
     app.use(cookieParser());
 
     // Express MongoDB session storage
-    var secret = "hjjhdsu465aklsdjfhasdasdf342ehsf09kljlasdf";
+    let secret = "hjjhdsu465aklsdjfhasdasdf342ehsf09kljlasdf";
     app.use(session({
         store: new RedisStore({host: config.redis.host, port: config.redis.port, client: redis}),
         secret: secret
@@ -125,20 +138,7 @@ module.exports = function () {
     app.use(helmet.ienoopen());
     app.disable('x-powered-by');
 
-    var setStaticResourceFolder = function (req, res, next) {
-        //console.log(process.cwd());
-        var myRegex = /^(\/admin\/?)/g;
-        var match = myRegex.exec(req.url);
-        if (match) {
-            var serve = serveStatic(__base + 'app/backend/views_layout');
-        }
-        else {
-            var serve = serveStatic(__base + 'app/frontend/themes');
-        }
-        serve(req, res, next);
-    };
-    // Setting the app router and static folder
-    app.use(express.static(path.resolve('./public')));
+
     //app.use(setStaticResourceFolder);
     // Passing the request url to environment locals
     app.use(function (req, res, next) {
@@ -227,7 +227,7 @@ module.exports = function () {
 
     // Assume 404 since no middleware responded
     app.use(function (req, res) {
-        var env = __.createNewEnv([__base + 'app/frontend/themes', __base + 'app/frontend/themes/' + config.themes]);
+        let env = __.createNewEnv([__base + 'app/frontend/themes', __base + 'app/frontend/themes/' + config.themes]);
         env.render('404.html', res.locals, function (err, re) {
             res.send(re);
         });
@@ -239,11 +239,11 @@ module.exports = function () {
         console.log('Securely using https protocol');
 
         // Load SSL key and certificate
-        var privateKey = fs.readFileSync('./config/sslcerts/key.pem', 'utf8');
-        var certificate = fs.readFileSync('./config/sslcerts/cert.pem', 'utf8');
+        let privateKey = fs.readFileSync('./config/sslcerts/key.pem', 'utf8');
+        let certificate = fs.readFileSync('./config/sslcerts/cert.pem', 'utf8');
 
         // Create HTTPS Server
-        var httpsServer = https.createServer({
+        let httpsServer = https.createServer({
             key: privateKey,
             cert: certificate
         }, app);

@@ -1,11 +1,12 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
-var utils = require(__base+'libs/utils'),
+let utils = require(__base+'libs/utils'),
     dateFormatter = require(__base+'libs/dateformatter');
 module.exports = function (env) {
     env.addFilter('date', function(input, format, offset, abbr){
-        var l = format.length,
+        let l = format.length,
             date = new dateFormatter.DateZ(input),
             cur,
             i = 0,

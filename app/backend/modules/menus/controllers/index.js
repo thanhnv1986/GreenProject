@@ -1,13 +1,14 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
 var
     util = require('util'),
     _ = require('lodash');
-var promise = require('bluebird');
+let promise = require('bluebird');
 
-var route = 'menus';
-var breadcrumb =
+let route = 'menus';
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -23,7 +24,7 @@ function MenusModule() {
     BaseModuleBackend.call(this);
     this.path = "/menus";
 }
-var _module = new MenusModule();
+let _module = new MenusModule();
 
 
 _module.index = function (req, res) {
@@ -35,8 +36,8 @@ _module.index = function (req, res) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
     //Config ordering
-    var column = req.params.sort || 'id';
-    var order = req.params.order || '';
+    let column = req.params.sort || 'id';
+    let order = req.params.order || '';
     res.locals.root_link = '/admin/menus/sort';
     //Config columns
     __.createFilter(req, res, '', '/admin/menus', column, order, [
@@ -114,7 +115,7 @@ _module.update = function (req, res) {
             id: req.body.id
         }
     }).then(function (menu) {
-        var menu_order = req.body.output;
+        let menu_order = req.body.output;
 
         return menu.updateAttributes({
             name:req.body.name,
@@ -128,9 +129,9 @@ _module.update = function (req, res) {
             }
         });
     }).then(function () {
-        var promises = [];
+        let promises = [];
 
-        for (var i in req.body.title) {
+        for (let i in req.body.title) {
             promises.push(
                 __models.menu_detail.create({
                     id: req.body.mn_id[i],

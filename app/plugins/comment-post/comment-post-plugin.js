@@ -1,9 +1,10 @@
+'use strict'
 /**
  * Created by thanhnv on 3/13/15.
  */
-var Promise = require('bluebird'),
+let Promise = require('bluebird'),
     _ = require('lodash');
-var _base_config = {
+let _base_config = {
     alias: 'comment-post',
     name: 'Comment to Post',
     author: 'Jack',

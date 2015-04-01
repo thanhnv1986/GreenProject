@@ -1,9 +1,10 @@
-var BaseWidget = require('../base_widget'),
+"use strict"
+let BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash'),
     Promise = require('bluebird');
 
-var _base_config = {
+let _base_config = {
     alias: "search-post",
     name: "Search post",
     description: "Search post",

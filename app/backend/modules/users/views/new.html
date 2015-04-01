@@ -120,7 +120,7 @@
 
 {% block jsExtends %}
     <script>
-        var password = document.getElementById("user_pass")
+        let password = document.getElementById("user_pass")
                 , confirm_password = document.getElementById("confirm_pass");
 
         function validatePassword() {
@@ -141,7 +141,7 @@
         function readURL(input) {
 
             if (input.files && input.files[0]) {
-                var reader = new FileReader();
+                let reader = new FileReader();
 
                 reader.onload = function (e) {
                     $('#user_image').attr('src', e.target.result);

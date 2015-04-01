@@ -1,3 +1,4 @@
+'use strict'
 /**
  * Created by thanhnv on 3/24/15.
  */
@@ -13,8 +14,8 @@ module.exports = function (socket_manager, socket) {
         socket_manager.publish('user:user-list', socket_manager.clients);
     });
     socket.on('user:connected', function (user) {
-        var isNew = true;
-        for (var i in socket_manager.clients) {
+        let isNew = true;
+        for (let i in socket_manager.clients) {
             if (socket_manager.clients[i].id == user.id) {
                 isNew = false;
                 socket_manager.clients[i] = user;

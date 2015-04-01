@@ -6,7 +6,7 @@
  * Module dependencies.
  */
 
-var util = require('util'),
+let util = require('util'),
     config = require(__base + 'config/config.js'),
     _ = require('lodash');
 
@@ -14,9 +14,9 @@ function IndexModule() {
     BaseModuleFrontend.call(this);
     this.path = "/index";
 }
-var _module = new IndexModule();
+let _module = new IndexModule();
 _module.index = function (req, res) {
-    var index_view = 'index';
+    let index_view = 'index';
     _module.render(req, res, index_view, {
         user: req.user || null
     });

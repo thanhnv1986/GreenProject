@@ -2,11 +2,11 @@
 
 module.exports = function (app) {
     // Root routing
-    var post = require('./controllers/post');
-    var category = require('./controllers/category');
-    var archives = require('./controllers/archives');
-    var author = require('./controllers/author');
-    var search = require('./controllers/search');
+    let post = require('./controllers/post');
+    let category = require('./controllers/category');
+    let archives = require('./controllers/archives');
+    let author = require('./controllers/author');
+    let search = require('./controllers/search');
 
     // Search router
     app.route('/search/').get(search.index);

@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
 var
     util = require('util'),
     _ = require('lodash');
-var redis = require('redis').createClient();
-var route = 'modules';
-var breadcrumb =
+let redis = require('redis').createClient();
+let route = 'modules';
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -22,7 +23,7 @@ function ModulesModule() {
     BaseModuleBackend.call(this);
     this.path = "/modules";
 }
-var _module = new ModulesModule();
+let _module = new ModulesModule();
 
 _module.index = function (req, res) {
     // Breadcrumb
@@ -48,7 +49,7 @@ _module.active = function (req, res) {
 };
 
 _module.reload = function (req, res, next) {
-    var md = require(__base + 'libs/modules_backend_manager.js');
+    let md = require(__base + 'libs/modules_backend_manager.js');
     md.loadAllModules();
     req.flash.success("Reload all modules");
     next();

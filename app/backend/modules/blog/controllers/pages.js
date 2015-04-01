@@ -1,11 +1,12 @@
-var promise = require('bluebird');
+"use strict"
+let promise = require('bluebird');
 
-var config = require(__base + 'config/config.js');
-var slug = require('slug');
+let config = require(__base + 'config/config.js');
+let slug = require('slug');
 
-var route = 'blog';
+let route = 'blog';
 
-var breadcrumb =
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -26,7 +27,7 @@ function BlogModule() {
     BaseModuleBackend.call(this);
     this.path = "/blog";
 }
-var _module = new BlogModule();
+let _module = new BlogModule();
 
 exports.index = function (req, res) {
     // Create breadcrumb
@@ -37,13 +38,13 @@ exports.index = function (req, res) {
     res.locals.deleteButton = __acl.addButton(req, route, 'page_delete');
 
     // Get current page and default sorting
-    var page = req.params.page || 1;
-    var column = req.params.sort || 'created_by';
-    var order = req.params.order || 'desc';
+    let page = req.params.page || 1;
+    let column = req.params.sort || 'created_by';
+    let order = req.params.order || 'desc';
     res.locals.root_link = '/admin/blog/pages/page/' + page + '/sort';
 
     // Create filter
-    var filter = __.createFilter(req, res, route, '/admin/blog/pages', column, order, [
+    let filter = __.createFilter(req, res, route, '/admin/blog/pages', column, order, [
         {
             column: "id",
             width: '1%',
@@ -126,7 +127,7 @@ exports.index = function (req, res) {
         limit: config.pagination.number_item,
         offset: (page - 1) * config.pagination.number_item
     }).then(function (results) {
-        var totalPage = Math.ceil(results.count / config.pagination.number_item);
+        let totalPage = Math.ceil(results.count / config.pagination.number_item);
 
         // Render view
         _module.render(req, res, '/pages/index.html', {
@@ -164,7 +165,7 @@ exports.create = function (req, res) {
 };
 
 exports.saveCreate = function (req, res) {
-    var data = req.body;
+    let data = req.body;
 
     // Generate alias
     if (data.alias == undefined || data.alias == '') {
@@ -235,7 +236,7 @@ exports.edit = function (req, res) {
 
 exports.saveEdit = function (req, res) {
     // Get post data
-    var data = req.body;
+    let data = req.body;
 
     // Find page by id
     __models.posts.find(req.params.cid).then(function (page) {

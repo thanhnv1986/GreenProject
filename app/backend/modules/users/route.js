@@ -1,10 +1,11 @@
+'use strict'
 /**
  * Created by thanhnv on 1/26/15.
  */
-var express = require('express');
-var router = express.Router();
-var controller = require('./controllers/index.js');
-var moduleName = 'users';
+let express = require('express');
+let router = express.Router();
+let controller = require('./controllers/index.js');
+let moduleName = 'users';
 
 //console.log(controller);
 

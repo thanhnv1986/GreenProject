@@ -1,19 +1,20 @@
+'use strict'
 /**
  * Created by thanhnv on 2/26/15.
  */
-var config = require(__base + 'config/config');
+let config = require(__base + 'config/config');
 
 exports.create_breadcrumb = function (root) {
-    var arr = root.slice(0);
-    for (var i = 1; i < arguments.length; i++) {
+    let arr = root.slice(0);
+    for (let i = 1; i < arguments.length; i++) {
         if (arguments[i] != undefined)
             arr.push(arguments[i]);
     }
     return arr;
 };
 exports.active_menu = function (value, string_to_compare, cls, index) {
-    var arr = value.split('/');
-    var st = "active";
+    let arr = value.split('/');
+    let st = "active";
     if (cls) {
         st = cls;
     }
@@ -27,8 +28,8 @@ exports.active_menu = function (value, string_to_compare, cls, index) {
 };
 
 exports.sortMenus = function (menus) {
-    var sortable = [];
-    for (var m in menus) {
+    let sortable = [];
+    for (let m in menus) {
         //console.log(menus[m].sort);
         sortable.push({menu: m, sort: menus[m].sort})
     }
@@ -42,19 +43,20 @@ exports.sortMenus = function (menus) {
     return sortable;
 };
 exports.getWidget = function (alias) {
-    for (var i in __widgets) {
+    for (let i in __widgets) {
         if (__widgets[i].alias == alias) {
             return __widgets[i];
         }
     }
 };
 exports.createNewEnv = function (views) {
-    var nunjucks = require('nunjucks');
+    let nunjucks = require('nunjucks');
+    let env;
     if (views) {
-        var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(views));
+        env = new nunjucks.Environment(new nunjucks.FileSystemLoader(views));
     }
     else {
-        var env = new nunjucks.Environment(new nunjucks.FileSystemLoader([__base + 'app/widgets', __base + 'app/frontend/themes']));
+        env = new nunjucks.Environment(new nunjucks.FileSystemLoader([__base + 'app/widgets', __base + 'app/frontend/themes']));
     }
     env = __.getAllCustomFilter(env);
     return env;
@@ -129,20 +131,20 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
         res.locals.searchButton = __acl.customButton(route);
         res.locals.resetFilterButton = __acl.customButton(reset_link);
     }
-    var conditions = [];
-    var values = [];
+    let conditions = [];
+    let values = [];
     values.push('command');
-    var getColumn = function (name) {
-        for (var i in columns) {
+    let getColumn = function (name) {
+        for (let i in columns) {
             if (columns[i].column == name) {
                 return columns[i];
             }
         }
         return {filter: {}};
     };
-    for (var i in req.query) {
+    for (let i in req.query) {
         if (req.query[i] != '') {
-            var col = getColumn(i);
+            let col = getColumn(i);
             if (!col) continue;
             if (col.query) {
                 conditions.push(col.query);
@@ -151,10 +153,10 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
                 conditions.push(__.parseCondition(i, req.query[i], col));
             }
 
-            var value = __.parseValue(req.query[i], col);
+            let value = __.parseValue(req.query[i], col);
             console.log(value);
             if (Array.isArray(value)) {
-                for (var y in value) {
+                for (let y in value) {
                     values.push(value[y].trim());
                 }
 
@@ -165,8 +167,8 @@ exports.createFilter = function (req, res, route, reset_link, current_column, or
 
         }
     }
-    var tmp = conditions.length > 0 ? "(" + conditions.join(" AND ") + ")" : " 1=1 ";
-    var stCondition = tmp + (customCondition ? customCondition : '');
+    let tmp = conditions.length > 0 ? "(" + conditions.join(" AND ") + ")" : " 1=1 ";
+    let stCondition = tmp + (customCondition ? customCondition : '');
     values[0] = stCondition;
     res.locals.table_columns = columns;
     res.locals.currentColumn = current_column;

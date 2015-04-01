@@ -1,4 +1,5 @@
-var isArray;
+'use strict'
+let isArray;
 
 /**
  * Strip leading and trailing whitespace from a string.
@@ -36,7 +37,7 @@ exports.endsWith = function (str, suffix) {
  * @return {array|object}     The original input object.
  */
 exports.each = function (obj, fn) {
-  var i, l;
+  let i, l;
 
   if (isArray(obj)) {
     i = 0;
@@ -75,7 +76,7 @@ exports.isArray = isArray = (Array.hasOwnProperty('isArray')) ? Array.isArray : 
  * @return {boolean}
  */
 exports.some = function (obj, fn) {
-  var i = 0,
+  let i = 0,
     result,
     l;
   if (isArray(obj)) {
@@ -103,7 +104,7 @@ exports.some = function (obj, fn) {
  * @return {object}       New mapped object.
  */
 exports.map = function (obj, fn) {
-  var i = 0,
+  let i = 0,
     result = [],
     l;
 
@@ -128,7 +129,7 @@ exports.map = function (obj, fn) {
  * @return {object}
  */
 exports.extend = function () {
-  var args = arguments,
+  let args = arguments,
     target = args[0],
     objs = (args.length > 1) ? Array.prototype.slice.call(args, 1) : [],
     i = 0,

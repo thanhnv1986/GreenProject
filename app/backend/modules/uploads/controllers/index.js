@@ -1,23 +1,24 @@
+'use strict'
 /**
  * Created by thanhnv on 2/2/15.
  */
-var fs = require('fs'),
+let fs = require('fs'),
     sizeOf = require('image-size'),
     im = require('imagemagick'),
     formidable = require('formidable'),
     path = require('path');
-var rootPath = '/fileman/Uploads';
-var standardPath = __base + 'public/';
+let rootPath = '/fileman/Uploads';
+let standardPath = __base + 'public/';
 
 exports.dirtree = function (req, res) {
-    var results = [];
+    let results = [];
     getDirectories(rootPath, results);
     res.jsonp(results);
 };
 
 exports.createdir = function (req, res) {
-    var dir = req.param('d');
-    var name = req.param('n');
+    let dir = req.param('d');
+    let name = req.param('n');
     fs.mkdir(standardPath + dir + '/' + name, '7777', function (err) {
         if (err) {
             throw err;
@@ -29,7 +30,7 @@ exports.createdir = function (req, res) {
 };
 
 exports.deletedir = function (req, res) {
-    var dir = req.param('d');
+    let dir = req.param('d');
 
     fs.rmdir(standardPath + dir, function (err) {
         if (err) {
@@ -50,31 +51,31 @@ exports.copydir = function (req, res) {
 };
 
 exports.renamedir = function (req, res) {
-    var d = req.param('d');
-    var n = req.param('n');
-    var path = d.substring(0, d.lastIndexOf('/'));
+    let d = req.param('d');
+    let n = req.param('n');
+    let path = d.substring(0, d.lastIndexOf('/'));
 
     fs.renameSync(standardPath + d, standardPath + path + '/' + n);
     res.jsonp({"res": "ok", "msg": ""});
 };
 
 exports.fileslist = function (req, res) {
-    var folder = req.param('d');
-    var type = req.param('type');
-    var rPath = standardPath + folder;
+    let folder = req.param('d');
+    let type = req.param('type');
+    let rPath = standardPath + folder;
     fs.readdir(rPath, function (err, files) {
         if (err) {
         }
         else {
-            var result = [];
-            for (var i in files) {
-                var filePath = rPath + '/' + files[i];
+            let result = [];
+            for (let i in files) {
+                let filePath = rPath + '/' + files[i];
                 if (checkFileType(filePath) == "image") {
-                    var sta = fs.statSync(filePath);
+                    let sta = fs.statSync(filePath);
                     if (sta.isFile()) {
 
-                        var dimension = sizeOf(filePath);
-                        var p = {
+                        let dimension = sizeOf(filePath);
+                        let p = {
                             p: folder + "/" + files[i],
                             s: sta.size,
                             t: new Date(sta.mtime).getTime() / 1000,
@@ -91,10 +92,10 @@ exports.fileslist = function (req, res) {
 };
 
 exports.upload = function (req, res) {
-    var form = new formidable.IncomingForm();
+    let form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         folder = fields.d;
-        var folder_to_upload = standardPath + folder;
+        let folder_to_upload = standardPath + folder;
         fs.rename(files["files[]"].path, folder_to_upload + '/' + files["files[]"].name, function (err) {
             if (err) {
                 //console.log(err);
@@ -115,15 +116,15 @@ exports.downloaddir = function (req, res) {
 };
 
 exports.deletefile = function (req, res) {
-    var file = req.param('f');
+    let file = req.param('f');
     if (fs.existsSync(standardPath + file)) {
         fs.unlink(standardPath + file, function (err) {
             if (err) {
                 throw err;
             }
             else {
-                var tmp = getFileName(file);
-                var tmp_path = standardPath + '/fileman/tmp/' + tmp;
+                let tmp = getFileName(file);
+                let tmp_path = standardPath + '/fileman/tmp/' + tmp;
                 if (fs.existsSync(tmp_path)) {
                     fs.unlinkSync(standardPath + '/fileman/tmp/' + tmp);
                 }
@@ -144,14 +145,14 @@ exports.copyfile = function (req, res) {
 };
 
 exports.renamefile = function (req, res) {
-    var f = req.param('f');
-    var n = req.param('n');
-    var path = f.substring(0, f.lastIndexOf('/'));
+    let f = req.param('f');
+    let n = req.param('n');
+    let path = f.substring(0, f.lastIndexOf('/'));
     fs.renameSync(standardPath + f, standardPath + path + '/' + n);
 
     // Change name of thumb tmp
-    var tmp = getFileName(f);
-    var tmp_path = standardPath + '/fileman/tmp/' + tmp;
+    let tmp = getFileName(f);
+    let tmp_path = standardPath + '/fileman/tmp/' + tmp;
     if (fs.existsSync(tmp_path)) {
         fs.renameSync(tmp_path, standardPath + '/fileman/tmp/' + n);
     }
@@ -159,15 +160,15 @@ exports.renamefile = function (req, res) {
 };
 
 exports.thumb = function (req, res) {
-    var filePath = req.param('f');
-    var width = req.param('width');
-    var height = req.param('height');
-    var tmpFolder = standardPath + '/fileman/tmp';
-    var filename = getFileName(filePath);
+    let filePath = req.param('f');
+    let width = req.param('width');
+    let height = req.param('height');
+    let tmpFolder = standardPath + '/fileman/tmp';
+    let filename = getFileName(filePath);
 
     // Check file exit
     if (fs.existsSync(tmpFolder + '/' + filename)) {
-        var img = fs.readFileSync(tmpFolder + '/' + filename);
+        let img = fs.readFileSync(tmpFolder + '/' + filename);
         res.writeHead(200, {'Content-Type': 'image/' + getExtension(filename) });
         res.end(img, 'binary');
     } else {
@@ -179,7 +180,7 @@ exports.thumb = function (req, res) {
             height: height
         }, function (err, stdout, stderr) {
             if (err) throw err;
-            var img = fs.readFileSync(tmpFolder + '/' + filename);
+            let img = fs.readFileSync(tmpFolder + '/' + filename);
             res.writeHead(200, {'Content-Type': 'image/' + getExtension(filename) });
             res.end(img, 'binary');
         });
@@ -204,10 +205,10 @@ function getExtension(path) {
 }
 
 function getDirectories(srcpath, results) {
-    var files_and_dirs = fs.readdirSync(standardPath + srcpath);
-    var totalSubFolders = 0;
-    var totalSubFiles = 0;
-    var dirs = files_and_dirs.filter(function (file) {
+    let files_and_dirs = fs.readdirSync(standardPath + srcpath);
+    let totalSubFolders = 0;
+    let totalSubFiles = 0;
+    let dirs = files_and_dirs.filter(function (file) {
         if (fs.statSync(path.join('public/' + srcpath, file)).isDirectory()) {
             totalSubFolders++;
             return true;
@@ -218,14 +219,14 @@ function getDirectories(srcpath, results) {
         }
     });
 
-    var p = {
+    let p = {
         p: srcpath,
         f: totalSubFiles,
         s: totalSubFolders
     };
     results.push(p);
 
-    for (var i in dirs) {
+    for (let i in dirs) {
         results = getDirectories(srcpath + '/' + dirs[i], results);
     }
     return results;

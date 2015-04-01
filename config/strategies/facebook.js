@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport'),
+let passport = require('passport'),
     url = require('url'),
     FacebookStrategy = require('passport-facebook').Strategy,
     config = require('../config'),
@@ -19,12 +19,12 @@ module.exports = function () {
         },
         function (req, accessToken, refreshToken, profile, done) {
             // Set the provider data and include tokens
-            var providerData = profile._json;
+            let providerData = profile._json;
             providerData.accessToken = accessToken;
             providerData.refreshToken = refreshToken;
             console.log('^^^^^^^', profile);
             // Create the user OAuth profile
-            var providerUserProfile = {
+            let providerUserProfile = {
                 id: providerData.id,
                 user_url: providerData.link,
                 user_email: providerData.email,

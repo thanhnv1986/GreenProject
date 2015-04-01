@@ -1,8 +1,9 @@
+'use strict'
 /**
  * Created by thanhnv on 1/19/15.
  */
 module.exports = function (sequelize, DataTypes) {
-    var MenuDetail = sequelize.define("menu_detail", {
+    let MenuDetail = sequelize.define("menu_detail", {
         menu_id:DataTypes.INTEGER,
         name: DataTypes.STRING,
         type: DataTypes.STRING,

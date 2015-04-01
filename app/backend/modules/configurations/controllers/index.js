@@ -3,11 +3,11 @@
  * Created by thanhnv on 2/17/15.
  */
 
-var   util = require('util'),
+let   util = require('util'),
     _ = require('lodash');
-var config = require(__base + 'config/config');
-var redis = require('redis').createClient();
-var breadcrumb =
+let config = require(__base + 'config/config');
+let redis = require('redis').createClient();
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -28,14 +28,14 @@ function ConfigurationsModule() {
     BaseModuleBackend.call(this);
     this.path = "/configurations";
 }
-var _module = new ConfigurationsModule();
+let _module = new ConfigurationsModule();
 
 _module.index = function (req, res) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
     _module.render(req, res, 'sites/index', {config: config});
 };
 _module.update_setting = function (req, res, next) {
-    var data = req.body;
+    let data = req.body;
     //site info
     config.app.title = data.title;
     config.app.logo = data.logo;

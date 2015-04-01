@@ -1,10 +1,10 @@
-var BaseWidget = require('../base_widget'),
+"use strict"
+let BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash'),
     Promise = require('bluebird');
-;
 
-var _base_config = {
+let _base_config = {
     alias: "post-archives",
     name: "Archives",
     description: "Archives post",
@@ -26,8 +26,8 @@ function PostArchives() {
 util.inherits(PostArchives, BaseWidget);
 
 PostArchives.prototype.render = function (widget) {
-    var sql;
-    var _this = this;
+    let sql;
+    let _this = this;
     if(widget.data.show_post_count == '1'){
         sql = "SELECT count(id) AS count, ConCat(to_char(created_at, 'YYYY-MM'),'-01') AS date, ConCat(to_char(created_at, 'YYYY-MM'),'-99') AS dateX FROM posts WHERE type='post' GROUP BY date, dateX ORDER BY date DESC";
     }else{

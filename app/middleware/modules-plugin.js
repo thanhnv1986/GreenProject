@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 2/23/15.
  */
-var config = require(__base + 'config/config.js');
+let config = require(__base + 'config/config.js');
 
 module.exports = function (req, res, next) {
     //Check if is using admin view
-    var pre_fix = '';
-    var module = res.locals.route.split('/')[1];
+    let pre_fix = '';
+    let module = res.locals.route.split('/')[1];
     if (module == config.admin_prefix) {
         pre_fix = module = res.locals.route.split('/')[2];
     }
@@ -14,7 +15,7 @@ module.exports = function (req, res, next) {
         module = 'dashboard';
     }
     module = module.split('?')[0];
-    var moduleName = module.replace('-', '_');
+    let moduleName = module.replace('-', '_');
 
     if (moduleName == 'login' || moduleName == 'uploads' || moduleName == 'err') return next();
     if (__modules[moduleName] != undefined && (__modules[moduleName].system || __modules[moduleName].active)) {

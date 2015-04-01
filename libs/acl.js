@@ -1,11 +1,12 @@
+'use strict'
 /**
  * Created by thanhnv on 2/23/15.
  */
 exports.isAllow = function (route, action, orAction, hasAuthorize) {
     return function (req, res, next) {
         if (req.user != undefined && req.user.acl[route] != undefined) {
-            var rules = req.user.acl[route].split(':');
-            for (var i in rules) {
+            let rules = req.user.acl[route].split(':');
+            for (let i in rules) {
                 if (action == rules[i]) {
                     next();
                     return;
@@ -29,8 +30,8 @@ exports.isAllow = function (route, action, orAction, hasAuthorize) {
 
 exports.addButton = function (req, route, action, url) {
     if (req.user != undefined && req.user.acl[route] != undefined) {
-        var rules = req.user.acl[route].split(':');
-        for (var i in rules) {
+        let rules = req.user.acl[route].split(':');
+        for (let i in rules) {
             if (action == rules[i]) {
                 if (url === undefined) {
                     return route.replace('_', '-');

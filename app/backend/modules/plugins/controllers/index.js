@@ -1,13 +1,14 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
 var
     util = require('util'),
     _ = require('lodash');
-var redis = require('redis').createClient();
-var fs = require('fs');
-var route = 'modules';
-var breadcrumb =
+let redis = require('redis').createClient();
+let fs = require('fs');
+let route = 'modules';
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -23,7 +24,7 @@ function PluginsModule() {
     BaseModuleBackend.call(this);
     this.path = "/plugins";
 }
-var _module = new PluginsModule();
+let _module = new PluginsModule();
 
 _module.index = function (req, res) {
     // Breadcrumb
@@ -36,9 +37,9 @@ _module.index = function (req, res) {
 _module.setting = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: req.params.alias});
-    var plg = __pluginManager.getPlugin(req.params.alias);
+    let plg = __pluginManager.getPlugin(req.params.alias);
     if (fs.existsSync(__base + 'app/plugins/' + req.params.alias + '/setting.html')) {
-        var env = __.createNewEnv([__base + 'app/plugins/' + req.params.alias]);
+        let env = __.createNewEnv([__base + 'app/plugins/' + req.params.alias]);
         env.render('setting.html', {
             title: "Setting Plugins",
             plugin: plg
@@ -59,7 +60,7 @@ _module.setting = function (req, res) {
 
 };
 _module.save_setting = function (req, res, next) {
-    var plg = __pluginManager.getPlugin(req.params.alias);
+    let plg = __pluginManager.getPlugin(req.params.alias);
     plg.options = req.body;
     redis.set('all_plugins', JSON.stringify(__pluginManager.plugins), redis.print);
     req.flash.success("Saved success");
@@ -67,14 +68,14 @@ _module.save_setting = function (req, res, next) {
 };
 
 _module.active = function (req, res, next) {
-    var plg = __pluginManager.getPlugin(req.params.alias);
+    let plg = __pluginManager.getPlugin(req.params.alias);
     plg.active = !plg.active;
     redis.set('all_plugins', JSON.stringify(__pluginManager.plugins), redis.print);
     next();
 };
 
 _module.reload = function (req, res, next) {
-    var md = require(__base + 'libs/plugins_manager.js');
+    let md = require(__base + 'libs/plugins_manager.js');
     md.loadAllModules();
     req.flash.success("Reload all plugins");
     next();

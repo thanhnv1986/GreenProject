@@ -1,10 +1,11 @@
+'use strict'
 /**
  * Created by thanhnv on 2/23/15.
  */
-var config = require(__base + 'config/config.js');
+let config = require(__base + 'config/config.js');
 module.exports = function (req, res, next) {
-    var module = res.locals.route.split('/')[1];
-    var moduleName = module.replace('-', '_');
+    let module = res.locals.route.split('/')[1];
+    let moduleName = module.replace('-', '_');
     if (__f_modules[moduleName] == undefined) next();
     else if (__f_modules[moduleName].system || __f_modules[moduleName].active) {
         next();

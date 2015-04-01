@@ -1,7 +1,8 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 
 module.exports = function (env) {
     env.addFilter('setting_sidebars', function (sidebarName, cb) {
@@ -11,22 +12,22 @@ module.exports = function (env) {
             },
             order: ['ordering']
         }, {raw: true}).then(function (widgets) {
-            var promises = [];
-            var getWidgetHtml = function (widget) {
-                var w = __.getWidget(widget.widget_type);
+            let promises = [];
+            let getWidgetHtml = function (widget) {
+                let w = __.getWidget(widget.widget_type);
                 if (w) {
                     promises.push(w.render_setting(widget.widget_type, widget));
                 }
 
             }
-            for (var i in widgets) {
+            for (let i in widgets) {
                 getWidgetHtml(widgets[i]);
             }
             Promise.all(promises).then(function (results) {
-                var html = "";
+                let html = "";
                 if (results.length > 0) {
-                    for (var i in results) {
-                        var w = __.getWidget(widgets[i].widget_type);
+                    for (let i in results) {
+                        let w = __.getWidget(widgets[i].widget_type);
                         html += '<li style="position: relative" id="' + widgets[i].id + '">' +
                         '<div class="widget-item" style="position: relative">' + w.name + '</div>' +
                         '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +

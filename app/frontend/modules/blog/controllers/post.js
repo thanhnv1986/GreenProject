@@ -1,16 +1,16 @@
 'use strict';
-var _ = require('lodash'),
+let _ = require('lodash'),
     promise = require('bluebird');
 
 function BlogModule() {
     BaseModuleFrontend.call(this);
     this.path = "/blog";
 }
-var _module = new BlogModule();
+let _module = new BlogModule();
 
 module.exports.index = function (req, res) {
-    var data = null;
-    var Promise = promise.all(
+    let data = null;
+    let Promise = promise.all(
             [
                 // Find post by alias
                 __models.posts.find({
@@ -53,7 +53,7 @@ module.exports.index = function (req, res) {
         }).then(function (results) {
             if (Array.isArray(data)) {
                 // Get SEO info
-                var seo_info = null;
+                let seo_info = null;
                 if (data[0].seo_info && data[0].seo_info != '') seo_info = JSON.parse(data[0].seo_info);
 
                 // Render view

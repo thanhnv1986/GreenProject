@@ -2,7 +2,8 @@
 /**
  * Created by thanhnv on 3/18/15.
  */
-let nunjucks = require('nunjucks'),
+let debug=require('debug')("BaseBackEnd"),
+    nunjucks = require('nunjucks'),
     _ = require('lodash');
 let env = __.createNewEnv([__dirname + '/views_layout', __dirname + '/modules']);
 function BaseModuleBackend() {
@@ -20,6 +21,9 @@ function BaseModuleBackend() {
         view = self.path.substring(1) + '/views/' + view;
         ////console.log('**********', env.loaders, view);
         env.render(view, _.assign(res.locals, options), function (err, re) {
+            if(err){
+                debug('???????', err);
+            }
             ////console.log('???????', err);
             res.send(re);
         });

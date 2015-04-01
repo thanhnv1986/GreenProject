@@ -1,3 +1,4 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
@@ -5,7 +6,7 @@ var
     util = require('util'),
     _ = require('lodash');
 
-var breadcrumb =
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -21,7 +22,7 @@ function DashboardModule() {
     BaseModuleBackend.call(this);
     this.path = "/dashboard";
 }
-var _module = new DashboardModule();
+let _module = new DashboardModule();
 _module.index = function (req, res) {
     res.locals.breadcrump = [
         {

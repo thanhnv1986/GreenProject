@@ -1,8 +1,8 @@
 "use strict";
-var crypto = require('crypto');
+let crypto = require('crypto');
 
 module.exports = function (sequelize, DataTypes) {
-    var User = sequelize.define("user", {
+    let User = sequelize.define("user", {
         id: DataTypes.BIGINT,
         user_login: DataTypes.STRING(60),
         user_pass: DataTypes.STRING(64),
@@ -58,12 +58,12 @@ module.exports = function (sequelize, DataTypes) {
     return User;
 };
 
-var randomid = function(length)
+let randomid = function(length)
 {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let text = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < length; i++ )
+    for( let i=0; i < length; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;

@@ -1,5 +1,6 @@
+"use strict"
 module.exports = function (sequelize, DataTypes) {
-    var Categories = sequelize.define("categories", {
+    let Categories = sequelize.define("categories", {
         parent: DataTypes.INTEGER,
         level: DataTypes.INTEGER,
         name: DataTypes.STRING(255),

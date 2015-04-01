@@ -1,23 +1,23 @@
 'use strict';
 
-var _ = require('lodash'),
+let _ = require('lodash'),
     config = require(__base + 'config/config.js');
 
 function BlogModule() {
     BaseModuleFrontend.call(this);
     this.path = "/blog";
 }
-var _module = new BlogModule();
+let _module = new BlogModule();
 
 module.exports.index = function (req, res) {
     // Get page
-    var page = req.params.page;
+    let page = req.params.page;
     if (page == undefined) {
         page = 1;
     }
 
     // Get date
-    var date = req.params.year + '-' + req.params.month;
+    let date = req.params.year + '-' + req.params.month;
 
     // Find all posts by date
     __models.posts.findAndCountAll({
@@ -33,7 +33,7 @@ module.exports.index = function (req, res) {
         limit: config.pagination.number_item,
         offset: (page - 1) * config.pagination.number_item
     }).then(function (posts) {
-        var totalPage = Math.ceil(posts.count / config.pagination.number_item);
+        let totalPage = Math.ceil(posts.count / config.pagination.number_item);
 
         // Render view
         _module.render(req, res, 'archives.html', {

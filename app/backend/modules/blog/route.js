@@ -1,13 +1,14 @@
+'use strict'
 /**
  * Created by vhchung on 1/26/15.
  */
-var express = require('express'),
+let express = require('express'),
     router = express.Router(),
     categories = require('./controllers/categories'),
     posts = require('./controllers/posts'),
     pages = require('./controllers/pages');
 
-var moduleName = 'blog';
+let moduleName = 'blog';
 
 router.route('/blog').get(__acl.isAllow(moduleName, 'post_index'), posts.index);
 

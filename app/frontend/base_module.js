@@ -1,16 +1,19 @@
+"use strict"
 /**
  * Created by thanhnv on 3/18/15.
  */
-var nunjucks = require('nunjucks'),
+let debug = require('debug')("BaseModule Front End");
+
+let nunjucks = require('nunjucks'),
     fs = require('fs'),
     config = require(__base + 'config/config'),
     _ = require('lodash');
-
-var env = __.createNewEnv([__dirname + '/themes', __dirname + '']);
+let env = __.createNewEnv([__dirname + '/themes', __dirname + '']);
 function BaseModule() {
 
     this.render = function (req, res, view, options) {
-        var self = this;
+        let self = this;
+        debug('############ Begin render #############');
         //get messages from session
         res.locals.messages = req.session.messages;
         //clear session messages
@@ -18,7 +21,7 @@ function BaseModule() {
         if (view.indexOf('.html') == -1) {
             view += '.html';
         }
-        var tmp = config.themes + '/_modules/' + self.path + '/' + view;
+        let tmp = config.themes + '/_modules/' + self.path + '/' + view;
         if (fs.existsSync(__base + 'app/frontend/themes/' + tmp)) {
             env.loaders[0].searchPaths = [__dirname + '/themes'];
             view = config.themes + '/_modules' + self.path + '/' + view;
@@ -29,16 +32,17 @@ function BaseModule() {
         }
         //console.log('*************', env.loaders, view, tmp);
         env.render(view, _.assign(res.locals, options), function (err, re) {
-            if(err){
+            if (err) {
                 console.log('??????????', err, env.loaders);
             }
 
             res.send(re);
+            debug('############ End render #############');
         });
     };
 
-    var render_error = function (req, res, view) {
-        var self = this;
+    let render_error = function (req, res, view) {
+        let self = this;
         //get messages from session
         res.locals.messages = req.session.messages;
         //clear session messages

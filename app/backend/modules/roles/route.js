@@ -1,10 +1,11 @@
+'use strict'
 /**
  * Created by thanhnv on 1/26/15.
  */
-var express = require('express');
-var router = express.Router();
-var controller = require('./controllers/index.js');
-var moduleName = 'roles';
+let express = require('express');
+let router = express.Router();
+let controller = require('./controllers/index.js');
+let moduleName = 'roles';
 
 router.get('/roles', __acl.isAllow(moduleName, 'index'), controller.list);
 router.get('/roles/sort/:sort/:order', __acl.isAllow(moduleName, 'index'), controller.list);

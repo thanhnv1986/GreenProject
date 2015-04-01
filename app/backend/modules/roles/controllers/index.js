@@ -1,15 +1,14 @@
+'use strict'
 /**
  * Created by thanhnv on 1/26/15.
  */
-var
-    util = require('util'),
+let util = require('util'),
     _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var _ = require('lodash');
+let fs = require('fs');
+let path = require('path');
 
-var route = 'roles';
-var breadcrumb =
+let route = 'roles';
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -26,7 +25,7 @@ function RolesModule() {
     BaseModuleBackend.call(this);
     this.path = "/roles";
 }
-var _module = new RolesModule();
+let _module = new RolesModule();
 
 _module.list = function (req, res) {
     // Add button
@@ -37,11 +36,11 @@ _module.list = function (req, res) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
     //Config ordering
-    var column = req.params.sort || 'id';
-    var order = req.params.order || '';
+    let column = req.params.sort || 'id';
+    let order = req.params.order || '';
     res.locals.root_link = '/admin/roles/sort';
     //Config columns
-    var filter = __.createFilter(req, res, route, '/admin/roles', column, order, [
+    let filter = __.createFilter(req, res, route, '/admin/roles', column, order, [
         {
             column: "id",
             width: '1%',
@@ -144,9 +143,9 @@ _module.update = function (req, res) {
             id: req.params.cid
         }
     }).then(function (role) {
-        var rules = {};
+        let rules = {};
 
-        for (var k in req.body) {
+        for (let k in req.body) {
             if (req.body.hasOwnProperty(k)) {
                 if (k != 'title' && k != 'status') {
                     rules[k] = req.body[k].join(':');
@@ -184,9 +183,9 @@ _module.create = function (req, res) {
 };
 
 _module.save = function (req, res) {
-    var rules = {};
+    let rules = {};
 
-    for (var k in req.body) {
+    for (let k in req.body) {
         if (req.body.hasOwnProperty(k)) {
             if (k != 'title' && k != 'status') {
                 rules[k] = req.body[k].join(':');

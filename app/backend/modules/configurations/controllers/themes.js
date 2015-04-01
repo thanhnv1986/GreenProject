@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 3/4/15.
  */
 
-var util = require('util'),
+let util = require('util'),
     _ = require('lodash');
-var config = require(__base + 'config/config');
+let config = require(__base + 'config/config');
 
-var breadcrumb =
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -28,22 +29,22 @@ function ConfigurationsThemesModule() {
     BaseModuleBackend.call(this);
     this.path = "/configurations";
 }
-var _module = new ConfigurationsThemesModule();
+let _module = new ConfigurationsThemesModule();
 
 
 _module.index = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
-    var themes = [];
+    let themes = [];
 
     config.getGlobbedFiles(__base + 'app/frontend/themes/*/theme.json').forEach(function (filePath) {
         themes.push(require(filePath));
     });
 
-    for (var i in themes) {
+    for (let i in themes) {
         if (themes[i].alias.toLowerCase() == config.themes.toLowerCase()) {
-            var current_theme = __current_theme = themes[i];
+            let current_theme = __current_theme = themes[i];
         }
     }
 
@@ -57,15 +58,15 @@ _module.detail = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: req.params.themeName});
 
-    var themes = [];
+    let themes = [];
 
     config.getGlobbedFiles(__base + 'app/frontend/themes/*/theme.json').forEach(function (filePath) {
         themes.push(require(filePath));
     });
 
-    for (var i in themes) {
+    for (let i in themes) {
         if (themes[i].alias.toLowerCase() == req.params.themeName) {
-            var current_theme = __current_theme = themes[i];
+            let current_theme = __current_theme = themes[i];
         }
     }
 

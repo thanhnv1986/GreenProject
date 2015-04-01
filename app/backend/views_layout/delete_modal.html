@@ -19,7 +19,7 @@
 
 <script>
     function openDeleteConfirmModal() {
-        var ids = [];
+        let ids = [];
         $("input:checkbox[name='ids[]']:checked").each(function () {
             ids.push($(this).val());
         });

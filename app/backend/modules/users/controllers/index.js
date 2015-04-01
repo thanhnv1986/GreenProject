@@ -1,26 +1,27 @@
+'use strict'
 /**
  * Created by thanhnv on 1/26/15.
  */
-var util = require('util'),
+let util = require('util'),
     _ = require('lodash');
 
-var promise = require('bluebird');
+let promise = require('bluebird');
 
-var renameAsync = promise.promisify(require('fs').rename);
+let renameAsync = promise.promisify(require('fs').rename);
 
-var formidable = require('formidable');
+let formidable = require('formidable');
 promise.promisifyAll(formidable);
 
-var redis = require('redis').createClient();
+let redis = require('redis').createClient();
 
-var path = require('path');
-var slug = require('slug');
-var config = require(__base + 'config/config.js');
+let path = require('path');
+let slug = require('slug');
+let config = require(__base + 'config/config.js');
 
-var edit_template = 'new.html';
-var folder_upload = '/img/users/';
-var route = 'users';
-var breadcrumb =
+let edit_template = 'new.html';
+let folder_upload = '/img/users/';
+let route = 'users';
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -37,7 +38,7 @@ function UsersModule() {
     BaseModuleBackend.call(this);
     this.path = "/users";
 }
-var _module = new UsersModule();
+let _module = new UsersModule();
 
 _module.list = function (req, res) {
     // Add button
@@ -46,12 +47,12 @@ _module.list = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb);
 
-    var page = req.params.page || 1;
-    var column = req.params.sort || 'id';
-    var order = req.params.order || '';
+    let page = req.params.page || 1;
+    let column = req.params.sort || 'id';
+    let order = req.params.order || '';
     //Config columns
     res.locals.root_link = '/admin/users/page/' + page + '/sort';
-    var filter = __.createFilter(req, res, route, '/admin/users', column, order, [
+    let filter = __.createFilter(req, res, route, '/admin/users', column, order, [
         {
             column: "id",
             width: '10%',
@@ -133,7 +134,7 @@ _module.list = function (req, res) {
         offset: (page - 1) * config.pagination.number_item,
         where: filter.values
     }).then(function (results) {
-        var totalPage = Math.ceil(results.count / config.pagination.number_item);
+        let totalPage = Math.ceil(results.count / config.pagination.number_item);
         _module.render(req, res, 'index.html', {
             title: "All Users",
             totalPage: totalPage,
@@ -181,7 +182,7 @@ _module.view = function (req, res) {
 };
 
 _module.update = function (req, res, next) {
-    var edit_user = null;
+    let edit_user = null;
 
     // Get user by id
     __models.user.find({
@@ -192,18 +193,18 @@ _module.update = function (req, res, next) {
         edit_user = user;
 
         // Get form data
-        var form = new formidable.IncomingForm();
+        let form = new formidable.IncomingForm();
 
         return form.parseAsync(req);
     }).then(function (result) {
-        var data = result[0];
-        var files = result[1];
+        let data = result[0];
+        let files = result[1];
 
         // Check user image was changed
         if (files.user_image_url.name != '') {
-            var type = files.user_image_url.name.split('.');
+            let type = files.user_image_url.name.split('.');
             type = type[type.length - 1];
-            var fileName = folder_upload + slug(data.user_login).toLowerCase() + '.' + type;
+            let fileName = folder_upload + slug(data.user_login).toLowerCase() + '.' + type;
             return renameAsync(files.user_image_url.path, __base + 'public' + fileName).then(function () {
                 data.user_image_url = fileName;
                 return data;
@@ -254,18 +255,18 @@ _module.create = function (req, res) {
 
 _module.save = function (req, res, next) {
     // Get form data
-    var form = new formidable.IncomingForm();
+    let form = new formidable.IncomingForm();
     form.parseAsync(req).then(function (result) {
-        var data = result[0];
-        var files = result[1];
+        let data = result[0];
+        let files = result[1];
         data.id = new Date().getTime();
 
         // Check user image was uploaded
         if (files.user_image_url.name != '') {
-            var type = files.user_image_url.name.split('.');
+            let type = files.user_image_url.name.split('.');
             type = type[type.length - 1];
 
-            var fileName = folder_upload + slug(data.user_login).toLowerCase() + '.' + type;
+            let fileName = folder_upload + slug(data.user_login).toLowerCase() + '.' + type;
 
             return renameAsync(files.user_image_url.path, __base + 'public' + fileName).then(function () {
                 data.user_image_url = fileName;
@@ -292,9 +293,9 @@ _module.save = function (req, res, next) {
 
 _module.delete = function (req, res) {
     // Check delete current user
-    var ids = req.body.ids;
-    var id = req.user.id;
-    var index = ids.indexOf(id);
+    let ids = req.body.ids;
+    let id = req.user.id;
+    let index = ids.indexOf(id);
 
     // Delete user
     if (index == -1) {
@@ -321,7 +322,7 @@ _module.delete = function (req, res) {
  * Signout
  */
 _module.signout = function (req, res) {
-    var key = 'current-user-' + req.user.id;
+    let key = 'current-user-' + req.user.id;
     redis.del(key);
     req.logout();
     res.redirect('/admin/login');
@@ -366,8 +367,8 @@ _module.changePass = function (req, res) {
  * Update pass view
  */
 _module.updatePass = function (req, res) {
-    var old_pass = req.body.old_pass;
-    var user_pass = req.body.user_pass;
+    let old_pass = req.body.old_pass;
+    let user_pass = req.body.user_pass;
     __models.user.find(req.user.id).then(function (user) {
         if (user.authenticate(old_pass)) {
             user.updateAttributes({

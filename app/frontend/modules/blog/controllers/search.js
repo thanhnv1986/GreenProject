@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('lodash'),
+let _ = require('lodash'),
     config = require(__base + 'config/config.js'),
     promise = require('bluebird');
 
@@ -8,14 +8,14 @@ function BlogModule() {
     BaseModuleFrontend.call(this);
     this.path = "/blog";
 }
-var _module = new BlogModule();
+let _module = new BlogModule();
 
 module.exports.index = function (req, res) {
     // Get search query
-    var s = req.query.s;
+    let s = req.query.s;
     if (s != undefined && s.length > 0) {
         // Get page
-        var page = req.params.page;
+        let page = req.params.page;
         if (page == undefined) {
             page = 1;
         }
@@ -64,8 +64,8 @@ module.exports.index = function (req, res) {
                     })
                 ]
             ).then(function (results) {
-                var totalItems = results[0].count;
-                var totalPage = Math.ceil(totalItems / config.pagination.number_item);
+                let totalItems = results[0].count;
+                let totalPage = Math.ceil(totalItems / config.pagination.number_item);
 
                 // Render view
                 _module.render(req, res, 'search.html', {

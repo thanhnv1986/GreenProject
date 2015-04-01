@@ -1,9 +1,10 @@
+'use strict'
 /**
  * Created by thanhnv on 2/2/15.
  */
-var express = require('express');
-var router = express.Router();
-var upload = require('./controllers/index');
+let express = require('express');
+let router = express.Router();
+let upload = require('./controllers/index');
 
 //Books Routes
 router.route('/uploads/dirtree').post(upload.dirtree);

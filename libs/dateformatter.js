@@ -1,6 +1,7 @@
-var utils = require('./utils');
+'use strict'
+let utils = require('./utils');
 
-var _months = {
+let _months = {
     full: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     abbr: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   },
@@ -19,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 exports.tzOffset = 0;
 exports.DateZ = function () {
-  var members = {
+  let members = {
       'default': ['getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds', 'getUTCMinutes', 'getUTCMonth', 'getUTCSeconds', 'toISOString', 'toGMTString', 'toUTCString', 'valueOf', 'getTime'],
       z: ['getDate', 'getDay', 'getFullYear', 'getHours', 'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getYear', 'toDateString', 'toLocaleDateString', 'toLocaleTimeString']
     },
@@ -67,18 +68,18 @@ exports.l = function (input) {
   return _days.full[input.getDay()];
 };
 exports.N = function (input) {
-  var d = input.getDay();
+  let d = input.getDay();
   return (d >= 1) ? d + 1 : 7;
 };
 exports.S = function (input) {
-  var d = input.getDate();
+  let d = input.getDate();
   return (d % 10 === 1 && d !== 11 ? 'st' : (d % 10 === 2 && d !== 12 ? 'nd' : (d % 10 === 3 && d !== 13 ? 'rd' : 'th')));
 };
 exports.w = function (input) {
   return input.getDay();
 };
 exports.z = function (input, offset, abbr) {
-  var year = input.getFullYear(),
+  let year = input.getFullYear(),
     e = new exports.DateZ(year, input.getMonth(), input.getDate(), 12, 0, 0),
     d = new exports.DateZ(year, 0, 1, 12, 0, 0);
 
@@ -89,7 +90,7 @@ exports.z = function (input, offset, abbr) {
 
 // Week
 exports.W = function (input) {
-  var target = new Date(input.valueOf()),
+  let target = new Date(input.valueOf()),
     dayNr = (input.getDay() + 6) % 7,
     fThurs;
 
@@ -125,7 +126,7 @@ exports.L = function (input) {
   return new Date(input.getFullYear(), 1, 29).getDate() === 29;
 };
 exports.o = function (input) {
-  var target = new Date(input.valueOf());
+  let target = new Date(input.valueOf());
   target.setDate(target.getDate() - ((input.getDay() + 6) % 7) + 3);
   return target.getFullYear();
 };
@@ -144,32 +145,32 @@ exports.A = function (input) {
   return input.getHours() < 12 ? 'AM' : 'PM';
 };
 exports.B = function (input) {
-  var hours = input.getUTCHours(), beats;
+  let hours = input.getUTCHours(), beats;
   hours = (hours === 23) ? 0 : hours + 1;
   beats = Math.abs(((((hours * 60) + input.getUTCMinutes()) * 60) + input.getUTCSeconds()) / 86.4).toFixed(0);
   return ('000'.concat(beats).slice(beats.length));
 };
 exports.g = function (input) {
-  var h = input.getHours();
+  let h = input.getHours();
   return h === 0 ? 12 : (h > 12 ? h - 12 : h);
 };
 exports.G = function (input) {
   return input.getHours();
 };
 exports.h = function (input) {
-  var h = input.getHours();
+  let h = input.getHours();
   return ((h < 10 || (12 < h && 22 > h)) ? '0' : '') + ((h < 12) ? h : h - 12);
 };
 exports.H = function (input) {
-  var h = input.getHours();
+  let h = input.getHours();
   return (h < 10 ? '0' : '') + h;
 };
 exports.i = function (input) {
-  var m = input.getMinutes();
+  let m = input.getMinutes();
   return (m < 10 ? '0' : '') + m;
 };
 exports.s = function (input) {
-  var s = input.getSeconds();
+  let s = input.getSeconds();
   return (s < 10 ? '0' : '') + s;
 };
 //u = function () { return ''; },
@@ -178,7 +179,7 @@ exports.s = function (input) {
 //e = function () { return ''; },
 //I = function () { return ''; },
 exports.O = function (input) {
-  var tz = input.getTimezoneOffset();
+  let tz = input.getTimezoneOffset();
   return (tz < 0 ? '-' : '+') + (tz / 60 < 10 ? '0' : '') + Math.abs((tz / 60)) + '00';
 };
 //T = function () { return ''; },

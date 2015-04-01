@@ -1,16 +1,17 @@
+'use strict'
 /**
  * Created by thanhnv on 3/11/15.
  */
-var passport = require('passport');
-var _ = require('lodash');
-var config = require(__base + 'config/config.js');
+let passport = require('passport');
+let _ = require('lodash');
+let config = require(__base + 'config/config.js');
 
-var mailer = require('nodemailer');
+let mailer = require('nodemailer');
 
-var promise = require('bluebird');
-var randomBytesAsync = promise.promisify(require('crypto').randomBytes);
-var env = __.createNewEnv(__dirname + '/views_layout');
-var render = function (req, res, view, options, fn) {
+let promise = require('bluebird');
+let randomBytesAsync = promise.promisify(require('crypto').randomBytes);
+let env = __.createNewEnv(__dirname + '/views_layout');
+let render = function (req, res, view, options, fn) {
     res.locals.messages = req.session.messages;
     req.session.messages = [];
     if (view.indexOf('.html') == -1) {
@@ -67,10 +68,10 @@ module.exports = function (app) {
             return render(req, res, 'forgot-password.html');
         }
 
-        var token = '';
+        let token = '';
 
         // Generate random token
-        var promises = randomBytesAsync(20).then(function (buffer) {
+        let promises = randomBytesAsync(20).then(function (buffer) {
             token = buffer.toString('hex');
 
             // Lookup user by user_email
@@ -84,12 +85,12 @@ module.exports = function (app) {
                 return promises.cancel();
             } else {
                 // Block spam
-                var time = Date.now() + 3600000; // 1 hour
+                let time = Date.now() + 3600000; // 1 hour
 
                 if (user.reset_password_expires != null) {
                     if (time - user.reset_password_expires < 900000) // 15 minutes
                     {
-                        var min = 15 - Math.ceil((time - user.reset_password_expires) / 60000);
+                        let min = 15 - Math.ceil((time - user.reset_password_expires) / 60000);
                         req.flash.warning('An reset password email has already been sent. Please try again in ' + min + ' minutes.');
                         render(req, res, 'reset-password.html');
                         return promises.cancel();
@@ -97,7 +98,7 @@ module.exports = function (app) {
                 }
 
                 // Update user
-                var data = {};
+                let data = {};
                 data.reset_password_token = token;
                 data.reset_password_expires = time;
                 return user.updateAttributes(data)
@@ -113,7 +114,7 @@ module.exports = function (app) {
                     next(err);
                     return promises.cancel();
                 } else {
-                    var mailOptions = {
+                    let mailOptions = {
                         to: user.user_email,
                         from: config.mailer.from,
                         subject: 'Password Reset',
@@ -154,9 +155,9 @@ module.exports = function (app) {
             form: true
         });
     }).post(function (req, res) {
-        var passwordDetails = req.body;
+        let passwordDetails = req.body;
 
-        var promises = __models.user.find({
+        let promises = __models.user.find({
             where: {
                 id: req.params.userid,
                 reset_password_token: req.params.token,
@@ -167,7 +168,7 @@ module.exports = function (app) {
         }).then(function (user) {
             if (user) {
                 if (passwordDetails.newpassword === passwordDetails.retype_password) {
-                    var data = {};
+                    let data = {};
                     data.user_pass = user.hashPassword(passwordDetails.newpassword);
                     data.reset_password_token = '';
                     data.reset_password_expires = null;
@@ -190,7 +191,7 @@ module.exports = function (app) {
                 site: 'http://' + req.headers.host,
                 login_url: 'http://' + req.headers.host + '/admin/login'
             }, function (err, emailHTML) {
-                var mailOptions = {
+                let mailOptions = {
                     to: user.user_email,
                     from: config.mailer.from,
                     subject: 'Your password has been changed',
@@ -226,7 +227,7 @@ module.exports = function (app) {
     });
     function sendMail(mailOptions) {
         return new Promise(function (fulfill, reject) {
-            var transporter = mailer.createTransport(config.mailer_config);
+            let transporter = mailer.createTransport(config.mailer_config);
             transporter.sendMail(mailOptions, function (err, info) {
                 if (err !== null) {
                     reject(err);

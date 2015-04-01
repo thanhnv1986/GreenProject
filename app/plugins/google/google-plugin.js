@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 3/13/15.
  */
 /**
  * Created by thanhnv on 3/13/15.
  */
-var Promise = require('bluebird'),
+let Promise = require('bluebird'),
     _ = require('lodash');
-var _base_config = {
+let _base_config = {
     alias: 'google',
     name: 'Google analytics',
     author: 'Jack',
@@ -20,12 +21,12 @@ var _base_config = {
 };
 
 function GooglePlugin() {
-    var self = this;
+    let self = this;
     _.assign(self, _base_config);
 
     this.before_close_body_tag = function (data) {
         return new Promise(function (done, reject) {
-            var html = '<script>' +
+            let html = '<script>' +
                 '(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){' +
                 '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),' +
                 'm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)' +

@@ -1,11 +1,12 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
 
 module.exports = function (env) {
     env.addFilter('active_page', function (value, string_to_compare, cls) {
-        var arr = value.split('/');
-        var st = "active";
+        let arr = value.split('/');
+        let st = "active";
         if (cls) {
             st = cls;
         }

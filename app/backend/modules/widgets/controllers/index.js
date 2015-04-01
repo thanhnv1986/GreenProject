@@ -1,16 +1,16 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
-var
-    util = require('util'),
+let util = require('util'),
     _ = require('lodash');
-var redis = require('redis').createClient();
-var fs = require("fs");
-var Promise = require("bluebird");
-var config = require(__base + 'config/config');
-var route = 'modules';
+let redis = require('redis').createClient();
+let fs = require("fs");
+let Promise = require("bluebird");
+let config = require(__base + 'config/config');
+let route = 'modules';
 
-var breadcrumb =
+let breadcrumb =
     [
         {
             title: 'Home',
@@ -27,7 +27,7 @@ function WidgetsModule() {
     BaseModuleBackend.call(this);
     this.path = "/widgets";
 }
-var _module = new WidgetsModule();
+let _module = new WidgetsModule();
 
 _module.index = function (req, res) {
     //breadcrumb
@@ -49,14 +49,14 @@ _module.sidebar = function (req, res, next) {
     });
 };
 _module.addWidget = function (req, res) {
-    var widget = __.getWidget(req.params.widget);
+    let widget = __.getWidget(req.params.widget);
     widget.render_setting(req.params.widget).then(function (re) {
         res.send(re);
     });
 }
 _module.saveWidget = function (req, res) {
     //console.log(req.body);
-    var widget_type = req.body.widget;
+    let widget_type = req.body.widget;
     var widget = __.getWidget(widget_type);
     widget.save(req.body).then(function (id) {
         res.send(id);
@@ -77,11 +77,11 @@ _module.delete = function (req, res) {
 }
 _module.sidebar_sort = function (req, res) {
     //console.log(req.body);
-    var ids = req.body.ids.split(',');
-    var sidebar = req.body.sidebar;
-    var index = 1;
-    var promises = [];
-    for (var i in ids) {
+    let ids = req.body.ids.split(',');
+    let sidebar = req.body.sidebar;
+    let index = 1;
+    let promises = [];
+    for (let i in ids) {
         if (ids[i] == '') {
             index++;
             continue;

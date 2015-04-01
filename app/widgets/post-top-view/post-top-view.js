@@ -1,10 +1,11 @@
-var BaseWidget = require('../base_widget'),
+"use strict"
+let BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash'),
     Promise = require('bluebird');
 ;
 
-var _base_config = {
+let _base_config = {
     alias: "post-top-view",
     name: "Blog Top View",
     description: "Top view in post",
@@ -28,7 +29,7 @@ function PostTopView() {
 util.inherits(PostTopView, BaseWidget);
 
 PostTopView.prototype.render = function (widget) {
-    var _this = this;
+    let _this = this;
     return new Promise(function (resolve, reject) {
         __models.posts.findAll({
             where : "type = 'post'",

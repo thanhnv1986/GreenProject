@@ -1,12 +1,13 @@
+'use strict'
 /**
  * Created by thanhnv on 2/17/15.
  */
 
-var BaseWidget = require('../base_widget'),
+let BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash');
 
-var _base_config = {
+let _base_config = {
     alias: "custom-html",
     name: "Custom HTML",
     description: "Create block HTML to view",

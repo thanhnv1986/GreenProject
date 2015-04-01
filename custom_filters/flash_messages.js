@@ -1,18 +1,19 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
 
 module.exports = function (env) {
     env.addFilter('flash_message', function (messages) {
-        var html = '';
+        let html = '';
         console.log(messages);
         if (messages && messages.length > 0) {
             html += '<div class="margin no-print">';
 
-            for (var i in messages) {
-                var mgs_class = '';
-                var mgs_icon = '';
-                var message = messages[i];
+            for (let i in messages) {
+                let mgs_class = '';
+                let mgs_icon = '';
+                let message = messages[i];
                 if (message.type == 'error') {
                     mgs_class = 'callout-danger';
                     mgs_icon = 'icon fa fa-ban';

@@ -1,7 +1,8 @@
+'use strict'
 /**
  * Created by thanhnv on 2/23/15.
  */
-var menus = {};
+let menus = {};
 module.exports = function () {
     // Main Navigation group
     menus.default = {

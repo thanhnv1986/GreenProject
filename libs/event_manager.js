@@ -1,18 +1,19 @@
+'use strict'
 /**
  * Created by thanhnv on 3/13/15.
  */
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 
 function EventManager() {
     this.fire_event = function (name, data, cb) {
-        var promises = [];
-        var promisesSync = [];
-        var allPromise = [];
-        var syncData;
+        let promises = [];
+        let promisesSync = [];
+        let allPromise = [];
+        let syncData;
         //Check plugin will run with event
-        for (var i in __pluginManager.plugins) {
-            var plugin = __pluginManager.plugins[i];
-            var active = plugin.active;
+        for (let i in __pluginManager.plugins) {
+            let plugin = __pluginManager.plugins[i];
+            let active = plugin.active;
             if (active) {
                 if (plugin[name]) {
                     //check plugin run with sync data
@@ -40,8 +41,8 @@ function EventManager() {
         }
         if (promises.length > 0) {
             allPromise.push(Promise.settle(promises).then(function (results) {
-                var values = [];
-                var errors = [];
+                let values = [];
+                let errors = [];
                 results.forEach(function (result) {
                     if (result.isFulfilled()) {
                         values.push(result.value());

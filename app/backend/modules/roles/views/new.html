@@ -72,12 +72,12 @@
 {% block jsExtends %}
     <script>
         $(function () {
-            var checkParent = $('input.check-rule-parent');
+            let checkParent = $('input.check-rule-parent');
 
             // Check parent if all children is checked
             checkParent.each(function(){
-                var isCheckAll = true;
-                var cbChild = $(this).parent('label').parent('div')
+                let isCheckAll = true;
+                let cbChild = $(this).parent('label').parent('div')
                         .children('div').children('label').children('input[type="checkbox"]');
 
                 cbChild.each(function(){
@@ -93,7 +93,7 @@
 
             // Check rule event
             checkParent.change(function () {
-                var cbChild = $(this).parent('label').parent('div')
+                let cbChild = $(this).parent('label').parent('div')
                         .children('div').children('label').children('input[type="checkbox"]');
                 if ($(this).is(':checked')) {
                     cbChild.prop('checked', true);

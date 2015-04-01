@@ -17,7 +17,7 @@
 {% block jsExtends %}
     <script>
         function deleteRecords() {
-            var ids = [];
+            let ids = [];
             $("input:checkbox[name='ids[]']:checked").each(function () {
                 ids.push($(this).val());
             });

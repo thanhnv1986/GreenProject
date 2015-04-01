@@ -1,7 +1,8 @@
+"use strict"
 /**
  * Created by thanhnv on 2/28/15.
  */
-var config = require(__base + 'config/config');
+let config = require(__base + 'config/config');
 
 module.exports = function (env) {
     env.addFilter('get_menu', function (menu_name, route, cb) {
@@ -17,7 +18,7 @@ module.exports = function (env) {
                 }
             }, {raw: true}).then(function (menu_details) {
                 //get menu order
-                var menu_order = JSON.parse(menu.menu_order);
+                let menu_order = JSON.parse(menu.menu_order);
                 env.render(config.themes + '/_menus/main_menu.html', {
                         route:route,
                         _menus: menu_order,
@@ -26,19 +27,19 @@ module.exports = function (env) {
                     function (err, res) {
                         cb(err, res);
                     });
-                /*var getMenuItem = function (id) {
-                 for (var i in menu_details) {
+                /*let getMenuItem = function (id) {
+                 for (let i in menu_details) {
                  if (menu_details[i].id == id) {
                  return menu_details[i];
                  }
                  }
                  }
-                 var html = '';
-                 var buildMenu = function (arr) {
-                 var tmp = '';
-                 for (var i in arr) {
-                 var mn = getMenuItem(arr[i].id);
-                 var active = mn.link.substring(1) === route.substring(1);
+                 let html = '';
+                 let buildMenu = function (arr) {
+                 let tmp = '';
+                 for (let i in arr) {
+                 let mn = getMenuItem(arr[i].id);
+                 let active = mn.link.substring(1) === route.substring(1);
                  if (arr[i].children) {
                  tmp += '<li class="' + menu.li_cls + ' ' + (active ? menu.li_active_cls : "") + '"><a class="' + menu.a_cls + '" data-toggle="dropdown" href="' + mn.link + '">' + mn.name + ' <i class="fa fa-angle-down"></i></a>';
                  tmp += '<ul class="' + menu.sub_ul_cls + '">';

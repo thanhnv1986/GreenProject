@@ -25,6 +25,8 @@ global.BaseModuleBackend = require('./app/backend/base_module');
 global.BaseModuleFrontend = require('./app/frontend/base_module');
 __pluginManager.loadAllPlugin();
 
+let redis = require('redis').createClient();
+
 // Init SEO
 redis.get('seo_enable', function (err, result) {
     if (result != null) {
