@@ -255,9 +255,9 @@
 {% block jsExtends %}
     <script src="/admin/plugins/nestable/jquery.nestable.js"></script>
     <script>
-        let number_menu_item = 1;
-        let updateOutput = function (e) {
-            let list = e.length ? e : $(e.target),
+        var number_menu_item = 1;
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target),
                     output = list.data('output');
             if (window.JSON) {
                 output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
@@ -265,11 +265,11 @@
                 output.val('JSON browser support required for this demo.');
             }
         };
-        let obj = '{{ menu.menu_order|safe }}';
+        var obj = '{{ menu.menu_order|safe }}';
         {% if menu_details %}
-        let menu_details = {{ menu_details|safe }};
+        var menu_details = {{ menu_details|safe }};
         {% else %}
-        let menu_details = {};
+        var menu_details = {};
         {% endif %}
         $.each(JSON.parse(obj), function (index, item) {
             $('#nestable3 ol').first().append(buildItem(item, index));
@@ -301,7 +301,7 @@
         }
 
         function changeTitle(element) {
-            let header = $(element).parents("li").first().find('.dd-handle')[0];
+            var header = $(element).parents("li").first().find('.dd-handle')[0];
             header.innerHTML = $(element).val();
         }
 
@@ -312,15 +312,15 @@
 
         function buildItem(item) {
             number_menu_item++;
-            let detail = {};
-            for (let i in menu_details) {
+            var detail = {};
+            for (var i in menu_details) {
                 if (item.id == menu_details[i].id) {
                     detail = menu_details[i];
                     break;
                 }
             }
 
-            let html = '';
+            var html = '';
             html += '<li class="dd-item" data-id="' + detail.id + '">' +
             '<div class="dd-handle" style="position: relative"> ' + detail.name + '</div>' +
             '<a href="#" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this);"></a>' +
@@ -375,7 +375,7 @@
         }
 
         function showDetail(element, changeIcon) {
-            let box = $(element).parents("li").first().find('.box').first();
+            var box = $(element).parents("li").first().find('.box').first();
             if (box.hasClass('open')) {
                 box.removeClass('open');
                 box.addClass('close');
@@ -384,7 +384,7 @@
                     $(element).addClass('fa-caret-left');
                 }
                 else {
-                    let el = $(element).parents('li').first().find('a').first();
+                    var el = $(element).parents('li').first().find('a').first();
                     $(el).removeClass('fa-caret-down');
                     $(el).addClass('fa-caret-left');
                 }
@@ -418,7 +418,7 @@
             $("#nestable3 .box").each(function (index) {
                 $(this).removeClass('open');
                 $(this).addClass('close');
-                let el = $(this).parents('li').first().find('a').first();
+                var el = $(this).parents('li').first().find('a').first();
                 $(el).removeClass('fa-caret-down');
                 $(el).addClass('fa-caret-left');
             });

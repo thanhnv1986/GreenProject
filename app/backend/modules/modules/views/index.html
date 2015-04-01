@@ -104,7 +104,7 @@
 {% block jsFooter %}
     <script>
         function deleteCourses() {
-            let ids = [];
+            var ids = [];
             $("input:checkbox[name='id[]']:checked").each(function () {
                 ids.push($(this).val());
             });

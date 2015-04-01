@@ -244,12 +244,12 @@
 //        $('.date-range').daterangepicker({format: 'MM/DD/YYYY h:mm A'});
         $('.date-range').daterangepicker({format: 'YYYY-MM-DD'});
         $('.sort-link').each(function () {
-            let link = $(this).attr('href');
+            var link = $(this).attr('href');
             $(this).attr('href', link + location.search);
 
         });
         $('.page-link').each(function () {
-            let link = $(this).attr('href');
+            var link = $(this).attr('href');
             $(this).attr('href', link + location.search);
 
         });
@@ -264,9 +264,9 @@
 /*
     app.controller('NotifyController', ['$scope', 'socket', '$http',
         function ($scope, socket, $http) {
-            let self = this;
+            var self = this;
             $scope.notifies = [];
-            let data_usr = {
+            var data_usr = {
                 id:{{ __user.id }},
                 user_login: '{{ __user.user_login }}',
                 user_email: '{{ __user.user_email }}',

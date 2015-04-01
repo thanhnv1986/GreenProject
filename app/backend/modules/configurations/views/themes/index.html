@@ -50,7 +50,7 @@
 {% endblock %}
 {% block jsExtends %}
     <script>
-        let current_theme = '';
+        var current_theme = '';
         function changeTheme(themeName, theme) {
             current_theme = themeName;
             $("#modal-title").val("Do you want to select " + theme + ' ?');
