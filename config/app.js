@@ -161,7 +161,7 @@ module.exports = function () {
 
     //module manager backend
     require(__base + 'app/backend/core_route')(app);
-    app.use('/admin/*', require('../app/middleware/modules-plugin.js'));
+    //app.use('/admin/*', require('../app/middleware/modules-plugin.js'));
     // Globbing routing admin files
     config.getGlobbedFiles('./app/backend/modules/*/route.js').forEach(function (routePath) {
         app.use('/' + config.admin_prefix, require(path.resolve(routePath)));

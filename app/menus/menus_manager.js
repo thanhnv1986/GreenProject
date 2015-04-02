@@ -32,7 +32,18 @@ module.exports = function () {
         "plugins",
         "configurations"
     ];
-
+    menus.addGroup = function (alias, title) {
+        menus[alias] = {
+            title: title,
+            sort: 999,
+            modules: {}
+        }
+    };
+    menus.addMenus = function (group, menus) {
+        for (let i in menus) {
+            menus[group].modules.push(menus[i]);
+        }
+    };
     return menus;
 };
 
