@@ -2,12 +2,12 @@
 /**
  * Created by thanhnv on 3/9/15.
  */
-let Promise = require('bluebird'),
+var Promise = require('bluebird'),
     fs = require('fs'),
     _ = require('lodash'),
     config = require(__base + 'config/config');
 
-let _base_config = {
+var _base_config = {
     alias: "Base",
     name: "Base",
     description: "Base",
@@ -20,11 +20,11 @@ let _base_config = {
         file: ''
     }
 };
-
+var env = __.createNewEnv();
 //Base constructor
 function BaseWidget() {
     _.assign(this, _base_config);
-    this.env = __.createNewEnv();
+    this.env = env;
 }
 BaseWidget.prototype.getAllLayouts = function (alias) {
     let files = [];
@@ -74,7 +74,7 @@ BaseWidget.prototype.save = function (data) {
 BaseWidget.prototype.render_setting = function (widget_type, widget) {
     let _this = this;
     return new Promise(function (done, reject) {
-        _this.env.render(widget_type + '/setting.html', {widget: widget, widget_type: widget_type, files: _this.files},
+        env.render(widget_type + '/setting.html', {widget: widget, widget_type: widget_type, files: _this.files},
             function (err, re) {
                 done(re);
             }).catch(function (err) {
@@ -87,7 +87,7 @@ BaseWidget.prototype.render_setting = function (widget_type, widget) {
 BaseWidget.prototype.render = function (widget, data) {
     let _this = this;
     return new Promise(function (resolve, reject) {
-        let renderWidget = Promise.promisify(_this.env.render, _this.env);
+        let renderWidget = Promise.promisify(env.render, env);
         let widgetFile = widget.widget_type + '/' + widget.data.file;
         let widgetFilePath = __base + 'app/frontend/themes/' + config.themes + '/_widgets/' + widgetFile;
 

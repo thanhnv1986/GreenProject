@@ -94,7 +94,7 @@
                             </div>
                         </div>
 
-                        {% if seo_enable == 'true' %}
+                        {% if seo_enable %}
                             {% include 'seo-form.html' %}
                         {% endif %}
                     </div>
@@ -108,7 +108,7 @@
     {% include 'editorScript.html' %}
     <script src="/admin/plugins/select2/select2.min.js"></script>
     <script>
-        {% if seo_enable == 'true' %}
+        {% if seo_enable %}
         SEO.init({
             title_field: 'title',
             content_field: 'full_text'

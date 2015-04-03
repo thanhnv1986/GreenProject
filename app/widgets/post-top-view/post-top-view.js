@@ -1,26 +1,27 @@
 "use strict"
-let BaseWidget = require('../base_widget'),
+var BaseWidget = require('../base_widget'),
     util = require('util'),
     _ = require('lodash'),
     Promise = require('bluebird');
-;
 
-let _base_config = {
-    alias: "post-top-view",
-    name: "Blog Top View",
-    description: "Top view in post",
-    author: "ZaiChi",
-    version: "0.1.0",
-    options: {
-        id: '',
-        title: '',
-        number_to_show: '',
-        display_date: '',
-        display_index: ''
-    }
-};
+
+
 
 function PostTopView() {
+    let _base_config = {
+        alias: "post-top-view",
+        name: "Blog Top View",
+        description: "Top view in post",
+        author: "ZaiChi",
+        version: "0.1.0",
+        options: {
+            id: '',
+            title: '',
+            number_to_show: '',
+            display_date: '',
+            display_index: ''
+        }
+    };
     PostTopView.super_.call(this);
     _.assign(this, _base_config);
     this.files = BaseWidget.prototype.getAllLayouts.call(this, _base_config.alias);

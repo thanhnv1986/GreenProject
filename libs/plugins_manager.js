@@ -2,7 +2,7 @@
 /**
  * Created by thanhnv on 3/13/15.
  */
-let config = require(__base + 'config/config'),
+var config = require(__base + 'config/config'),
     _ = require('lodash'),
     redis = require('redis').createClient(),
     Promise = require('bluebird');

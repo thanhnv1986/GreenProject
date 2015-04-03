@@ -15,16 +15,18 @@ var SEO = function() {
     var initForm = function() {
         var seo_info = $('input[name=seo_info]').val();
         try {
-            seo_info = JSON.parse(seo_info);
+            seo_info = JSON.parse(decodeURIComponent(seo_info));
         }
         catch(err) {
             seo_info = {};
         }
-        if(seo_info.meta_title) mtitle.val(seo_info.meta_title);
-        if(seo_info.meta_keyword) mkeyword.val(seo_info.meta_keyword);
-        if(seo_info.meta_description) {
-            mdescription.val(seo_info.meta_description);
-            $('#counter > span').html(seo_info.meta_description.length);
+        if(seo_info){
+            if(seo_info.meta_title) mtitle.val(seo_info.meta_title);
+            if(seo_info.meta_keyword) mkeyword.val(seo_info.meta_keyword);
+            if(seo_info.meta_description) {
+                mdescription.val(seo_info.meta_description);
+                $('#counter > span').html(seo_info.meta_description.length);
+            }
         }
     };
 
@@ -102,13 +104,16 @@ var SEO = function() {
     var handleSubmit = function() {
         $('form').submit(function(e) {
             var content = CKEDITOR.instances[contentObj].getData();
-            content = $(content).text();
+            var div = document.createElement('div');
+            div.innerHTML = content;
+            content = div.textContent;
+
             var seo_info = {
                 meta_title: (mtitle.val() != '')? mtitle.val() : titleItem.val(),
                 meta_keyword: mkeyword.val(),
                 meta_description: (mdescription.val() != '')? mdescription.val() : extractDes(content)
             };
-            $('input[name="seo_info"]').val(JSON.stringify(seo_info));
+            $('input[name="seo_info"]').val(encodeURIComponent(JSON.stringify(seo_info)));
         })
     };
 

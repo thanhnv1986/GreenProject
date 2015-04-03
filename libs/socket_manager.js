@@ -3,7 +3,7 @@
  * Created by thanhnv on 3/21/15.
  */
 
-let socket = require('socket.io'),
+var socket = require('socket.io'),
     config = require(__base + 'config/config');
 
 function SocketManager(server) {

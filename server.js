@@ -60,5 +60,6 @@ global.__socketManager = require('./libs/socket_manager')(server);
 // Expose app
 module.exports = app;
 
+//debug('Route',app._router.stack);
 // Logging initialization
 console.log('Application started on port ' + config.port);

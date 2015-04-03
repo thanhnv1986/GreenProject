@@ -5,22 +5,23 @@
 /**
  * Created by thanhnv on 3/13/15.
  */
-let Promise = require('bluebird'),
+var Promise = require('bluebird'),
     _ = require('lodash');
-let _base_config = {
-    alias: 'facebook',
-    name: 'Facebook login',
-    author: 'Jack',
-    version: '0.1.0',
-    description: 'Authentication with facebook',
-    active: true,
-    sync: false,
-    options: {
-        appId: '347148475491688'
-    }
-};
+
 
 function FacebookPlugin() {
+    let _base_config = {
+        alias: 'facebook',
+        name: 'Facebook login',
+        author: 'Jack',
+        version: '0.1.0',
+        description: 'Authentication with facebook',
+        active: true,
+        sync: false,
+        options: {
+            appId: '347148475491688'
+        }
+    };
     let self = this;
     _.assign(self, _base_config);
 

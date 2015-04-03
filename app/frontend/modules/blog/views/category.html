@@ -25,18 +25,22 @@
 
                                     <div class="col-xs-12 col-sm-10 blog-content">
                                         {% if item.image != null %}
-                                            <a href="/{{ category.alias }}/p{{ item.alias }}/p{{ item.id }}/"><img
+                                            {#<a href="/{{ category.alias }}/p{{ item.alias }}/p{{ item.id }}/"><img#}
+                                            {#class="img-responsive img-blog" src="{{ item.image }}"#}
+                                            {#width="100%" alt=""/></a>#}
+                                            <a href="{{ create_link('',item.alias) }}"><img
                                                         class="img-responsive img-blog" src="{{ item.image }}"
                                                         width="100%" alt=""/></a>
                                         {% endif %}
 
                                         <h2>
-                                            <a href="/{{ category.alias }}/p{{ item.alias }}/p{{ item.id }}/">{{ item.title|title }}</a>
+                                            {#<a href="/{{ category.alias }}/p{{ item.alias }}/p{{ item.id }}/">{{ item.title|title }}</a>#}
+                                            <a href="{{ create_link('',item.alias) }}">{{ item.title|title }}</a>
                                         </h2>
 
                                         <h3>{{ item.intro_text|safe }}</h3>
                                         <a class="btn btn-primary readmore"
-                                           href="/{{ category.alias }}/p{{ item.alias }}/p{{ item.id }}/">Read More
+                                           href="{{ create_link('',item.alias) }}">Read More
                                             <i
                                                     class="fa fa-angle-right"></i></a>
                                     </div>

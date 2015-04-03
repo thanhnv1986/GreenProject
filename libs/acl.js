@@ -4,27 +4,39 @@
  */
 exports.isAllow = function (route, action, orAction, hasAuthorize) {
     return function (req, res, next) {
-        if (req.user != undefined && req.user.acl[route] != undefined) {
-            let rules = req.user.acl[route].split(':');
-            for (let i in rules) {
-                if (action == rules[i]) {
-                    next();
-                    return;
-                }
-                if (orAction != null && orAction == rules[i]) {
-                    if (hasAuthorize(req, res, next)) {
+        //Check module active
+        if (__modules[route] != undefined && (__modules[route].system || __modules[route].active)) {
+            //Check acl
+            if (req.user != undefined && req.user.acl[route] != undefined) {
+                let rules = req.user.acl[route].split(':');
+                for (let i in rules) {
+                    if (action == rules[i]) {
                         next();
                         return;
+                    }
+                    if (orAction != null && orAction == rules[i]) {
+                        if (hasAuthorize(req, res, next)) {
+                            next();
+                            return;
+                        }
+
                     }
 
                 }
 
             }
-
+            else{
+                req.flash.error("You do not have permission to access");
+                res.redirect('/admin/err/404');
+            }
+        }
+        else {
+            req.flash.error('Module ' + route + ' is not active');
+            res.redirect('/admin/err/500');
         }
 
-        req.flash.error("You do not have permission to access");
-        res.redirect('/admin/err/404');
+
+
     }
 };
 
