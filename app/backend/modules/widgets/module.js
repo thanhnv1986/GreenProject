@@ -4,7 +4,7 @@
  */
 module.exports = function (modules) {
     modules.widgets = {
-        title: 'Wdigets',
+        title: 'Widgets',
         author: 'Nguyen Van Thanh',
         version: '0.1.1',
         description: 'Widget management of website',

@@ -280,7 +280,7 @@ exports.edit = function (req, res) {
                 categories: categoryTree,
                 post: post,
                 categories_text: post.categories,
-                seo_info: post.seo_info,
+                seo_info: encodeURIComponent(post.seo_info),
                 seo_enable: __seo_enable
             });
         }).catch(function (error) {
@@ -301,7 +301,6 @@ exports.edit = function (req, res) {
 exports.saveEdit = function (req, res) {
     // Get post data
     let data = req.body;
-
     // Find post by id
     __models.posts.find(req.params.cid).then(function (post) {
         // Generate alias
@@ -309,7 +308,7 @@ exports.saveEdit = function (req, res) {
             data.alias = data.title;
         }
         data.alias = slug(data.alias.toLowerCase());
-
+        data.seo_info = decodeURIComponent(data.seo_info);
         // Set type
         data.type = 'post';
 
