@@ -118,7 +118,7 @@ exports.index = function (req, res) {
     __models.posts.findAndCountAll({
         include: [
             {
-                model: __models.user, attribute: ['display_name'],
+                model: __models.user, attributes: ['display_name'],
                 where: '1 = 1'
             }
         ],

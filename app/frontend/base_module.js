@@ -34,6 +34,7 @@ function BaseModule() {
         env.render(view, _.assign(res.locals, options), function (err, re) {
             if (err) {
                 console.log('??????????', err, env.loaders);
+                return res.send(err.stack);
             }
 
             res.send(re);

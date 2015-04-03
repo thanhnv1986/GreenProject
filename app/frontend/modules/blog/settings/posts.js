@@ -1,9 +1,7 @@
-/**
- * Created by thanhnv on 3/28/15.
- */
 'use strict'
+
 module.exports = function (app, config) {
-    let alias = 'categories';
+    let alias = 'posts';
 
     app.route('/_menus/' + alias + '/page/:page').get(function (req, res) {
         if (req.isAuthenticated()) {
@@ -12,12 +10,12 @@ module.exports = function (app, config) {
             let s = req.query.s;
 
             // Set conditions
-            let conditions = "id <> 1 AND published = 1";
-            if (s != '') conditions += " AND name ilike '%" + s + "%'";
+            let conditions = "type='post' AND published = 1";
+            if (s != '') conditions += " AND title ilike '%" + s + "%'";
 
-            // Find all categories with page and search keyword
-            __models.categories.findAndCountAll({
-                attributes: ['id', 'alias', 'name'],
+            // Find all posts with page and search keyword
+            __models.posts.findAndCount({
+                attributes: ['id', 'alias', 'title'],
                 where: conditions,
                 limit: 10,
                 offset: (page - 1) * 10
@@ -31,8 +29,8 @@ module.exports = function (app, config) {
                     totalRows: totalRows,
                     totalPage: totalPage,
                     items: items,
-                    title_column: 'name',
-                    link_template: '/category/{alias}'
+                    title_column: 'title',
+                    link_template: '/{alias}'
                 });
             });
         }
@@ -42,7 +40,8 @@ module.exports = function (app, config) {
     });
 
     return {
-        title: 'Categories',
+        title: 'Posts',
         alias: alias,
+        search: true
     };
 };

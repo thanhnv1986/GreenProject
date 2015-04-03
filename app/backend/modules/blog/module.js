@@ -4,7 +4,7 @@ module.exports = function (modules) {
         author: 'FreeSky Team',
         version: '0.1.0',
         description: 'Blog Manager',
-        system: false,
+        system: true,
         rules: [
             {
                 name: 'category_index',
