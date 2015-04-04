@@ -120,6 +120,7 @@ _module.save = function (req, res) {
                     menu_id: menu_id,
                     name: req.body.title[i],
                     link: req.body.url[i],
+                    attribute: req.body.attribute[i],
                     status: 'publish'
                 })
             );
@@ -183,6 +184,7 @@ _module.update = function (req, res) {
                     menu_id: req.params.cid,
                     name: req.body.title[i],
                     link: req.body.url[i],
+                    attribute: req.body.attribute[i],
                     status: 'publish'
                 })
             );

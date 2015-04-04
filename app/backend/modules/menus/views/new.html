@@ -277,36 +277,9 @@
     updateOutput($('#nestable3').data('output', $('#output')));
 
     function renderNewMenu(label_input_value, url_input_value) {
-        console.log('df');
-        var html = $('<li class="dd-item" data-id="1">' +
-                '<div class="dd-handle">' + label_input_value + '</div>' +
-                '<a href="javascript:void(0)" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this, true);"></a>' +
-                '<div class="box box-solid box-default close"  style="display: none;">' +
-                '<div class="box-body"><div class="row"><div class="col-md-6"><div class="form-group">' +
-                '<label><i>Menu Item Name </i></label>' +
-                '<input type="text" class="form-control" id="title" name="title[]" value="' + label_input_value + '" ' +
-                'onchange="changeTitle(this)">' +
-                '<input type="hidden" id="mn_id" name="mn_id[]" value="' + number_menu_item + '">' +
-                '</div></div>' +
-                '<div class="col-md-6"><div class="form-group">' +
-                '<label><i>Title Attribute </i>' +
-                '<a class="information" tabindex="0" data-toggle="popover" data-trigger="focus" title="Help" ' +
-                'data-placement="top" data-content="Title Attribute is the title of Menu Item which displays when user hover over The Menu Item. ' +
-                'This attribute can be not supported in almost templates.">' +
-                '<i class="fa fa-info-circle"></i></a></label>' +
-                '<input type="text" class="form-control" id="attribute" name="attribute[]">' +
-                '</div></div></div>' +
-                '<div class="row"><div class="col-md-12"><div class="form-group">' +
-                '<label><i>URL Preview:</i> ' +
-                '<a href="' + url_input_value + '" target="_blank"> ' + label_input_value + '</a></label>' +
-                '<input type="hidden" class="form-control" id="url" name="url[]" value="' + url_input_value + '">' +
-                '</div></div></div>' +
-                '<div class="row"><div class="col-md-12">' +
-                '<a href="javascript:void(0)" class="btn btn-danger" onclick="return removeMenu(this)">' +
-                '<i class="fa fa-remove"></i> Remove</a> ' +
-                '<a href="javascript:void(0)" class="btn btn-warning" onclick="return showDetail(this, false)">' +
-                '<i class="fa fa-arrow-circle-up"></i> Close</a>' +
-                '</div></div></div></div></li>');
+        var htm = renderMenuItemHtml(number_menu_item, label_input_value, url_input_value, '');
+        var html = $(htm + '</li>');
+        
         $('#nestable3 > ol').append(html);
         $('#nestable3 li:last-child').last().attr('data-id', number_menu_item++);
         updateOutputValue();
@@ -318,7 +291,7 @@
         });
 
         // Remove highlight after 0.1s
-        setTimeout(function(){
+        setTimeout(function () {
             html.children().not('ol').css({
                 'background': '',
                 'color': ''
@@ -336,7 +309,7 @@
         if (custom_link_title == '') custom_link_title = 'Menu Item';
         if (custom_link_url != '') {
             renderNewMenu(custom_link_title, custom_link_url);
-        }else{
+        } else {
             alert('URL is missing!');
         }
     }
@@ -376,36 +349,10 @@
             }
         }
 
-        if (detail.type == null) detail.type = '';
+        if (detail.attribute == null) detail.attribute = '';
 
         var html = '';
-        html += '<li class="dd-item" data-id="' + detail.id + '">' +
-                '<div class="dd-handle"> ' + detail.name + '</div>' +
-                '<a href="javascript:void(0)" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this, true);"></a>' +
-                '<div class="box box-solid box-default close" style="display: none;">' +
-                '<div class="box-body"><div class="row"><div class="col-md-6"><div class="form-group">' +
-                '<label><i>Menu Item Name</i></label>' +
-                '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" value="' + detail.name + '">' +
-                '<input type="hidden" id="mn_id" name="mn_id[]" value="' + detail.id + '">' +
-                '</div></div>' +
-                '<div class="col-md-6"><div class="form-group">' +
-                '<label><i>Title Attribute </i>' +
-                '<a class="information" tabindex="0" data-toggle="popover" data-trigger="focus" title="Help" ' +
-                'data-placement="top" data-content="Title Attribute is the title of Menu Item which displays when user hover over The Menu Item. ' +
-                'This attribute can be not supported in almost templates.">' +
-                '<i class="fa fa-info-circle"></i></a></label>' +
-                '<input type="text" class="form-control" id="attribute" name="attribute[]" value="' + detail.type + '">' +
-                '</div></div></div>' +
-                '<div class="row"><div class="col-md-12"><div class="form-group">' +
-                '<label><i>URL Preview:</i><a href="' + detail.link + '" target="_blank"> ' + detail.name + '</a></label>' +
-                '<input type="hidden" class="form-control" id="url" name="url[]" value="' + detail.link + '">' +
-                '</div></div></div>' +
-                '<div class="row"><div class="col-md-12">' +
-                '<a href="javascript:void(0)" class="btn btn-danger" onclick="return removeMenu(this)">' +
-                '<i class="fa fa-remove"></i> Remove</a> ' +
-                '<a href="javascript:void(0)" class="btn btn-warning" onclick="return showDetail(this, false)">' +
-                '<i class="fa fa-arrow-circle-up"></i> Close</a>' +
-                '</div></div></div></div>';
+        html += renderMenuItemHtml(detail.id, detail.name, detail.link, detail.attribute);
 
         if (item.children) {
             html += "<ol class='dd-list'>";
@@ -419,10 +366,48 @@
         return html;
     }
 
+    function renderMenuItemHtml(id, title, url, attribute) {
+        return '<li class="dd-item" data-id="' + id + '">' +
+                '<div class="dd-handle"> ' + title + '</div>' +
+                '<a href="javascript:void(0)" class="fa fa-caret-left expand_arrow" ' +
+                'onclick="return showDetail(this, true);"></a>' +
+                '<div class="box box-solid box-default close" style="display: none;">' +
+                '<div class="box-body">' +
+                '<div class="row"><div class="col-md-6">' +
+                '<div class="form-group">' +
+                '<label><i>Menu Item Name</i></label>' +
+                '<input type="text" class="form-control" id="title" name="title[]" onchange="changeTitle(this)" ' +
+                'value="' + title + '" maxlength="40" />' +
+                '<input type="hidden" id="mn_id" name="mn_id[]" value="' + id + '" />' +
+                '</div></div>' +
+                '<div class="col-md-6">' +
+                '<div class="form-group">' +
+                '<label><i>Title Attribute </i>' +
+                '<a class="information" tabindex="0" data-toggle="popover" data-trigger="focus" title="Help" ' +
+                'data-placement="top" data-content="Title Attribute is the title of Menu Item which displays when user hover over The Menu Item. ' +
+                'This attribute can be not supported in almost templates.">' +
+                '<i class="fa fa-info-circle"></i></a></label>' +
+                '<input type="text" class="form-control" id="attribute" name="attribute[]" ' +
+                'value="' + attribute + '" maxlength="40" />' +
+                '</div></div></div>' +
+                '<div class="row"><div class="col-md-12">' +
+                '<div class="form-group">' +
+                '<label><i>URL Preview:' +
+                '</i><a href="' + url + '" target="_blank"> ' + title + '</a></label>' +
+                '<input type="hidden" class="form-control" id="url" name="url[]" value="' + url + '" />' +
+                '</div></div></div>' +
+                '<div class="row"><div class="col-md-12">' +
+                '<a href="javascript:void(0)" class="btn btn-danger" onclick="return removeMenu(this)">' +
+                '<i class="fa fa-remove"></i> Remove</a> ' +
+                '<a href="javascript:void(0)" class="btn btn-warning" onclick="return showDetail(this, false)">' +
+                '<i class="fa fa-arrow-circle-up"></i> Close</a>' +
+                '</div></div></div></div>';
+    }
+
     function showDetail(element, isChangeIcon) {
         var box = $(element).parents("li").first().find('.box').first();
         if (box.hasClass('open')) {
-            box.slideUp('fast', function(){
+            box.slideUp('fast', function () {
                 box.removeClass('open');
                 box.addClass('close');
             });

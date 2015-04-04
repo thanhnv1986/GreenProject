@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
     let MenuDetail = sequelize.define("menu_detail", {
         menu_id:DataTypes.INTEGER,
         name: DataTypes.STRING,
-        type: DataTypes.STRING,
+        attribute: DataTypes.STRING,
         link: DataTypes.STRING,
         parent_id: DataTypes.INTEGER,
         status: DataTypes.STRING,
