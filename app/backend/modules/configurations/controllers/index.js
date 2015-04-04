@@ -43,6 +43,7 @@ _module.update_setting = function (req, res, next) {
     //site info
     config.app.title = data.title;
     config.app.description = data.description;
+    config.app.keywords = data.keywords;
     config.app.logo = data.logo;
     config.app.icon = data.icon;
     config.pagination.number_item = data.number_item;
