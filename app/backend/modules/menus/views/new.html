@@ -12,6 +12,60 @@
                 <button class="btn btn-success">Save</button>
             </div>
 
+            <div class="col-md-3">
+                <div class="box box-primary arr-module-box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Custom Link</h3>
+
+                        <div class="box-tools" style="width: 100%;">
+                            <button type="button" class="btn btn-box-tool" style="width: 100%; text-align: right;"
+                                    onclick="collapseBox(this);">
+                                <i class="fa fa-minus arr-collapse-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="custom_link_title">Title</label>
+                            <input class="form-control" id="custom_link_title" type="text">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="custom_link_url">URL</label>
+                            <input class="form-control" id="custom_link_url" placeholder="http://..." type="text">
+                        </div>
+
+                        <div class="form-group btn-add-menu-wrapper">
+                            <button type="button" class="btn btn-primary btn-add-menu"
+                                    onclick="return addCustomLink(this);">
+                                Add to Menu&nbsp; <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {% for module in setting_menu_module %}
+                    {% if module.alias %}
+                        <div class="box box-primary arr-module-box collapsed-box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">{{ module.title }}</h3>
+
+                                <div class="box-tools" style="width: 100%;">
+                                    <button type="button" class="btn btn-box-tool"
+                                            style="width: 100%; text-align: right;"
+                                            onclick="collapseBox(this); loadModuleDetail(this, '{{ module.alias }}', 1, '', {{ module.search }});">
+                                        <i class="fa fa-plus arr-collapse-icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="box-body"></div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
             <div class="col-md-9">
                 <div class="box box-primary">
                     <div class="box-body">
@@ -40,64 +94,6 @@
                         <input type="hidden" id="output" name="output">
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="box box-primary arr-module-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Custom Link</h3>
-
-                        <div class="box-tools" style="width: 100%;">
-                            <button type="button" class="btn btn-box-tool" style="width: 100%; text-align: right;"
-                                    onclick="collapseBox(this);">
-                                <i class="fa fa-minus arr-collapse-icon"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="custom_link_title">Title</label>
-                            <input class="form-control" id="custom_link_title" type="text">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="custom_link_url">URL</label>
-                            <input class="form-control" id="custom_link_url" placeholder="http://..." type="text">
-                        </div>
-
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary btn-add-menu"
-                                    onclick="return addCustomLink(this);">
-                                <i class="fa fa-arrow-circle-left"></i> &nbsp;Add to Menu
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {% for module in setting_menu_module %}
-                    {% if module.alias %}
-                        <div class="box box-primary arr-module-box collapsed-box">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">{{ module.title }}</h3>
-
-                                <div class="box-tools" style="width: 100%;">
-                                    <button type="button" class="btn btn-box-tool"
-                                            style="width: 100%; text-align: right;"
-                                            onclick="collapseBox(this); loadModuleDetail(this, '{{ module.alias }}', 1, '', {{ module.search }});">
-                                        <i class="fa fa-plus arr-collapse-icon"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="box-body">
-                                <div class="form-group">
-
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
             </div>
         </form>
     </div>
@@ -150,11 +146,11 @@
             var link_template = result.link_template;
             var total_pages = result.totalPage;
 
-            var module_detail_view = '';
+            var module_detail_view = '<div class="form-group">';
 
             if (useSearch) {
                 module_detail_view += '<div class="arr-module-search"><div class="input-group input-group-sm">' +
-                        '<input class="form-control arr-search-menu-item" type="text" value="' + search + '">' +
+                        '<input class="form-control arr-search-menu-item" type="text" value="' + search + '" />' +
                         '<span class="input-group-btn">' +
                         '<button class="btn btn-default btn-flat" type="button" ' +
                         'onclick="setSearchKeyword(this, \'' + alias + '\')">' +
@@ -181,13 +177,14 @@
             }
 
             btnLoadModule = button;
-            module_detail_view += getPagination(total_pages, page, alias, search, useSearch);
+            //module_detail_view += getPagination(total_pages, page, alias, search, useSearch);
 
-            module_detail_view += '<button type="button" class="btn btn-primary btn-add-menu" ' +
+            module_detail_view += '</div><div class="form-group btn-add-menu-wrapper">' +
+                    '<button type="button" class="btn btn-primary btn-add-menu" ' +
                     'onclick="return addNewMenu(this);">' +
-                    '<i class="fa fa-arrow-circle-left"></i> &nbsp;Add to Menu</button>';
+                    'Add to Menu&nbsp; <i class="fa fa-arrow-circle-right"></i></button></div>';
 
-            $(button).parent().parent('.box-header').next('.box-body').children('div').html(module_detail_view);
+            $(button).parent().parent('.box-header').next('.box-body').html(module_detail_view);
 
             // Remove call ajax after first call
             $(button).attr('onclick', 'collapseBox(this);');
@@ -209,7 +206,7 @@
                 }
             }
 
-            pagination += '<ul class="pagination pagination-sm no-margin pull-right">';
+            pagination += '<ul class="pagination pagination-sm no-margin">';
 
             if (current_page > 1) {
                 pagination += '<li><a href="javascript:void(0)" onclick="loadModuleDetail(btnLoadModule, \'' + alias + '\', ' + 1 + ', \'' + search + '\', ' + useSearch + ')">«</a></li>';
@@ -280,7 +277,8 @@
     updateOutput($('#nestable3').data('output', $('#output')));
 
     function renderNewMenu(label_input_value, url_input_value) {
-        var html = '<li class="dd-item" data-id="1">' +
+        console.log('df');
+        var html = $('<li class="dd-item" data-id="1">' +
                 '<div class="dd-handle">' + label_input_value + '</div>' +
                 '<a href="javascript:void(0)" class="fa fa-caret-left expand_arrow" onclick="return showDetail(this, true);"></a>' +
                 '<div class="box box-solid box-default close"  style="display: none;">' +
@@ -308,10 +306,24 @@
                 '<i class="fa fa-remove"></i> Remove</a> ' +
                 '<a href="javascript:void(0)" class="btn btn-warning" onclick="return showDetail(this, false)">' +
                 '<i class="fa fa-arrow-circle-up"></i> Close</a>' +
-                '</div></div></div></div></li>';
+                '</div></div></div></div></li>');
         $('#nestable3 > ol').append(html);
         $('#nestable3 li:last-child').last().attr('data-id', number_menu_item++);
         updateOutputValue();
+
+        // Highlight added menu item
+        html.children().not('ol').css({
+            'background': 'orange',
+            'color': 'white'
+        });
+
+        // Remove highlight after 0.1s
+        setTimeout(function(){
+            html.children().not('ol').css({
+                'background': '',
+                'color': ''
+            });
+        }, 100);
 
         // Re-init popover
         $('.information').popover();
@@ -324,13 +336,14 @@
         if (custom_link_title == '') custom_link_title = 'Menu Item';
         if (custom_link_url != '') {
             renderNewMenu(custom_link_title, custom_link_url);
+        }else{
+            alert('URL is missing!');
         }
     }
 
     function addNewMenu(button) {
         // Update label, url, title
-        var checkbox = $(button).parent('div').children('.checkbox').children('label').children('input');
-
+        var checkbox = $(button).parent('div').parent('.box-body').find('input[type="checkbox"]');
         checkbox.each(function () {
             if ($(this).is(':checked')) {
                 renderNewMenu($(this).parent('label').text().trim(), $(this).val());
