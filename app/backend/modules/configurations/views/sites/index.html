@@ -24,19 +24,26 @@
                                 <!-- Morris chart - Sales -->
                                 <div class="tab-pane active" id="site-setting">
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Title</label>
+                                            <label>Site title</label>
                                             <input type="text" name="title" class="form-control"
                                                    value="{{ config.app.title }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Meta keywords</label>
+                                            <input type="text" name="keywords" class="form-control"
+                                                   value="{{ config.app.keywords }}">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Site description</label>
-                                            <input type="text" name="description" class="form-control"
-                                                   value="{{ config.app.description }}">
+                                            <textarea name="description" class="form-control" cols="30" rows="4">{{ config.app.description }}</textarea>
                                         </div>
                                     </div>
 
