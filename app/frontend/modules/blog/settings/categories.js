@@ -44,5 +44,6 @@ module.exports = function (app, config) {
     return {
         title: 'Categories',
         alias: alias,
+        search: true
     };
 };
