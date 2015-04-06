@@ -88,6 +88,9 @@ _module.create = function (req, res) {
     res.locals.saveButton = __acl.addButton(req, route, 'create');
     res.locals.backButton = __acl.addButton(req, route, 'index', '/admin/menus');
 
+    // Get module links
+    res.locals.setting_menu_module = __setting_menu_module;
+
     // Render view
     _module.render(req, res, 'new');
 };
