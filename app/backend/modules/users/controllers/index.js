@@ -259,7 +259,7 @@ _module.save = function (req, res, next) {
     form.parseAsync(req).then(function (result) {
         let data = result[0];
         let files = result[1];
-        data.id = new Date().getTime();
+        data.id = null;
 
         // Check user image was uploaded
         if (files.user_image_url.name != '') {
@@ -276,6 +276,7 @@ _module.save = function (req, res, next) {
             return data;
         }
     }).then(function (data) {
+        //res.send(data);
         return __models.user.create(data).then(function () {
             req.flash.success("Add new user successfully");
             res.redirect('/admin/users/');

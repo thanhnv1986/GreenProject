@@ -3,7 +3,6 @@ let crypto = require('crypto');
 
 module.exports = function (sequelize, DataTypes) {
     let User = sequelize.define("user", {
-        id: DataTypes.BIGINT,
         user_login: DataTypes.STRING(60),
         user_pass: DataTypes.STRING(64),
         user_email: DataTypes.STRING(100),
