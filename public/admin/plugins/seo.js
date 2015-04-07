@@ -10,7 +10,7 @@ var SEO = function() {
     var contentObj = options.content_field;
     var mtitle = $('#meta_title');
     var mdescription = $('#meta_description');
-    var mkeyword = $('#meta_keyword');
+    var mkeyword = $('#meta_keywords');
 
     var initForm = function() {
         var seo_info = $('input[name=seo_info]').val();
@@ -22,7 +22,7 @@ var SEO = function() {
         }
         if(seo_info){
             if(seo_info.meta_title) mtitle.val(seo_info.meta_title);
-            if(seo_info.meta_keyword) mkeyword.val(seo_info.meta_keyword);
+            if(seo_info.meta_keywords) mkeyword.val(seo_info.meta_keywords);
             if(seo_info.meta_description) {
                 mdescription.val(seo_info.meta_description);
                 $('#counter > span').html(seo_info.meta_description.length);
@@ -110,7 +110,7 @@ var SEO = function() {
 
             var seo_info = {
                 meta_title: (mtitle.val() != '')? mtitle.val() : titleItem.val(),
-                meta_keyword: mkeyword.val(),
+                meta_keywords: mkeyword.val(),
                 meta_description: (mdescription.val() != '')? mdescription.val() : extractDes(content)
             };
             $('input[name="seo_info"]').val(encodeURIComponent(JSON.stringify(seo_info)));
