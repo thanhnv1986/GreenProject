@@ -2,11 +2,56 @@
  * Created by thanhnv on 3/9/15.
  */
 
+// Use for CKEDITOR version
+/*var _ckeditor_id = 1;*/
+
+var maximize_button = '<div class="maximize-toolbar">' +
+    '<a href="javascript:void(0)" onclick="maximizeEditor(this)">' +
+    '<i class="fa fa-arrows-alt"></i></a></div>';
+var minimize_button = '<div class="minimize-toolbar">' +
+    '<a href="javascript:void(0)" onclick="minimizeEditor(this)">' +
+    '<i class="fa fa-arrows-alt"></i></a></div>';
+
 $(function () {
+    // Init popover
+    $('.information').tooltip();
+
+    // Init code mirror by class 'arr-codemirror'
+    var textarea = document.getElementsByClassName('arr-codemirror');
+    if (textarea.length > 0) {
+        for (var i = 0; i < textarea.length; i++) {
+            if (textarea[i] != null) {
+                var input = textarea[i];
+                var editor = CodeMirror.fromTextArea(textarea[i]);
+                $(textarea[i]).after(maximize_button);
+
+                editor.on('change', function (cm, obj) {
+                    cm.save();
+                });
+            }
+        }
+    }
+
+    // CKEDITOR version: Init ckeditor
+    /*$('textarea.ckeditor').each(function () {
+     $(this).attr('id', 'ckeditor' + _ckeditor_id);
+
+     initCkeditor();
+     });*/
+
+    // Collapse all widgets after init code mirror to prevent cursor height bug
+    $('.sidebar-list').find('div.widget-item')
+        .next('a').removeClass('fa-caret-down').addClass('fa-caret-left')
+        .next('div.box').removeClass('open').addClass('close');
+
     $("#widgets li").draggable({
         appendTo: "body",
-        helper: "clone"
+        helper: "clone",
+        start: function (event, ui) {
+            $(ui.helper).width($(this).width());
+        }
     });
+
     $(".sidebar-widget").droppable({
         activeClass: "ui-state-default",
         hoverClass: "widget-state-hover",
@@ -18,7 +63,6 @@ $(function () {
             li.append('<a href="#" class="fa fa-caret-down expand_arrow" onclick="return showDetail(this);"></a>');
             _this = $(this);
             li.find(".widget-item").first().text(ui.draggable.text());
-//                    var ul = $(this).find('.widget-list').first();
             var ul = $(this);
             $.ajax({
                 url: '/admin/widgets/sidebars/add/' + ui.draggable.attr('data-alias')
@@ -29,26 +73,49 @@ $(function () {
                 new_box.find("form").first().append("<input type='hidden' name='ordering' value='" + (ul.find("li").length + 1) + "'>");
                 li.append(new_box);
                 ul.append(li);
-            });
-//                    $(this).find('.box-body').append("<div class='box box-solid close'><div class='box-body'></div></div>");
 
+                // Init code mirror by class 'arr-codemirror' after drop
+                var textarea = $(li)[0].getElementsByClassName('arr-codemirror')
+                if (textarea.length > 0) {
+                    for (var i = 0; i < textarea.length; i++) {
+                        if (textarea[i] != null) {
+                            var editor = CodeMirror.fromTextArea(textarea[i]);
+
+                            editor.on('change', function (cm, obj) {
+                                cm.save();
+                            });
+                        }
+                    }
+                }
+
+                // CKEDITOR version: Init ckeditor for new textarea
+                /*$(li).find('textarea.ckeditor').first().attr('id', 'ckeditor' + _ckeditor_id);
+                 initCkeditor();*/
+            });
         }
     }).sortable({
+        handle: ".widget-item",
         delay: 100,
         items: "li",
         placeholder: "placeholder",
+        start: function(event, ui) {
+            var arrow = $(ui.item).children('a.expand_arrow');
+            if(arrow.hasClass('fa-caret-down')){
+                arrow.removeClass('fa-caret-down').addClass('fa-caret-left');
+            }
+
+            var box = $(ui.item).children('div.box');
+            if(box.hasClass('open')){
+                box.removeClass('open').addClass('close');
+            }
+        },
         sort: function () {
-            // gets added unintentionally by droppable interacting with sortable
-            // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
             $(this).removeClass("ui-state-default");
         },
         connectWith: ".sidebar-widget",
         receive: function (event, ui) {
             $(this).find(".placeholder").remove();
-            console.log("Receive");
-            console.log(this);
             var ids = $(this).sortable('toArray');
-            console.log(ids);
             sorting(this, ids);
         },
         remove: function (event, ui) {
@@ -57,27 +124,56 @@ $(function () {
             }
         },
         stop: function (event, ui) {
-            console.log("Stop");
-            console.log(this);
             var ids = $(this).sortable('toArray');
-            console.log(ids);
             sorting(this, ids);
         }
-        /*start: function (event, ui) {
-         if ($(this).find('.widget-item').length == 1 && $(this).find('.placeholder').length == 0) {
-         $(this).find("ul").append("<li class='placeholder'>Drop widget here</li>");
-         }
-         }*/
+    });
+});
+
+function maximizeEditor(button) {
+    var editor = $(button).parent('.maximize-toolbar').next();
+    editor.css({
+        'position': 'fixed',
+        'width': '100%',
+        'height': '100%',
+        'top': '0',
+        'left': '0',
+        'z-index': '9999'
     });
 
-    /*$('.sidebar-widget .widget-list textarea').each(function(index){
-     console.log(this.id);
-     CKEDITOR.replace(this.id);
-     });*/
+    editor.children().first().before(minimize_button);
+}
 
-});
+function minimizeEditor(button) {
+    var editor = $(button).parent().parent('.CodeMirror');
+    editor.css({
+        'position': 'relative',
+        'width': '',
+        'height': '',
+        'top': '',
+        'left': '',
+        'z-index': ''
+    });
+
+    $(button).parent('.minimize-toolbar').remove();
+}
+
+// CKEDITOR version
+/*function initCkeditor() {
+ CKEDITOR.config.startupMode = 'source';
+ CKEDITOR.replace('ckeditor' + _ckeditor_id, {
+ height: 150,
+ toolbar: [
+ { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+ ]
+ });
+
+ _ckeditor_id++;
+ }*/
+
 function showDetail(element, changeIcon) {
     var box = $(element).parents("li").first().find('.box').first();
+
     if (box.hasClass('open')) {
         box.removeClass('open');
         box.addClass('close');
@@ -99,17 +195,24 @@ function showDetail(element, changeIcon) {
             $(element).removeClass('fa-caret-left');
             $(element).addClass('fa-caret-down');
         }
-
-
     }
+
     return false;
 }
 
 function saveWidget(button) {
-    var form = $(button).parents('form');
+    var form = $(button).parents('form').first();
     var box = $(button).parents('.box').first();
-    var widget = $(button).parents("li").first();
+
+    // CKEDITOR version: save textarea values
+    /*var textareas = form.find('textarea.ckeditor');
+     for(var i =0; i< textareas.length; i++){
+     var textarea_id = $(textareas[i]).attr('id');
+     $(textareas[i]).val(CKEDITOR.instances[textarea_id].getData());
+     }*/
+
     showBlock(box);
+
     $.ajax({
         type: "POST",
         url: '/admin/widgets/sidebars/save',
@@ -120,15 +223,17 @@ function saveWidget(button) {
         removeBlock(box);
         return false;
     });
+
     return false;
 }
 
 function removeWidget(button) {
     var id = $(button).parents('form').find('input[name="id"]').val();
     var box = $(button).parents('.box').first();
+
     if (id != '') {
-        //delete in database
         showBlock(box);
+
         $.ajax({
             url: '/admin/widgets/sidebars/' + id,
             type: "DELETE"
@@ -140,23 +245,29 @@ function removeWidget(button) {
     } else {
         $(button).parents('li').first().remove();
     }
+
     return false;
 }
 
 function showBlock(element) {
     $(element).append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
 }
+
 function removeBlock(element) {
     $(element).find(".overlay").remove();
 }
+
 function sorting(element, ids) {
     var box = $(element).parents(".box").first();
+
     for (var i in ids) {
         if (ids[i] == '') {
             box.find("form").find("input[name='ordering']").val(parseInt(i) + 1);
         }
     }
+
     showBlock(box);
+
     $.ajax({
         url: '/admin/widgets/sidebars/sort',
         type: 'POST',

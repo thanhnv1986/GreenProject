@@ -37,8 +37,10 @@ _module.index = function (req, res) {
         widgets: __widgets
     });
 };
+
 _module.sidebar = function (req, res, next) {
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Sidebars'});
+    
     Promise.promisifyAll(fs);
     fs.readFileAsync(__base + "app/frontend/themes/" + config.themes + "/theme.json", "utf8").then(function (data) {
         _module.render(req, res, 'sidebars', {
@@ -48,20 +50,22 @@ _module.sidebar = function (req, res, next) {
         });
     });
 };
+
 _module.addWidget = function (req, res) {
     let widget = __.getWidget(req.params.widget);
     widget.render_setting(req.params.widget).then(function (re) {
         res.send(re);
     });
-}
+};
+
 _module.saveWidget = function (req, res) {
-    //console.log(req.body);
     let widget_type = req.body.widget;
     var widget = __.getWidget(widget_type);
     widget.save(req.body).then(function (id) {
         res.send(id);
     });
-}
+};
+
 _module.read = function (req, res) {
     __models.widgets.find(req.params.cid).then(function (widget) {
         var widget = __.getWidget(widget.widget_type);
@@ -69,12 +73,14 @@ _module.read = function (req, res) {
             res.send(re);
         });
     });
-}
+};
+
 _module.delete = function (req, res) {
     __models.widgets.destroy({where: {id: req.params.cid}}).then(function () {
         res.sendStatus(200);
     });
-}
+};
+
 _module.sidebar_sort = function (req, res) {
     //console.log(req.body);
     let ids = req.body.ids.split(',');
@@ -86,7 +92,7 @@ _module.sidebar_sort = function (req, res) {
             index++;
             continue;
         }
-        promises.push(__models.sequelize.query("Update "+__models.widgets.getTableName()+" set ordering=?, sidebar=? where id=?",
+        promises.push(__models.sequelize.query("Update " + __models.widgets.getTableName() + " set ordering=?, sidebar=? where id=?",
             {replacements: [index++, sidebar, ids[i]]}));
     }
     Promise.all(promises).then(function (results) {

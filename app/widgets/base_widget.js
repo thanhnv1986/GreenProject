@@ -20,12 +20,14 @@ var _base_config = {
         file: ''
     }
 };
+
 var env = __.createNewEnv();
-//Base constructor
+
 function BaseWidget() {
     _.assign(this, _base_config);
     this.env = env;
 }
+
 BaseWidget.prototype.getAllLayouts = function (alias) {
     let files = [];
     config.getGlobbedFiles(__base + "app/frontend/themes/" + config.themes + '/_widgets/' + alias + '/*.html').forEach(function (path) {
@@ -39,7 +41,8 @@ BaseWidget.prototype.getAllLayouts = function (alias) {
         });
     }
     return files;
-}
+};
+
 BaseWidget.prototype.save = function (data) {
     return new Promise(function (done, reject) {
         let json_data = _.clone(data);
@@ -47,7 +50,6 @@ BaseWidget.prototype.save = function (data) {
         delete json_data.id;
         json_data = JSON.stringify(json_data);
         if (data.id != '') {
-
             __models.widgets.find(data.id).then(function (widget) {
                 widget.updateAttributes({
                     sidebar: data.sidebar,
@@ -56,7 +58,6 @@ BaseWidget.prototype.save = function (data) {
                     done(widget.id);
                 });
             });
-
         } else {
             __models.widgets.create({
                 id: new Date().getTime(),
@@ -70,7 +71,8 @@ BaseWidget.prototype.save = function (data) {
         }
 
     });
-}
+};
+
 BaseWidget.prototype.render_setting = function (widget_type, widget) {
     let _this = this;
     return new Promise(function (done, reject) {
@@ -81,9 +83,8 @@ BaseWidget.prototype.render_setting = function (widget_type, widget) {
                 reject(err);
             });
     });
+};
 
-}
-//Render v
 BaseWidget.prototype.render = function (widget, data) {
     let _this = this;
     return new Promise(function (resolve, reject) {
@@ -105,6 +106,6 @@ BaseWidget.prototype.render = function (widget, data) {
             return "<p>" + err.cause;
         }));
     });
-}
+};
 
 module.exports = BaseWidget;

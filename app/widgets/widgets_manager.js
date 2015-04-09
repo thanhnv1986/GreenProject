@@ -10,4 +10,4 @@ module.exports = function () {
         w.push(new Widget());
     });
     return w;
-}
+};

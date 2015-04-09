@@ -1,11 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block cssExtends %}
+    <link rel="stylesheet" href="/admin/plugins/codemirror/css/codemirror.min.css">
     <style>
         .widget-list {
             list-style: none;
-            padding-left: 0px;
+            padding-left: 0;
             font-size: 15px;
+        }
+
+        .widget-list .box {
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
         }
 
         .widget-item {
@@ -15,6 +20,7 @@
             padding-left: 15px;
             background-color: aliceblue;
             margin-bottom: 10px;
+            cursor: move;
         }
 
         .widget-state-hover {
@@ -37,9 +43,11 @@
 
         .expand_arrow {
             position: absolute;
-            top: 8px;
+            top: 6px;
             right: 10px;
-            font-size: 20px;
+            width: 50px;
+            font-size: 24px;
+            text-align: center;
         }
 
         .placeholder {
@@ -52,12 +60,59 @@
             z-index: 9999;
             min-height: 50px;
         }
+
+        .information {
+            float: right;
+            padding-right: 10px;
+            color: #808080;
+            cursor: pointer;
+        }
+
+        .tooltip.in {
+            opacity: 1;
+        }
+
+        .tooltip.top {
+            padding: 8px 4px 5px 4px;
+        }
+
+        .tooltip-inner {
+            text-align: left;
+            background-color: #00c0ef;
+            color: white;
+        }
+
+        .tooltip.top .tooltip-arrow {
+            border-top-color: #00c0ef;
+        }
+
+        .maximize-toolbar, .minimize-toolbar {
+            border: 1px solid #ddd;
+            background-color: #f7fbff;
+            text-align: right;
+        }
+
+        .maximize-toolbar {
+            padding: 5px 10px;
+        }
+
+        .minimize-toolbar {
+            margin: -6px -12px 12px -12px;
+            padding: 15px 20px;
+            font-size: 20px;
+        }
+
+        .CodeMirror.cm-s-default {
+            padding: 6px 12px;
+            border: 1px solid #d2d6de;
+        }
     </style>
 {% endblock %}
+
 {% block content %}
     <div class="row">
-        <div class="col-sm-12">
-            <div class="col-sm-3">
+        <div class="col-md-12">
+            <div class="col-md-3">
                 <div class="box box-solid box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Widgets Available</h3>
@@ -66,14 +121,19 @@
                     <div class="box-body">
                         <ul class="widget-list" id="widgets">
                             {% for widget in widgets %}
-                                <li class="widget-item" data-alias="{{ widget.alias }}">{{ widget.name }}</li>
+                                <li class="widget-item" data-alias="{{ widget.alias }}">
+                                    {{ widget.name }}
+                                    <a class="information" title="{{ widget.description }}">
+                                        <i class="fa fa-info-circle"></i>
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-9 sidebar-list">
+            <div class="col-md-9 sidebar-list">
                 <div class="row">
                     {% macro sidebar_list(sidebar, widget_list) %}
                         <div class="col-md-12">
@@ -82,8 +142,8 @@
                                     <h3 class="box-title">{{ bar.title }}</h3>
 
                                     <div class="box-tools pull-right">
-                                        <button class="btn btn-box-tool" data-widget="collapse"><i
-                                                    class="fa fa-minus"></i>
+                                        <button class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -99,7 +159,7 @@
 
                     <div class="col-md-6">
                         {% for bar in sidebars %}
-                            {% if loop.index | even %}
+                            {% if loop.index | odd %}
                                 {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
                             {% endif %}
                         {% endfor %}
@@ -107,7 +167,7 @@
 
                     <div class="col-md-6">
                         {% for bar in sidebars %}
-                            {% if loop.index | odd %}
+                            {% if loop.index | even %}
                                 {{ sidebar_list(bar, bar.name|setting_sidebars|safe) }}
                             {% endif %}
                         {% endfor %}
@@ -119,6 +179,9 @@
 {% endblock %}
 
 {% block jsExtends %}
+    {#{% include 'editorScript.html' %}#}
     <script src="/admin/plugins/JQueryUI/jquery-ui-1.10.3.js"></script>
-    <script src="/admin/dist/js/widgets/sidebar.min.js"></script>
+    <script src="/admin/plugins/codemirror/js/codemirror.min.js"></script>
+    <script src="/admin/plugins/codemirror/js/codemirror.mode.htmlmixed.min.js"></script>
+    <script src="/admin/dist/js/widgets/sidebar.js"></script>
 {% endblock %}

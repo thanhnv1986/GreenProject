@@ -38,7 +38,7 @@
 
                         <div class="form-group btn-add-menu-wrapper">
                             <button type="button" class="btn btn-primary btn-add-menu"
-                                    onclick="return addCustomLink(this);">
+                                    onclick="return addCustomLink();">
                                 Add to Menu&nbsp; <i class="fa fa-arrow-circle-right"></i>
                             </button>
                         </div>
@@ -177,7 +177,7 @@
             }
 
             btnLoadModule = button;
-            //module_detail_view += getPagination(total_pages, page, alias, search, useSearch);
+            module_detail_view += getPagination(total_pages, page, alias, search, useSearch);
 
             module_detail_view += '</div><div class="form-group btn-add-menu-wrapper">' +
                     '<button type="button" class="btn btn-primary btn-add-menu" ' +
@@ -302,13 +302,16 @@
         $('.information').popover();
     }
 
-    function addCustomLink(button) {
-        var parent = $(button).parent().parent('.box-body');
-        var custom_link_title = parent.find('#custom_link_title').val();
-        var custom_link_url = parent.find('#custom_link_url').val();
+    function addCustomLink() {
+        var custom_link_title = $('#custom_link_title').val();
+        var custom_link_url = $('#custom_link_url').val();
         if (custom_link_title == '') custom_link_title = 'Menu Item';
         if (custom_link_url != '') {
+            // Create new menu item
             renderNewMenu(custom_link_title, custom_link_url);
+
+            // Reset value
+            $('#custom_link_url').val('');
         } else {
             alert('URL is missing!');
         }
@@ -319,7 +322,11 @@
         var checkbox = $(button).parent('div').parent('.box-body').find('input[type="checkbox"]');
         checkbox.each(function () {
             if ($(this).is(':checked')) {
+                // Create new menu item
                 renderNewMenu($(this).parent('label').text().trim(), $(this).val());
+
+                // Reset checkbox
+                $(this).prop('checked', false);
             }
         });
     }

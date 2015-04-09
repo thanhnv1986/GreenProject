@@ -41,7 +41,8 @@ module.exports = function (app) {
     }).post(function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {
             // Remove sensitive data before login
-            user.user_pass = undefined;
+            if(user)
+                user.user_pass = undefined;
 
             if (info) {
                 req.flash.error(info.message);
