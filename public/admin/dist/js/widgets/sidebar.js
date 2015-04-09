@@ -80,6 +80,7 @@ $(function () {
                     for (var i = 0; i < textarea.length; i++) {
                         if (textarea[i] != null) {
                             var editor = CodeMirror.fromTextArea(textarea[i]);
+                            $(textarea[i]).after(maximize_button);
 
                             editor.on('change', function (cm, obj) {
                                 cm.save();
