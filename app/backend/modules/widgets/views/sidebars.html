@@ -68,6 +68,10 @@
             cursor: pointer;
         }
 
+        .information:hover i {
+            color: #525252;
+        }
+
         .tooltip.in {
             opacity: 1;
         }
@@ -78,18 +82,18 @@
 
         .tooltip-inner {
             text-align: left;
-            background-color: #00c0ef;
-            color: white;
+            background-color: #f0eff0;
+            color: #000000;
+            border: 1px solid #d7d7d7;
         }
 
         .tooltip.top .tooltip-arrow {
-            border-top-color: #00c0ef;
+            border-top-color: #d7d7d7;
         }
 
         .maximize-toolbar, .minimize-toolbar {
             border: 1px solid #ddd;
             background-color: #f7fbff;
-            text-align: right;
         }
 
         .maximize-toolbar {
@@ -100,6 +104,26 @@
             margin: -6px -12px 12px -12px;
             padding: 15px 20px;
             font-size: 20px;
+        }
+
+        .maximize-toolbar a {
+            padding: 2px 5px;
+        }
+
+        .minimize-toolbar a {
+            padding: 6px 6px 2px 6px;
+        }
+
+        .maximize-toolbar a:hover, .minimize-toolbar a:hover {
+            background-color: #d5e1f3;
+        }
+
+        .maximize-toolbar a i, .minimize-toolbar a i {
+            color: #6b6b6b;
+        }
+
+        .maximize-toolbar a:hover i, .minimize-toolbar a:hover i {
+            color: #525252;
         }
 
         .CodeMirror.cm-s-default {

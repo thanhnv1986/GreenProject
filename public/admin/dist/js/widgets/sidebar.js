@@ -6,14 +6,14 @@
 /*var _ckeditor_id = 1;*/
 
 var maximize_button = '<div class="maximize-toolbar">' +
-    '<a href="javascript:void(0)" onclick="maximizeEditor(this)">' +
+    '<a href="javascript:void(0)" title="Maximize" onclick="maximizeEditor(this)">' +
     '<i class="fa fa-arrows-alt"></i></a></div>';
 var minimize_button = '<div class="minimize-toolbar">' +
-    '<a href="javascript:void(0)" onclick="minimizeEditor(this)">' +
-    '<i class="fa fa-arrows-alt"></i></a></div>';
+    '<a href="javascript:void(0)" title="Save" onclick="minimizeEditor(this)">' +
+    '<i class="fa fa-save"></i></a></div>';
 
 $(function () {
-    // Init popover
+    // Init tooltip for widget description
     $('.information').tooltip();
 
     // Init code mirror by class 'arr-codemirror'
@@ -30,6 +30,9 @@ $(function () {
                 });
             }
         }
+
+        // Init tooltip for maximize toolbar
+        //$('.maximize-toolbar > a').tooltip();
     }
 
     // CKEDITOR version: Init ckeditor
@@ -87,6 +90,9 @@ $(function () {
                             });
                         }
                     }
+
+                    // Init tooltip for maximize toolbar
+                    //$('.maximize-toolbar > a').tooltip();
                 }
 
                 // CKEDITOR version: Init ckeditor for new textarea
@@ -143,9 +149,13 @@ function maximizeEditor(button) {
     });
 
     editor.children().first().before(minimize_button);
+
+    // Init tooltip for minimize toolbar
+    //$('.minimize-toolbar > a').tooltip();
 }
 
 function minimizeEditor(button) {
+    // Minimize the editor
     var editor = $(button).parent().parent('.CodeMirror');
     editor.css({
         'position': 'relative',
@@ -156,7 +166,11 @@ function minimizeEditor(button) {
         'z-index': ''
     });
 
+    // Remove minimize button
     $(button).parent('.minimize-toolbar').remove();
+
+    // Save the editor and current widget
+    editor.parents('form').first().find('.arr-btn-submit').first().trigger('click');
 }
 
 // CKEDITOR version
