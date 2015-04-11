@@ -119,7 +119,8 @@ exports.index = function (req, res) {
         include: [
             {
                 model: __models.user, attributes: ['display_name'],
-                where: '1 = 1'
+                where: '1 = 1',
+                required: false
             }
         ],
         where: filter.values,

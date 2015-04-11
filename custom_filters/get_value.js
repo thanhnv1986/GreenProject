@@ -9,13 +9,17 @@ module.exports = function (env) {
             let arr = input.split('.');
             let value = '';
             for(let i in arr){
-                item = item[arr[i]];
+                item = (item[arr[i]] != null) ? item[arr[i]] : '';
                 value = item;
             }
             return value;
         }
         else{
-            return item[input];
+            if(item != null && item[input] != null) {
+                return item[input];
+            }else{
+                return '';
+            }
         }
     });
-}
+};
