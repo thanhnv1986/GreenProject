@@ -81,7 +81,7 @@ exports.fileslist = function (req, res) {
                             t: new Date(sta.mtime).getTime() / 1000,
                             w: dimension.width,
                             h: dimension.height
-                        }
+                        };
                         result.push(p);
                     }
                 }
@@ -94,7 +94,7 @@ exports.fileslist = function (req, res) {
 exports.upload = function (req, res) {
     let form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        folder = fields.d;
+        let folder = fields.d;
         let folder_to_upload = standardPath + folder;
         fs.rename(files["files[]"].path, folder_to_upload + '/' + files["files[]"].name, function (err) {
             if (err) {

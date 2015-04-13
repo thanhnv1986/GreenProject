@@ -1,9 +1,14 @@
 {% macro getContent(col) %}
-    {% if col.type == 'datetime' %}
-        {{ col.column|get_value(item)|date_time }}
+    {% if col.alias %}
+        {{ col.alias }}
     {% else %}
-        {{ col.column|get_value(item) }}
+        {% if col.type == 'datetime' %}
+            {{ col.column|get_value(item)|date_time }}
+        {% else %}
+            {{ col.column|get_value(item) }}
+        {% endif %}
     {% endif %}
+
 {% endmacro %}
 {% for item in items %}
     <tr xmlns="http://www.w3.org/1999/html">

@@ -37,33 +37,75 @@
                                 </option>
                             </select>
                         </div>
-
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom" style="cursor: move;">
+                        <!-- Tabs within a box -->
+                        <ul class="nav nav-tabs ui-sortable-handle">
+                            <li class=""><a href="#backend" data-toggle="tab" aria-expanded="false">Backend</a></li>
+                            <li class=""><a href="#frontend" data-toggle="tab" aria-expanded="false">Frontend</a></li>
+                        </ul>
                         <div class="row">
-                            {% for key, module in modules %}
-                                <div class="col-md-3 col-sm-3">
-                                    <div class="rule-item">
-                                        <div class="form-group">
-                                            <label class="label-rule">
-                                                <input type="checkbox" class="check-rule-parent"/>&nbsp;
-                                                {{ module.title }}
-                                            </label>
-                                            {% for rule in module.rules %}
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="{{ key }}[]"
-                                                               class="check-rule-children" value="{{ rule.name }}"
-                                                                {{ rules|check_state(key, rule.name) }} />
-                                                        {{ rule.title }}
-                                                    </label>
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <!-- Morris chart - Sales -->
+                                    <div class="tab-pane active" id="backend">
+                                        {% for key, module in modules %}
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="rule-item">
+                                                    <div class="form-group">
+                                                        <label class="label-rule">
+                                                            <input type="checkbox" class="check-rule-parent"/>&nbsp;
+                                                            {{ module.title }}
+                                                        </label>
+                                                        {% for rule in module.rules %}
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="{{ key }}[]"
+                                                                           class="check-rule-children"
+                                                                           value="{{ rule.name }}"
+                                                                            {{ rules|check_state(key, rule.name) }} />
+                                                                    {{ rule.title }}
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
-                                            {% endfor %}
-                                        </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="tab-pane active" id="frontend">
+                                        {% for key, module in f_modules %}
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="rule-item">
+                                                    <div class="form-group">
+                                                        <label class="label-rule">
+                                                            <input type="checkbox" class="check-rule-parent"/>&nbsp;
+                                                            {{ module.title }}
+                                                        </label>
+                                                        {% for rule in module.rules %}
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="{{ key }}[]"
+                                                                           class="check-rule-children"
+                                                                           value="{{ rule.name }}"
+                                                                            {{ rules|check_state(key, rule.name) }} />
+                                                                    {{ rule.title }}
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
@@ -75,18 +117,18 @@
             var checkParent = $('input.check-rule-parent');
 
             // Check parent if all children is checked
-            checkParent.each(function(){
+            checkParent.each(function () {
                 var isCheckAll = true;
                 var cbChild = $(this).parent('label').parent('div')
                         .children('div').children('label').children('input[type="checkbox"]');
 
-                cbChild.each(function(){
-                    if(!$(this).is(':checked')){
+                cbChild.each(function () {
+                    if (!$(this).is(':checked')) {
                         isCheckAll = false;
                     }
                 });
 
-                if(isCheckAll){
+                if (isCheckAll) {
                     $(this).prop('checked', true);
                 }
             });
