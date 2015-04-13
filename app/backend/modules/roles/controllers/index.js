@@ -92,13 +92,13 @@ _module.list = function (req, res) {
         order: column + " " + order
 
     }).then(function (roles) {
-        _module.render(req, res,'index', {
+        _module.render(req, res, 'index', {
             title: "All Roles",
             items: roles
         });
     }).catch(function (error) {
         req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
-        _module.render(req, res,'index', {
+        _module.render(req, res, 'index', {
             title: "All Roles",
             roles: null
         });
@@ -119,19 +119,20 @@ _module.view = function (req, res) {
             id: req.params.cid
         }
     }).then(function (roles) {
-        _module.render(req, res,'new', {
+        _module.render(req, res, 'new', {
             title: "Update Role",
             modules: __modules,
             role: roles,
-            f_modules:__f_modules,
-            rules: JSON.parse(roles.rules)
+            f_modules: __f_modules,
+            rules: JSON.parse(roles.rules),
+            f_rules: JSON.parse(roles.f_rules)
         });
     }).catch(function (error) {
         req.flash.error('Name: ' + error.name + '<br />' + 'Message: ' + error.message);
-        _module.render(req, res,'new', {
+        _module.render(req, res, 'new', {
             title: "Update Role",
             modules: __modules,
-            f_modules:__f_modules,
+            f_modules: __f_modules,
             role: null,
             rules: null
         });
@@ -146,11 +147,14 @@ _module.update = function (req, res) {
         }
     }).then(function (role) {
         let rules = {};
-
+        let f_rules = {};
         for (let k in req.body) {
             if (req.body.hasOwnProperty(k)) {
-                if (k != 'title' && k != 'status') {
+                if (k != 'title' && k != 'status' && k.indexOf('f_') < 0) {
                     rules[k] = req.body[k].join(':');
+                }
+                else if (k.indexOf('f_') == 0) {
+                    f_rules[k.replace('f_', '')] = req.body[k].join(':');
                 }
             }
         }
@@ -159,7 +163,8 @@ _module.update = function (req, res) {
         return role.updateAttributes({
             name: req.body.title,
             status: req.body.status,
-            rules: JSON.stringify(rules)
+            rules: JSON.stringify(rules),
+            f_rules: JSON.stringify(f_rules)
         });
     }).then(function () {
         req.flash.success('Update role successfully');
@@ -178,20 +183,23 @@ _module.create = function (req, res) {
     // Breadcrumb
     res.locals.breadcrumb = __.create_breadcrumb(breadcrumb, {title: 'Add New'});
 
-    _module.render(req, res,'new', {
+    _module.render(req, res, 'new', {
         title: "New Role",
         modules: __modules,
-        f_modules:__f_modules
+        f_modules: __f_modules
     });
 };
 
 _module.save = function (req, res) {
     let rules = {};
-
+    let f_rules = {};
     for (let k in req.body) {
         if (req.body.hasOwnProperty(k)) {
-            if (k != 'title' && k != 'status') {
+            if (k != 'title' && k != 'status' && k.indexOf('f_') < 0) {
                 rules[k] = req.body[k].join(':');
+            }
+            else if (k.indexOf('f_') == 0) {
+                f_rules[k.replace('f_', '')] = req.body[k].join(':');
             }
         }
     }
@@ -200,7 +208,8 @@ _module.save = function (req, res) {
     __models.role.create({
         name: req.body.title,
         status: req.body.status,
-        rules: JSON.stringify(rules)
+        rules: JSON.stringify(rules),
+        f_rules: JSON.parse(roles.f_rules)
     }).then(function () {
         req.flash.success('Create new role successfully');
         res.redirect('/admin/roles/');

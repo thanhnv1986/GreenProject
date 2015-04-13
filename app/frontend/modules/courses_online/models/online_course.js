@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         title: DataTypes.STRING,
         alias: DataTypes.STRING,
-        content: DataTypes.STRING,
+        content: DataTypes.JSONB,
         created_at: DataTypes.DATE,
         created_by: DataTypes.INTEGER
 
@@ -22,10 +22,10 @@ module.exports = function (sequelize, DataTypes) {
         deletedAt: false,
         classMethods: {
             associate: function (models) {
-                OnlineCourse.hasMany(models.online_course_category, {
+               /* OnlineCourse.belongsTo(models.online_course_category, {
                     as: "online_course_category",
                     through: 'online_course_category_course'
-                });
+                });*/
             }
         }
     });

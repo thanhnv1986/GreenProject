@@ -5,6 +5,7 @@
 module.exports = function (app) {
     require('./core/route')(app);
     require('./index/route')(app);
+    require('./courses_online/route')(app);
     require('./blog/route')(app);
     require('./todos/route')(app);
 };

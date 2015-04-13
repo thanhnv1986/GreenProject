@@ -16,6 +16,6 @@ module.exports = function(app) {
         .get(controller.update_view)
         .post(controller.update_save);
 
-    app.params('categoryId',controller.getByCategoryId);
-    app.params('courseId',controller.getByCourseId);
+    app.param('categoryId',controller.getByCategoryId);
+    app.param('courseId',controller.getByCourseId);
 };

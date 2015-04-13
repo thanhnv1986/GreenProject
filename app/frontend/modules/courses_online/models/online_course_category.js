@@ -21,10 +21,10 @@ module.exports = function (sequelize, DataTypes) {
         deletedAt: false,
         classMethods: {
             associate: function (models) {
-                OnlineCourseCategory.hasMany(models.online_course_category, {
+               /* OnlineCourseCategory.hasMany(models.online_course_category, {
                     as: "online_course_category",
                     through: 'online_course_category_course'
-                });
+                });*/
             }
         }
     });

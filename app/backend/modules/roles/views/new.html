@@ -87,10 +87,10 @@
                                                         {% for rule in module.rules %}
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" name="{{ key }}[]"
+                                                                    <input type="checkbox" name="f_{{ key }}[]"
                                                                            class="check-rule-children"
                                                                            value="{{ rule.name }}"
-                                                                            {{ rules|check_state(key, rule.name) }} />
+                                                                            {{ f_rules|check_state(key, rule.name) }} />
                                                                     {{ rule.title }}
                                                                 </label>
                                                             </div>

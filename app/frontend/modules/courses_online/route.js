@@ -7,5 +7,5 @@ module.exports = function(app) {
     // Root routing
 
     //require('./route_course_category')(app);
-    //require('./route_course')(app);
+    require('./route_course')(app);
 };
